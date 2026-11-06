@@ -103,6 +103,9 @@ table.units th{font-size:12px;text-transform:uppercase;color:var(--muted)}
 #map{height:560px;border-radius:14px;border:1px solid var(--line)}
 .pin{width:30px;height:30px;border-radius:50%;background:var(--ink);color:#fff;font:700 13px Inter;display:flex;align-items:center;justify-content:center;border:3px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,.4)}
 .pin.s{background:var(--orange);width:36px;height:36px}.pin.a{background:var(--green)}
+#asof{position:fixed;left:0;right:0;bottom:0;z-index:200;background:var(--orange);color:#fff;text-align:center;font:700 15px Inter,sans-serif;padding:10px 14px;box-shadow:0 -2px 8px rgba(0,0,0,.18)}
+body{padding-bottom:44px}
+#detail{bottom:40px}
 footer{background:var(--ink);color:#c9cfd6;font-size:13px;padding:24px 0}
 @media (max-width:640px){.hero{height:280px}.hero h1{font-size:32px}.big{font-size:32px}.value-card .big{font-size:36px}#map{height:420px}.dpanel{margin:0;border-radius:0}.gal img{height:44vh}}
 </style>
@@ -173,6 +176,7 @@ footer{background:var(--ink);color:#c9cfd6;font-size:13px;padding:24px 0}
 
 <div id="detail" onclick="if(event.target===this)closeDetail()"><div class="dpanel"><button class="close" onclick="closeDetail()">Close &times;</button><div id="dcontent"></div></div></div>
 
+<div id="asof"></div>
 <footer><div class="wrap" id="foot"></div></footer>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
@@ -218,6 +222,7 @@ function dist(x) { if (x.key === "subject") return "&ndash;"; const dLat = (x.la
 
 // header
 $("#agentName").textContent = M.agent.name; $("#agentCo").textContent = M.agent.team + ", " + M.agent.brokerage;
+$("#asof").innerHTML = "&#128197; Market data current as of " + ASOF_TXT;
 $("#prepared").textContent = (M.preparedFor ? "Prepared for " + M.preparedFor + " · " : "") + "Information as of " + ASOF_TXT;
 $("#hero").style.backgroundImage = "url('" + img(S.images[0], "large") + "')";
 $("#heroTitle").textContent = S.address.replace(" Avenue", " Ave");
