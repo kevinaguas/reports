@@ -64,7 +64,7 @@ section.view.on{display:block}
 .sbs th.rowh{position:sticky;left:0;z-index:3;background:#f0ebe2;min-width:130px;max-width:140px;font-size:12px;text-transform:uppercase;letter-spacing:.4px;color:var(--muted)}
 .sbs td.col{cursor:pointer}
 .sbs tr:hover td.col{background:#fbf8f3}
-.sbs td.subj{background:#fdf3ea}
+.sbs td.subj{background:#eef4fc}
 .sbs td.pic{padding:0}
 .sbs td.pic img{display:block;width:100%;height:140px;object-fit:cover;background:#ddd}
 .sbs td.pic .noimg{height:140px;background:#e9e4da}
@@ -106,7 +106,7 @@ table.units th{font-size:12px;text-transform:uppercase;color:var(--muted)}
 .btn{border:1px solid var(--line);background:var(--card);padding:10px 14px;border-radius:10px;font:600 14px Inter;cursor:pointer;color:var(--ink)}
 #map{height:560px;border-radius:14px;border:1px solid var(--line)}
 .pin{width:30px;height:30px;border-radius:50%;background:var(--ink);color:#fff;font:700 13px Inter;display:flex;align-items:center;justify-content:center;border:3px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,.4)}
-.pin.s{background:var(--orange);width:36px;height:36px}.pin.a{background:var(--green)}
+.pin{background:#b23b3b}.pin.s{background:#2c62a8;width:36px;height:36px}.pin.a{background:var(--green)}.pin.u{background:#e0b000;color:#3d2e00}
 #asof{position:fixed;left:0;right:0;bottom:0;z-index:200;background:var(--orange);color:#fff;text-align:center;font:700 15px Inter,sans-serif;padding:10px 14px;box-shadow:0 -2px 8px rgba(0,0,0,.18)}
 body{padding-bottom:44px}
 #detail{bottom:40px}
@@ -154,7 +154,7 @@ footer{background:var(--ink);color:#c9cfd6;font-size:13px;padding:24px 0}
 <section class="view" id="v-map-view">
  <h2 style="font-size:26px;margin-bottom:12px">Map</h2>
  <div id="map"></div>
- <div class="legend" style="margin-top:10px"><span><b style="color:var(--orange)">&#9679;</b> Subject</span><span><b>&#9679;</b> Sold comparable</span><span><b style="color:var(--green)">&#9679;</b> Active listing</span></div>
+ <div class="legend" style="margin-top:10px"><span><b style="color:#2c62a8">&#9679;</b> Subject</span><span><b style="color:#b23b3b">&#9679;</b> Sold comparable</span><span><b style="color:#e0b000">&#9679;</b> Under contract</span><span><b style="color:var(--green)">&#9679;</b> Active listing</span></div>
 </section>
 
 <section class="view" id="v-pricing">
@@ -363,7 +363,7 @@ function drawMap() {
   L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {attribution:"&copy; <a href='https://www.openstreetmap.org/copyright'>OpenStreetMap</a> contributors", maxZoom:19}).addTo(map);
   const pts = [];
   ALL.forEach(x => {
-    const cls = x.key === "subject" ? "pin s" : x.status === "Sold" ? "pin" : "pin a";
+    const cls = x.key === "subject" ? "pin s" : x.status === "Sold" ? "pin" : x.status === "Under contract" ? "pin u" : "pin a";
     const label = x.key === "subject" ? "&#9733;" : x.n;
     const m = L.marker([x.lat, x.lon], {icon:L.divIcon({className:"", html:"<div class='" + cls + "'>" + label + "</div>", iconSize:[36, 36], iconAnchor:[18, 18]})}).addTo(map);
     m.bindPopup("<div style='width:200px'><img src='" + img(x.images[0], "small") + "' style='width:100%;height:110px;object-fit:cover;border-radius:6px'><b>" + esc(x.address) + "</b><br>" + money(price(x)) + " &middot; " + (x.status === "Sold" ? "Sold" : x.key === "subject" ? "Subject" : x.status) + "<br><a href='#' onclick=\"openDetail('" + x.key + "');return false\">Details</a></div>");
