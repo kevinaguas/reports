@@ -193,7 +193,7 @@ const r5 = v => Math.round(v / 5000) * 5000;
 const pctS = v => (v >= 0 ? "+" : "") + (v * 100).toFixed(1) + "%";
 const chgTxt = x => x.soldPrice ? "<span class='" + (chg(x) >= 0 ? "up" : "down") + "'>" + pctS(chg(x)) + "</span> <span class='muted'>(" + Math.round(monthsSince(x)) + " mo)</span>" : "&ndash;";
 const CORE = SOLD.filter(c => c.role === "Anchor comp" || c.role === "Supporting");
-const V = {low: r5(Math.min(...CORE.map(adj))), high: r5(Math.max(...CORE.map(adj))), mid: r5(CORE.reduce((a, c) => a + adj(c), 0) / CORE.length)};
+const V = {low: r5(Math.min(...CORE.map(adj))), high: r5(Math.max(...CORE.map(adj))), mid: Math.round(CORE.reduce((a, c) => a + adj(c), 0) / CORE.length)};
 S.key = "subject"; SOLD.forEach((c, i) => { c.key = "s" + i; c.n = i + 1; }); ACT.forEach((c, i) => { c.key = "a" + i; c.n = String.fromCharCode(65 + i); });
 const ALL = [S, ...SOLD, ...ACT];
 const byKey = key => ALL.find(x => x.key === key);
@@ -229,7 +229,7 @@ $("#vList").innerHTML = money(S.listPrice);
 $("#vMed").innerHTML = money(M.market.medianNear);
 $("#vMedNote").textContent = M.market.countNear + " income-property sales within " + M.market.radiusNear + ", past 12 months";
 { const an = SOLD.find(c => c.role === "Anchor comp"), d = S.listPrice / V.mid - 1;
-  $("#summary").textContent = "Adjusted for market appreciation since each sale (" + pctS(APP.rate) + " per year for 2 to 4 unit buildings in Humboldt Park), the closest comparable sales support a value of " + k(V.low) + " to " + k(V.high) + ", most likely around " + k(V.mid) + ". The list price of " + k(S.listPrice) + " is " + (Math.abs(d) < 0.01 ? "in line with that value" : Math.round(Math.abs(d) * 100) + "% " + (d > 0 ? "above" : "below") + " it") + ". The closest match, " + an.address.replace(" Avenue", "") + ", sold for " + k(an.soldPrice) + " " + Math.round(monthsSince(an)) + " months ago, which is about " + k(adj(an)) + " in today's market."; }
+  $("#summary").textContent = "Adjusted for market appreciation since each sale (" + pctS(APP.rate) + " per year for 2 to 4 unit buildings in Humboldt Park), the closest comparable sales support a value of " + k(V.low) + " to " + k(V.high) + ", most likely around " + money(V.mid) + ". The list price of " + k(S.listPrice) + " is " + (Math.abs(d) < 0.01 ? "in line with that value" : Math.round(Math.abs(d) * 100) + "% " + (d > 0 ? "above" : "below") + " it") + ". The closest match, " + an.address.replace(" Avenue", "") + ", sold for " + k(an.soldPrice) + " " + Math.round(monthsSince(an)) + " months ago, which is about " + k(adj(an)) + " in today's market."; }
 const subjFacts = [["Units", S.units + " + garden in-law"], ["Beds / baths", S.beds + " / " + S.baths], ["Year built", S.year], ["Exterior", S.exterior], ["Lot", S.lot], ["Parking", S.parking], ["Days on market", S.dom], ["Taxes (" + S.taxYear + ")", money(S.taxes) + "*"], ["Existing rent-to-price ratio", rtpTxt(S, true)]];
 $("#subjFacts").innerHTML = subjFacts.map(f => "<div><div class='lbl'>" + f[0] + "</div><div class='v'>" + f[1] + "</div></div>").join("");
 function card(x) {
