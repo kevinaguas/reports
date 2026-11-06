@@ -78,6 +78,10 @@ section.view.on{display:block}
 .ccard img{width:100%;height:170px;object-fit:cover;display:block;background:#ddd}
 .ccard .b{padding:14px 16px}
 .ccard .p{font-family:'Space Grotesk',sans-serif;font-size:24px;font-weight:700}
+.tav{display:flex;justify-content:space-between;align-items:center;margin-top:10px;background:#e3f3e9;border:1px solid #a9d8b9;border-radius:10px;padding:10px 12px}
+.tav-l{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;color:#1f5e3a}
+.tav-v{font-family:'Space Grotesk',sans-serif;font-size:22px;font-weight:700;color:#1f5e3a}
+.tav-c{font-size:13px;font-weight:700;color:#1f5e3a;text-align:right}
 /* detail */
 #detail{position:fixed;inset:0;z-index:100;background:rgba(20,26,34,.6);display:none;overflow-y:auto}
 #detail.on{display:block}
@@ -232,7 +236,7 @@ $("#heroSub").textContent = "Chicago, IL " + S.zip + " · " + S.units + "-unit "
 $("#vRange").innerHTML = k(V.low) + " to " + k(V.high); $("#vMid").innerHTML = money(V.mid);
 $("#vAdjNote").textContent = "Comps adjusted " + pctS(APP.rate) + "/yr for market change since sale";
 $("#mathTitle").textContent = "How we got " + money(V.mid);
-$("#mathTable").innerHTML = "<tr><th>Comp</th><th>Sold</th><th>Months since sale</th><th>Market change</th><th>Adjusted to today</th></tr>" +
+$("#mathTable").innerHTML = "<tr><th>Comp</th><th>Sold</th><th>Months since sale</th><th>Market change</th><th>Time-adjusted value</th></tr>" +
   CORE.map(c => "<tr style='cursor:pointer' onclick=\"openDetail('" + c.key + "')\"><td><b>" + esc(c.address.replace(" Avenue", "")) + "</b><div class='muted' style='font-size:13px'>" + esc(c.role) + "</div></td><td>" + money(c.soldPrice) + "<div class='muted' style='font-size:13px'>" + fmtDate(c.soldDate) + "</div></td><td>" + monthsSince(c).toFixed(1) + "</td><td><span class='up'>" + pctS(chg(c)) + "</span></td><td><b>" + money(adj(c)) + "</b></td></tr>").join("") +
   "<tr><td colspan='4'><b>Average of the " + CORE.length + " closest comps = most likely value</b></td><td><b>" + money(V.mid) + "</b></td></tr>";
 $("#mathNote").innerHTML = "Adjusted price = sold price &times; (1 + " + pctS(APP.rate).replace("+", "") + " &times; months since sale &divide; 12). The range is the lowest and highest adjusted price of these comps. <b>This information is as of " + ASOF_TXT + ".</b>";
@@ -245,11 +249,12 @@ $("#vMedNote").textContent = M.market.countNear + " income-property sales within
 const subjFacts = [["Units", S.units + " + garden in-law"], ["Beds / baths", S.beds + " / " + S.baths], ["Year built", S.year], ["Exterior", S.exterior], ["Lot", S.lot], ["Parking", S.parking], ["Days on market", S.dom], ["Taxes (" + S.taxYear + ")", money(S.taxes) + "*"], ["Existing rent-to-price ratio", rtpTxt(S, true)]];
 $("#subjFacts").innerHTML = subjFacts.map(f => "<div><div class='lbl'>" + f[0] + "</div><div class='v'>" + f[1] + "</div></div>").join("");
 function card(x) {
-  const sub = x.status === "Sold" ? "Sold " + fmtDate(x.soldDate) + " · " + ratioTxt(x) + " of list<br>Today: <b>" + money(adj(x)) + "</b> <span class='muted'>(" + pctS(chg(x)) + " over " + Math.round(monthsSince(x)) + " mo)</span>" : x.status + " · " + x.dom + " days";
+  const sub = x.status === "Sold" ? "Sold " + fmtDate(x.soldDate) + " · " + ratioTxt(x) + " of list" : x.status + " · " + x.dom + " days";
   return "<div class='ccard' onclick=\"openDetail('" + x.key + "')\"><img loading='lazy' src='" + img(x.images[0]) + "' alt=''><div class='b'>" +
     "<div style='display:flex;justify-content:space-between;align-items:center'>" + pill(x) + "<span class='lbl'>" + esc(x.role) + "</span></div>" +
     "<div class='p' style='margin-top:8px'>" + money(price(x)) + "</div><div style='font-weight:600'>" + x.n + ". " + esc(x.address) + "</div>" +
     "<div class='muted' style='font-size:14px;margin-top:4px'>" + sub + "</div>" +
+    (x.soldPrice ? "<div class='tav'><div><div class='tav-l'>Time-adjusted value</div><div class='tav-v'>" + money(adj(x)) + "</div></div><div class='tav-c'>" + pctS(chg(x)) + "<br>over " + Math.round(monthsSince(x)) + " mo</div></div>" : "") +
     "<div class='muted' style='font-size:14px;margin-top:6px'>" + x.units + " units · " + x.beds + " bd / " + x.baths + " ba · " + esc(x.parking) + "</div>" +
     "<div style='font-size:14px;margin-top:8px;padding-top:8px;border-top:1px solid var(--line)'>Existing rent-to-price ratio: " + rtpTxt(x, true) + "</div></div></div>";
 }
@@ -263,7 +268,7 @@ const ROWS = [
   ["List price", x => money(x.listPrice)],
   ["Sold price", x => x.soldPrice ? "<b>" + money(x.soldPrice) + "</b>" : "&ndash;"],
   ["Market change since sale", chgTxt],
-  ["Today's adjusted price", x => x.soldPrice ? "<b>" + money(adj(x)) + "</b>" : "&ndash;"],
+  ["Time-adjusted value", x => x.soldPrice ? "<b>" + money(adj(x)) + "</b>" : "&ndash;"],
   ["Sold vs. list", ratioTxt],
   ["Price per unit", perUnit],
   ["Existing rents", rentTxt],
@@ -302,7 +307,7 @@ function renderDetail() {
   const x = cur, ims = x.images || [];
   const facts = [["Status", pill(x)], ["List price", money(x.listPrice)], ["Sold price", x.soldPrice ? money(x.soldPrice) : "&ndash;"], ["Sold vs. list", ratioTxt(x)],
     ["Original list price", money(x.originalPrice || x.listPrice)], ["Price per unit", perUnit(x)], ["Existing monthly rents", rentTxt(x)], ["Existing rent-to-price ratio", rtpTxt(x)], ["Days on market", x.dom ?? "&ndash;"], ["Listed", fmtDate(x.listDate)],
-    ["Sold", x.soldDate ? fmtDate(x.soldDate) : "&ndash;"], ["Market change since sale", chgTxt(x)], ["Today's adjusted price", x.soldPrice ? "<b>" + money(adj(x)) + "</b>" : "&ndash;"], ["Units", x.units + (x.type ? " (" + esc(x.type) + ")" : "")], ["Beds / baths", x.beds + " / " + x.baths],
+    ["Sold", x.soldDate ? fmtDate(x.soldDate) : "&ndash;"], ["Market change since sale", chgTxt(x)], ["Time-adjusted value", x.soldPrice ? "<b>" + money(adj(x)) + "</b>" : "&ndash;"], ["Units", x.units + (x.type ? " (" + esc(x.type) + ")" : "")], ["Beds / baths", x.beds + " / " + x.baths],
     ["Parking", esc(x.parking)], ["Basement", esc(x.basement || "None")], ["Lot", esc(x.lot || "&ndash;")], ["Year built", esc(x.year || "&ndash;")], ["Exterior", esc(x.exterior || "&ndash;")],
     ["Heating", esc(x.heating || "&ndash;")], ["Taxes", money(x.taxes) + (x.taxYear ? " (" + x.taxYear + ")" : "")], ["Distance from subject", dist(x)], ["MLS #", esc(x.mls)]];
   const ur = x.unitRows || [];
