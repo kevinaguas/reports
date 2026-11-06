@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Market Analysis | 1443 N Harding Ave</title>
+<meta name="robots" content="noindex, nofollow">
+<meta property="og:title" content="Comparative Market Analysis: 1443 N Harding Ave">
+<meta property="og:description" content="Prepared by Kevin Waters, The Axon Group at eXp Realty">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+<style>
+:root{--ink:#1d2733;--muted:#5d6773;--bg:#f5f2ec;--card:#fffdf9;--line:#e2ddd3;--blue:#2c62a8;--orange:#c8641e;--orange2:#e8955a;--green:#2e7d4f;--red:#b23b3b}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{font-family:Inter,system-ui,sans-serif;color:var(--ink);background:var(--bg);-webkit-font-smoothing:antialiased}
+h1,h2,h3{font-family:'Space Grotesk',Inter,sans-serif;margin:0}
+a{color:var(--blue)}
+header.top{background:var(--ink);color:var(--bg)}
+.wrap{max-width:1200px;margin:0 auto;padding:0 20px}
+.brand{display:flex;justify-content:space-between;align-items:center;padding:14px 0;font-size:14px;color:#c9cfd6;gap:12px;flex-wrap:wrap}
+.brand b{color:#fff}
+nav.tabs{position:sticky;top:0;z-index:50;background:var(--ink);border-top:1px solid #2c3846}
+nav.tabs .wrap{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none}
+nav.tabs a{color:#c9cfd6;text-decoration:none;padding:14px 14px;font-weight:600;font-size:15px;white-space:nowrap;border-bottom:3px solid transparent}
+nav.tabs a.on{color:#fff;border-bottom-color:var(--orange2)}
+.hero{position:relative;height:340px;background:#2c3846 center/cover no-repeat}
+.hero::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(29,39,51,0) 30%,rgba(29,39,51,.92))}
+.hero .cap{position:absolute;left:0;right:0;bottom:0;z-index:2;color:#fff;padding-bottom:24px}
+.eyebrow{font-size:13px;letter-spacing:2px;font-weight:700;color:var(--orange2);text-transform:uppercase}
+.hero h1{font-size:44px;line-height:1.05;margin:6px 0}
+.hero p{margin:0;color:#dfe3e8}
+section.view{display:none;padding:28px 0 60px}
+section.view.on{display:block}
+.grid{display:grid;gap:16px}
+.g3{grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px}
+.big{font-family:'Space Grotesk',sans-serif;font-size:40px;font-weight:700;line-height:1.05}
+.lbl{font-size:13px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.5px}
+.muted{color:var(--muted)}
+.value-card{background:var(--ink);color:#fff;border:none}
+.value-card .lbl{color:#c9cfd6}
+.value-card .big{color:#fff;font-size:48px}
+.range{position:relative;height:120px;margin:16px 0 8px}
+.range .bar{position:absolute;left:0;right:0;top:54px;height:6px;background:#d8d2c6;border-radius:3px}
+.range .band{position:absolute;top:40px;height:34px;background:rgba(44,98,168,.18);border:2px solid var(--blue);border-radius:8px}
+.range .dot{position:absolute;top:47px;width:20px;height:20px;margin-left:-10px;border-radius:50%;background:var(--ink);border:3px solid var(--bg);cursor:pointer}
+.range .dot.anchor{border-color:var(--orange)}
+.range .dot span{position:absolute;top:26px;left:50%;transform:translateX(-50%);font-size:12px;color:var(--muted);white-space:nowrap}
+.range .list{position:absolute;top:22px;height:70px;width:4px;margin-left:-2px;background:var(--orange)}
+.range .list span{position:absolute;top:-22px;left:50%;transform:translateX(-50%);font-size:13px;font-weight:700;color:#a8521a;white-space:nowrap}
+.legend{display:flex;gap:18px;flex-wrap:wrap;font-size:13px;color:var(--muted)}
+.pill{display:inline-block;font-size:12px;font-weight:700;padding:4px 10px;border-radius:999px;background:#e9e4da;color:var(--ink)}
+.pill.sold{background:#dbe7f6;color:#1f4a82}.pill.act{background:#dff1e6;color:#1f5e3a}.pill.uc{background:#fbe9dc;color:#8a4413}.pill.subj{background:var(--orange);color:#fff}
+/* side by side */
+.sbs-tools{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:14px}
+.seg{display:inline-flex;background:#e9e4da;border-radius:10px;padding:3px}
+.seg button{border:0;background:transparent;padding:8px 14px;border-radius:8px;font:600 14px Inter,sans-serif;color:var(--muted);cursor:pointer}
+.seg button.on{background:#fff;color:var(--ink);box-shadow:0 1px 2px rgba(0,0,0,.1)}
+.sbs{overflow-x:auto;border:1px solid var(--line);border-radius:14px;background:var(--card);-webkit-overflow-scrolling:touch}
+.sbs table{border-collapse:separate;border-spacing:0;min-width:100%}
+.sbs th,.sbs td{padding:10px 14px;border-bottom:1px solid var(--line);font-size:14px;text-align:left;vertical-align:top;min-width:190px;max-width:220px}
+.sbs th.rowh{position:sticky;left:0;z-index:3;background:#f0ebe2;min-width:130px;max-width:140px;font-size:12px;text-transform:uppercase;letter-spacing:.4px;color:var(--muted)}
+.sbs td.col{cursor:pointer}
+.sbs tr:hover td.col{background:#fbf8f3}
+.sbs td.subj{background:#fdf3ea}
+.sbs td.pic{padding:0}
+.sbs td.pic img{display:block;width:100%;height:140px;object-fit:cover;background:#ddd}
+.sbs td.pic .noimg{height:140px;background:#e9e4da}
+.sbs .addr{font-weight:700;font-size:15px}
+.sbs .open{display:inline-block;margin-top:6px;font-size:13px;font-weight:700;color:var(--blue)}
+.up{color:var(--green);font-weight:700}.down{color:var(--red);font-weight:700}
+/* cards list on overview */
+.comp-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px}
+.ccard{background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden;cursor:pointer;transition:transform .15s}
+.ccard:hover{transform:translateY(-2px)}
+.ccard img{width:100%;height:170px;object-fit:cover;display:block;background:#ddd}
+.ccard .b{padding:14px 16px}
+.ccard .p{font-family:'Space Grotesk',sans-serif;font-size:24px;font-weight:700}
+/* detail */
+#detail{position:fixed;inset:0;z-index:100;background:rgba(20,26,34,.6);display:none;overflow-y:auto}
+#detail.on{display:block}
+.dpanel{max-width:980px;margin:24px auto;background:var(--bg);border-radius:16px;overflow:hidden}
+.gal{position:relative;background:#111}
+.gal img{display:block;width:100%;height:min(62vh,560px);object-fit:contain;background:#111}
+.gal button{position:absolute;top:50%;transform:translateY(-50%);border:0;background:rgba(255,255,255,.85);width:44px;height:44px;border-radius:50%;font-size:22px;cursor:pointer}
+.gal .prev{left:12px}.gal .next{right:12px}
+.gal .count{position:absolute;bottom:10px;right:12px;color:#fff;font-size:13px;background:rgba(0,0,0,.5);padding:3px 8px;border-radius:6px}
+.thumbs{display:flex;gap:6px;overflow-x:auto;padding:8px;background:#1a1f26}
+.thumbs img{width:84px;height:60px;object-fit:cover;opacity:.6;cursor:pointer;border-radius:4px;flex:none}
+.thumbs img.on{opacity:1;outline:2px solid var(--orange2)}
+.close{position:sticky;top:0;float:right;margin:10px;z-index:5;border:0;background:var(--ink);color:#fff;border-radius:999px;padding:10px 16px;font:600 14px Inter;cursor:pointer}
+.dbody{padding:24px}
+.facts{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:12px;overflow:hidden;margin:18px 0}
+.facts div{background:var(--card);padding:12px 14px}
+.facts .v{font-weight:600;margin-top:2px}
+table.units{width:100%;border-collapse:collapse;margin:8px 0 18px;font-size:14px}
+table.units th,table.units td{padding:10px;border-bottom:1px solid var(--line);text-align:left}
+table.units th{font-size:12px;text-transform:uppercase;color:var(--muted)}
+.dnav{display:flex;justify-content:space-between;gap:10px;margin-top:20px}
+.btn{border:1px solid var(--line);background:var(--card);padding:10px 14px;border-radius:10px;font:600 14px Inter;cursor:pointer;color:var(--ink)}
+#map{height:560px;border-radius:14px;border:1px solid var(--line)}
+.pin{width:30px;height:30px;border-radius:50%;background:var(--ink);color:#fff;font:700 13px Inter;display:flex;align-items:center;justify-content:center;border:3px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,.4)}
+.pin.s{background:var(--orange);width:36px;height:36px}.pin.a{background:var(--green)}
+footer{background:var(--ink);color:#c9cfd6;font-size:13px;padding:24px 0}
+@media (max-width:640px){.hero{height:280px}.hero h1{font-size:32px}.big{font-size:32px}.value-card .big{font-size:36px}#map{height:420px}.dpanel{margin:0;border-radius:0}.gal img{height:44vh}}
+</style>
+</head>
+<body>
+<header class="top"><div class="wrap brand"><div><b id="agentName"></b> &middot; <span id="agentCo"></span></div><div id="prepared"></div></div></header>
+<nav class="tabs"><div class="wrap">
+<a href="#overview" data-v="overview">Overview</a>
+<a href="#comps" data-v="comps">Side by side</a>
+<a href="#map-view" data-v="map-view">Map</a>
+<a href="#pricing" data-v="pricing">Pricing</a>
+<a href="#about" data-v="about">About this CMA</a>
+</div></nav>
+<div class="hero" id="hero"><div class="cap wrap"><div class="eyebrow">Comparative Market Analysis</div><h1 id="heroTitle"></h1><p id="heroSub"></p></div></div>
+
+<main class="wrap">
+<section class="view" id="v-overview">
+ <div class="grid g3" style="margin-bottom:16px">
+  <div class="card value-card"><div class="lbl">Supported value</div><div class="big" id="vRange"></div><div style="margin-top:8px;color:#c9cfd6">Most likely <b style="color:#fff" id="vMid"></b></div></div>
+  <div class="card"><div class="lbl">List price</div><div class="big" id="vList"></div><div class="muted" id="vListNote" style="margin-top:8px"></div></div>
+  <div class="card"><div class="lbl">Neighborhood median</div><div class="big" id="vMed"></div><div class="muted" id="vMedNote" style="margin-top:8px"></div></div>
+ </div>
+ <div class="card" style="margin-bottom:16px"><p id="summary" style="margin:0;font-size:17px;line-height:1.55"></p></div>
+ <div class="card" style="margin-bottom:28px;cursor:pointer" onclick="openDetail('subject')">
+  <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap"><h2 style="font-size:24px">The property</h2><span class="open" style="font-weight:700;color:var(--blue)">See full details &rarr;</span></div>
+  <div class="facts" id="subjFacts"></div>
+ </div>
+ <h2 style="font-size:26px;margin-bottom:6px">Sold comparables</h2><p class="muted" style="margin-top:0">Tap any property for photos and full details.</p>
+ <div class="comp-cards" id="soldCards"></div>
+ <h2 style="font-size:26px;margin:32px 0 6px">Competing listings</h2><p class="muted" style="margin-top:0">On the market now.</p>
+ <div class="comp-cards" id="actCards"></div>
+</section>
+
+<section class="view" id="v-comps">
+ <div class="sbs-tools"><h2 style="font-size:26px">Side by side</h2>
+  <div class="seg" id="seg"><button data-f="sold" class="on">Sold</button><button data-f="active">Active</button><button data-f="all">All</button></div></div>
+ <p class="muted" style="margin-top:0">Scroll sideways to compare. Tap a column to open that property.</p>
+ <div class="sbs"><table id="sbsTable"></table></div>
+</section>
+
+<section class="view" id="v-map-view">
+ <h2 style="font-size:26px;margin-bottom:12px">Map</h2>
+ <div id="map"></div>
+ <div class="legend" style="margin-top:10px"><span><b style="color:var(--orange)">&#9679;</b> Subject</span><span><b>&#9679;</b> Sold comparable</span><span><b style="color:var(--green)">&#9679;</b> Active listing</span></div>
+</section>
+
+<section class="view" id="v-pricing">
+ <h2 style="font-size:26px;margin-bottom:12px">Where the price should land</h2>
+ <div class="card"><div class="range" id="range"></div>
+ <div class="legend"><span><b>&#9679;</b> Sold comparable (tap for details)</span><span style="color:var(--blue)"><b>&#9644;</b> Supported range</span><span style="color:#a8521a"><b>|</b> List price</span></div></div>
+ <div class="grid g3" style="margin-top:16px" id="pricingStats"></div>
+ <div class="card" style="margin-top:16px"><h3 style="font-size:20px;margin-bottom:8px">How the comps compare</h3><table class="units" id="adjTable"></table></div>
+</section>
+
+<section class="view" id="v-about">
+ <div class="card" style="line-height:1.6">
+ <h2 style="font-size:26px;margin-bottom:8px">What is a CMA?</h2>
+ <p>A comparative market analysis estimates what a property is worth by comparing it with similar properties that recently sold nearby. For 2 to 4 unit buildings, the best comparables match on unit count, construction, garden-level setup, parking and condition.</p>
+ <h3 style="font-size:20px;margin:18px 0 6px">How this one was prepared</h3>
+ <ul id="method"></ul>
+ <p class="muted" style="font-size:14px">This analysis is a broker opinion based on market data, not an appraisal. Information is deemed reliable but not guaranteed. Listing photos and remarks are courtesy of the listing brokers via the MRED MLS.</p>
+ <h3 style="font-size:20px;margin:18px 0 6px">Questions?</h3>
+ <p id="contact"></p>
+ </div>
+</section>
+</main>
+
+<div id="detail" onclick="if(event.target===this)closeDetail()"><div class="dpanel"><button class="close" onclick="closeDetail()">Close &times;</button><div id="dcontent"></div></div></div>
+
+<footer><div class="wrap" id="foot"></div></footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script>
+const R = {"report": {"slug": "1443-n-harding", "title": "1443 N Harding Ave", "prepared": "November 5, 2026", "preparedFor": "", "agent": {"name": "Kevin Waters", "team": "The Axon Group", "brokerage": "eXp Realty", "email": "kevin@househackusa.com"}, "valueLow": 520000, "valueHigh": 545000, "valueMid": 530000, "summary": "Comparable sales support a value of $520K to $545K, most likely around $530K. The list price of $580K is about 9% above that range. The closest match, 1422 N Harding directly across the street, sold for $525K after asking $599,900.", "market": {"medianNear": 528500, "countNear": 32, "radiusNear": "about 0.6 mile", "medianDom": 16, "medianWide": 569500, "countWide": 75}}, "subject": {"mls": "12782943", "status": "Active", "role": "Subject", "address": "1443 N Harding Avenue", "zip": "60651", "units": 2, "type": "2 Flat", "listPrice": 580000, "originalPrice": 580000, "listDate": "2026-10-24", "dom": 12, "beds": 7, "baths": 3, "year": "1913", "exterior": "Brick", "basement": "Finished, full, walk-out access", "parking": "2-car garage + carport", "heating": "Forced air, central air", "roof": "Asphalt", "lot": "25X125", "taxes": 2257.31, "taxYear": "2025", "taxNote": "Includes homeowner, senior and senior freeze exemptions. A new owner's bill will be higher.", "unitsDetail": [{"unit": "Unit 1 (1st floor)", "beds": 3, "baths": 1, "sqft": 1388, "notes": "Central air, hardwood floors, tenant pays all utilities"}, {"unit": "Unit 2 (2nd floor)", "beds": 3, "baths": 1, "sqft": 1388, "notes": "Central air, hardwood floors, month-to-month lease"}, {"unit": "Garden level", "beds": 1, "baths": 1, "sqft": null, "notes": "Finished in-law with summer kitchen, two separate entrances"}], "showing": "Sundays 11 AM to 2 PM by appointment, listing agent must accompany. Sold as-is.", "remarks": "Versatile Living & Investment Potential in Humboldt Park! Discover the possibilities in this well-maintained 2-flat offering plenty of space, flexibility, and great potential for homeowners and investors alike. Both units offer generous living space and spacious dining rooms, providing comfort and plenty of room to entertain. The finished basement features an additional bedroom, a full bathroom, and a summer kitchen, along with two separate entrances, making it ideal for an in-law arrangement. Enjoy the added convenience of a detached 2-car garage and an additional carport space. Wrought-iron fencing in the front and a fully fenced-in yard provide added privacy and security. Conveniently located near restaurants, shopping, and public transportation, this property offers a wonderful opportunity to make it your own or add to your investment portfolio. The property is in great shape and has been well maintained; however, it is being sold AS-IS.", "lat": 41.9076001, "lon": -87.7249553, "images": ["mred/IMG-MRD12782943_6aced2abde8e0660062c7a33.jpg", "mred/IMG-MRD12782943_6aced2abde8e0660062c7a22.jpg", "mred/IMG-MRD12782943_6aced2abde8e0660062c7a26.jpg", "mred/IMG-MRD12782943_6aced2abde8e0660062c7a30.jpg", "mred/IMG-MRD12782943_6aced2abde8e0660062c7a1e.jpg", "mred/IMG-MRD12782943_6aced2abde8e0660062c7a24.jpg", "mred/IMG-MRD12782943_6aced2abde8e0660062c7a1c.jpg", "mred/IMG-MRD12782943_6aced2abde8e0660062c7a32.jpg", "mred/IMG-MRD12782943_6aced2abde8e0660062c7a1b.jpg", "mred/IMG-MRD12782943_6aced2abde8e0660062c7a2f.jpg", "mred/IMG-MRD12782943_6aced2abde8e0660062c7a2e.jpg", "mred/IMG-MRD12782943_6aced2abde8e0660062c7a34.jpg", "mred/IMG-MRD12782943_6aced2abde8e0660062c7a1d.jpg", "mred/IMG-MRD12782943_6aced2abde8e0660062c7a36.jpg", "mred/IMG-MRD12782943_6aced2abde8e0660062c7a28.jpg", "mred/IMG-MRD12782943_6aced2abde8e0660062c7a27.jpg", "mred/IMG-MRD12782943_6aced2abde8e0660062c7a20.jpg", "mred/IMG-MRD12782943_6aced2abde8e0660062c7a21.jpg", "mred/IMG-MRD12782943_6aced2abde8e0660062c7a3a.jpg", "mred/IMG-MRD12782943_6aced2abde8e0660062c7a2c.jpg"]}, "sold": [{"mls": "12500273", "status": "Sold", "role": "Anchor comp", "why": "Across the street. Nearly identical brick 2-flat with finished walkout garden level. Rehabbed 2008, well maintained. Wider 37 ft lot.", "vs": "Similar", "address": "1422 N Harding Avenue", "zip": "60651", "units": 2, "type": "2 Flat", "listPrice": 599900, "originalPrice": 599900, "soldPrice": 525000, "soldDate": "2025-11-20", "listDate": "2025-10-20", "dom": 32, "beds": 9, "baths": 3, "year": "1913", "exterior": "Brick", "basement": "Finished, Exterior Entry, Full, Walk-Out Access", "parking": "2-car garage", "heating": "Natural Gas, Forced Air", "roof": "Asphalt, Rubber", "lot": "37X125", "taxes": 8464.73, "taxYear": "2023", "remarks": "Beautifully maintained two-unit building on a wide lot surrounded by new construction and located in the desirable West Humboldt Park neighborhood!!! Both apartments feature a bright and inviting open-concept living and dining area with beautiful hardwood floors and large windows that fill the space with natural light. The spacious kitchens feature classic wood cabinetry and room for a dining table, making it ideal for casual meals or family gatherings. The property was fully rehabbed in 2008. Recent improvements include both units freshly painted throughout, first-floor furnace (2016), condenser (2020), garage patio door, tuckpointing & concrete around the entire property (2023). Neither the seller nor the listing agent represents the legality of the basement unit.", "images": ["mred/IMG-MRD12500273_0.jpg", "mred/IMG-MRD12500273_1.jpg", "mred/IMG-MRD12500273_2.jpg", "mred/IMG-MRD12500273_3.jpg", "mred/IMG-MRD12500273_4.jpg", "mred/IMG-MRD12500273_5.jpg", "mred/IMG-MRD12500273_6.jpg", "mred/IMG-MRD12500273_7.jpg", "mred/IMG-MRD12500273_8.jpg", "mred/IMG-MRD12500273_9.jpg", "mred/IMG-MRD12500273_10.jpg", "mred/IMG-MRD12500273_11.jpg", "mred/IMG-MRD12500273_12.jpg", "mred/IMG-MRD12500273_13.jpg", "mred/IMG-MRD12500273_14.jpg", "mred/IMG-MRD12500273_15.jpg", "mred/IMG-MRD12500273_16.jpg", "mred/IMG-MRD12500273_17.jpg", "mred/IMG-MRD12500273_18.jpg", "mred/IMG-MRD12500273_19.jpg", "mred/IMG-MRD12500273_20.jpg", "mred/IMG-MRD12500273_21.jpg", "mred/IMG-MRD12500273_22.jpg", "mred/IMG-MRD12500273_23.jpg"], "lat": 41.9071, "lon": -87.7253}, {"mls": "12610235", "status": "Sold", "role": "Supporting", "why": "Brick 2-flat plus garden unit. Roof 2020, separate utilities, 2.5-car garage.", "vs": "Slightly better", "address": "4224 W Kamerling Avenue", "zip": "60651", "units": 2, "type": "2 Flat", "listPrice": 520000, "originalPrice": 520000, "soldPrice": 550000, "soldDate": "2026-04-20", "listDate": "2026-04-14", "dom": 7, "beds": 8, "baths": 3, "year": "1913", "exterior": "Brick", "basement": "Finished, Exterior Entry, Full", "parking": "2.5-car garage", "heating": "Natural Gas", "roof": null, "lot": "33X124", "taxes": 6993.38, "taxYear": "2024", "remarks": "Back on market due to buyer financing at no fault of seller. Originally under contract in August 2025.    Well-maintained brick 2-flat with an additional garden unit in West Humboldt Park. Each of the two main units offers 3 bedrooms and 1 bathroom. The garden unit features 2 bedrooms, 1 bathroom, in-unit laundry, and a dishwasher. Garden unit is currently vacant; legality not warranted.    The property has been carefully maintained, including a roof replacement in 2020 and a recoating in 2025. Additional updates include three newer water heaters and separate utilities for all units, with tenants responsible for their own gas and electric. The two main units are currently tenant-occupied, including long-term tenants.    Current rents are below market, providing opportunity for future income growth. Comparable 3-bedroom units in the area are renting for approximately $1,800-$2,000 per month.    Sale includes a 1-year American Home Shield home warranty. Property is suitable for investors or owner-occupants seeking steady income with potential for future upside.  First showings will be held Saturday April 18.", "images": ["mred/IMG-MRD12610235_0.jpg", "mred/IMG-MRD12610235_1.jpg", "mred/IMG-MRD12610235_2.jpg", "mred/IMG-MRD12610235_3.jpg", "mred/IMG-MRD12610235_4.jpg", "mred/IMG-MRD12610235_5.jpg", "mred/IMG-MRD12610235_6.jpg", "mred/IMG-MRD12610235_7.jpg", "mred/IMG-MRD12610235_8.jpg", "mred/IMG-MRD12610235_9.jpg", "mred/IMG-MRD12610235_10.jpg", "mred/IMG-MRD12610235_11.jpg", "mred/IMG-MRD12610235_12.jpg", "mred/IMG-MRD12610235_13.jpg", "mred/IMG-MRD12610235_14.jpg", "mred/IMG-MRD12610235_15.jpg", "mred/IMG-MRD12610235_16.jpg", "mred/IMG-MRD12610235_17.jpg", "mred/IMG-MRD12610235_18.jpg", "mred/IMG-MRD12610235_19.jpg", "mred/IMG-MRD12610235_20.jpg", "mred/IMG-MRD12610235_21.jpg", "mred/IMG-MRD12610235_22.jpg", "mred/IMG-MRD12610235_23.jpg"], "lat": 41.9055019, "lon": -87.73233859999999}, {"mls": "12723474", "status": "Sold", "role": "Supporting", "why": "Same street. Updated roof, kitchens, baths, furnaces and central air. No garage.", "vs": "Similar", "address": "1237 N Harding Avenue", "zip": "60651", "units": 2, "type": "2 Flat", "listPrice": 489900, "originalPrice": 489900, "soldPrice": 504900, "soldDate": "2026-08-11", "listDate": "2026-08-04", "dom": 8, "beds": 8, "baths": 3, "year": "1910", "exterior": "Brick", "basement": "Finished, Full", "parking": "Outdoor parking only", "heating": "Natural Gas, Forced Air", "roof": null, "lot": "3750", "taxes": 4374.05, "taxYear": "2024", "remarks": "EXCEPTIONAL INVESTMENT AND OWNER OCCUPANT OPPORTUNITY. THIS LEGAL 2 UNIT BUILDING WITH FULL FINISHED BASEMENT. FIRST FLOOR AND 2ND FLOOR HAS 3 BEDROOM, 1 FULL BATH WITH NEW SEPARATE GAS FORCED AIR FURNACE AND CENTRAL AIR CONDITIONER UNIT FOR 1ST FLOOR AND 2ND FLOOR APARTMENT.  FINISHED BASEMENT WITH 2 BEDROOM & 1 FULL BATH WITH A SEPARATE GAS FORCED AIR UNIT IS GOOD FOR IN-LAW ARRANGEMENT.REFINISHED HARDWOOD FLOOR FOR 1ST AND 2ND FLOOR APARTMENTS. CERAMIC TILE FLOOR FOR BASEMENT. NEW ROOF, NEW SIDING, GUTTERS. NEW REMODELED BATHROOM & KITCHEN W/ QUARTZ COUNTERTOPS. NEW STAINLESS STEEL ICE MAKER REFRIGERATORS & GAS STOVES.NEW TWO 40 GALLON HOT WATER HEATERS.  COIN OPERATING WASHER & DRYER. NEW 27X 45 FEET CONCRETE PARKING SPACE FOR 6 CAR PARKING OR SUMMER FAMILY GATHERING AT THE BACK YARD. MAKE THIS PROPERTY IS YOUR HOME FOR MANY YEARS TO COME.", "images": ["mred/IMG-MRD12723474_6a71e65237b5b05cf3394f31.jpg", "mred/IMG-MRD12723474_6a71e65237b5b05cf3394f47.jpg", "mred/IMG-MRD12723474_6a71e65237b5b05cf3394f33.jpg", "mred/IMG-MRD12723474_6a71e65237b5b05cf3394f3b.jpg", "mred/IMG-MRD12723474_6a71e65237b5b05cf3394f3d.jpg", "mred/IMG-MRD12723474_6a71e65237b5b05cf3394f36.jpg", "mred/IMG-MRD12723474_6a71e65237b5b05cf3394f32.jpg", "mred/IMG-MRD12723474_6a71e65237b5b05cf3394f2f.jpg", "mred/IMG-MRD12723474_6a71e65237b5b05cf3394f45.jpg", "mred/IMG-MRD12723474_6a71e65237b5b05cf3394f43.jpg", "mred/IMG-MRD12723474_6a71e65237b5b05cf3394f48.jpg", "mred/IMG-MRD12723474_6a71e65237b5b05cf3394f3c.jpg", "mred/IMG-MRD12723474_6a71e65237b5b05cf3394f3f.jpg", "mred/IMG-MRD12723474_6a71e65237b5b05cf3394f40.jpg", "mred/IMG-MRD12723474_6a71e65237b5b05cf3394f37.jpg", "mred/IMG-MRD12723474_6a71e65237b5b05cf3394f35.jpg", "mred/IMG-MRD12723474_6a71e65237b5b05cf3394f3a.jpg", "mred/IMG-MRD12723474_6a71e65237b5b05cf3394f34.jpg", "mred/IMG-MRD12723474_6a71e65237b5b05cf3394f44.jpg", "mred/IMG-MRD12723474_6a71e65237b5b05cf3394f3e.jpg", "mred/IMG-MRD12723474_6a71e65237b5b05cf3394f2e.jpg", "mred/IMG-MRD12723474_6a71e65237b5b05cf3394f2d.jpg", "mred/IMG-MRD12723474_6a71e65237b5b05cf3394f39.jpg", "mred/IMG-MRD12723474_6a71e65237b5b05cf3394f41.jpg"], "lat": 41.9037, "lon": -87.7253}, {"mls": "12574455", "status": "Sold", "role": "Upper bound", "why": "Six-figure renovation, but no basement unit and siding exterior.", "vs": "Better", "address": "1406 N Kildare Avenue", "zip": "60651", "units": 2, "type": "2 Flat", "listPrice": 539900, "originalPrice": 539900, "soldPrice": 545000, "soldDate": "2026-03-13", "listDate": "2026-02-26", "dom": 16, "beds": 5, "baths": 3, "year": "1909", "exterior": "Aluminum Siding, Vinyl Siding, Steel Siding", "basement": "None", "parking": "2-car garage", "heating": "Natural Gas, Forced Air", "roof": null, "lot": "25X126", "taxes": 5400.31, "taxYear": "2024", "remarks": "2-unit property in the vibrant West Humboldt Park neighborhood that has undergone a true transformation over the past year. After purchasing the property, the current owner has made significant six-figure investments in improvements, elevating the building far beyond its previous condition and creating a solid, income-producing asset with lasting value.    Both units now feature completely renovated kitchens with quartz countertops, full cabinetry, dishwashers, and new refrigerators-dramatically expanding upon the limited layouts that previously existed.    In addition to the beautifully upgraded interiors, extensive mechanical and structural improvements have been completed, including a brand-new front deck and a full rebuild of the entire rear stairwell from the ground up. An interior staircase was also added to the second-floor unit, creating an expanded duplex-up layout and enhancing functionality and flexibility.    Significant updates were made to the HVAC systems with new air conditioning units and ductwork, furnace relocation with new venting, electrical panel and wiring improvements, installation of new plumbing to accommodate in-building washer and dryer hookups (previously not present), gas line repair, installation of a sump pump, new garage door, insulation enhancements, and numerous functional upgrades throughout the property.    Combined with previously completed renovations to the roof, gutters, drainage systems, windows, doors, bathrooms, flooring, trim, and finishes, this property now offers a rare opportunity to own a thoughtfully improved, move-in-ready multi-unit building with major capital improvements already completed.    An excellent building for a live-in owner or investor. Ideally located near neighborhood parks, shopping, dining, and transportation, this West Humboldt Park gem presents exceptional potential for both investors and owner-occupants alike. Schedule your showing today.", "images": ["mred/IMG-MRD12574455_0.jpg", "mred/IMG-MRD12574455_1.jpg", "mred/IMG-MRD12574455_2.jpg", "mred/IMG-MRD12574455_3.jpg", "mred/IMG-MRD12574455_4.jpg", "mred/IMG-MRD12574455_5.jpg", "mred/IMG-MRD12574455_6.jpg", "mred/IMG-MRD12574455_7.jpg", "mred/IMG-MRD12574455_8.jpg", "mred/IMG-MRD12574455_9.jpg", "mred/IMG-MRD12574455_10.jpg", "mred/IMG-MRD12574455_11.jpg", "mred/IMG-MRD12574455_12.jpg", "mred/IMG-MRD12574455_13.jpg", "mred/IMG-MRD12574455_14.jpg", "mred/IMG-MRD12574455_15.jpg", "mred/IMG-MRD12574455_16.jpg", "mred/IMG-MRD12574455_17.jpg", "mred/IMG-MRD12574455_18.jpg", "mred/IMG-MRD12574455_19.jpg", "mred/IMG-MRD12574455_20.jpg", "mred/IMG-MRD12574455_21.jpg", "mred/IMG-MRD12574455_22.jpg", "mred/IMG-MRD12574455_23.jpg"], "lat": 41.90645120000001, "lon": -87.73406539999999}, {"mls": "12536307", "status": "Sold", "role": "Ceiling", "why": "Full permitted gut rehab in 2025 with new garage.", "vs": "Superior", "address": "4044 W Kamerling Avenue", "zip": "60651", "units": 2, "type": "2 Story Unit/s", "listPrice": 590000, "originalPrice": 590000, "soldPrice": 585000, "soldDate": "2026-01-21", "listDate": "2025-12-22", "dom": 31, "beds": 8, "baths": 3, "year": "1912", "exterior": "Brick", "basement": "Finished, Sleeping Area, Full", "parking": "2-car garage", "heating": "Natural Gas", "roof": null, "lot": "29 x 123", "taxes": 8677, "taxYear": "2023", "remarks": "Excellent opportunity for first-time homebuyers or investors in the heart of West Humboldt Park! This fully legal 2-unit building has been completely updated in 2025 with full village permits, making it a true turnkey property ready for immediate occupancy or rental income. New improvements, includes: Newly built garage, New plumbing system, New electrical wiring, New HVAC, New framing, New drywall. Each unit features separate utilities. The spacious basement includes 2 bedrooms and a full bathroom-perfect for generating extra rental income or creating an in-law suite. Ideal for owner-occupants looking to live in one unit and rent the others, or for investors seeking a fully renovated multi-family property with strong cash flow potential. Conveniently located near public transportation, shopping, dining, and major highways, this home combines modern updates, income potential, and unbeatable location value. Don't miss out on this beautifully renovated, income-producing gem in West Humboldt Park!  Located outside the 606 Demolition Surcharge and TOPA zone. Property is monitored with video surveillance 24/7.", "images": ["mred/IMG-MRD12536307_0.jpg", "mred/IMG-MRD12536307_1.jpg", "mred/IMG-MRD12536307_2.jpg", "mred/IMG-MRD12536307_3.jpg", "mred/IMG-MRD12536307_4.jpg", "mred/IMG-MRD12536307_5.jpg", "mred/IMG-MRD12536307_6.jpg", "mred/IMG-MRD12536307_7.jpg", "mred/IMG-MRD12536307_8.jpg", "mred/IMG-MRD12536307_9.jpg", "mred/IMG-MRD12536307_10.jpg", "mred/IMG-MRD12536307_11.jpg", "mred/IMG-MRD12536307_12.jpg", "mred/IMG-MRD12536307_13.jpg"], "lat": 41.9055505, "lon": -87.72818989999999}, {"mls": "12428887", "status": "Sold", "role": "Floor", "why": "Renovated brick 2-flat, partly finished basement, 219 days on market.", "vs": "Inferior", "address": "4138 W Potomac Avenue", "zip": "60651", "units": 2, "type": "2 Flat", "listPrice": 425000, "originalPrice": 499800, "soldPrice": 425000, "soldDate": "2026-02-27", "listDate": "2025-07-24", "dom": 219, "beds": 5, "baths": 3, "year": "1911", "exterior": "Brick", "basement": "Partially Finished, Full", "parking": "2-car garage", "heating": "Natural Gas", "roof": null, "lot": "25X124", "taxes": 5502.23, "taxYear": "2023", "remarks": "Renovated Brick 2-Flat in Humboldt Park. Features: updated kitchens, baths, 2nd floor hardwood flooring, and mechanicals-including 3 furnaces (2016), updated electrical/plumbing, and newer roof layer with rebuilt parapet walls. Features PVC windows, 4 electric meters, 3 gas meters, and a 2-car garage. Ideal for investors or owner-occupants in a vibrant neighborhood.", "images": ["mred/IMG-MRD12428887_0.jpg", "mred/IMG-MRD12428887_1.jpg", "mred/IMG-MRD12428887_2.jpg", "mred/IMG-MRD12428887_3.jpg", "mred/IMG-MRD12428887_4.jpg", "mred/IMG-MRD12428887_5.jpg", "mred/IMG-MRD12428887_6.jpg", "mred/IMG-MRD12428887_7.jpg", "mred/IMG-MRD12428887_8.jpg", "mred/IMG-MRD12428887_9.jpg", "mred/IMG-MRD12428887_10.jpg", "mred/IMG-MRD12428887_11.jpg", "mred/IMG-MRD12428887_12.jpg", "mred/IMG-MRD12428887_13.jpg", "mred/IMG-MRD12428887_14.jpg", "mred/IMG-MRD12428887_15.jpg", "mred/IMG-MRD12428887_16.jpg", "mred/IMG-MRD12428887_17.jpg", "mred/IMG-MRD12428887_18.jpg", "mred/IMG-MRD12428887_19.jpg", "mred/IMG-MRD12428887_20.jpg", "mred/IMG-MRD12428887_21.jpg", "mred/IMG-MRD12428887_22.jpg", "mred/IMG-MRD12428887_23.jpg"], "lat": 41.9046008, "lon": -87.7303633}], "actives": [{"mls": "12778119", "status": "Under contract", "role": "Competition", "why": "2-flat plus garden in-law on a 40 ft lot with a 3-car garage. Went under contract in about two weeks.", "vs": "Better", "address": "1623 N Tripp Avenue", "zip": "60639", "units": 2, "type": "2 Flat", "listPrice": 555000, "listDate": "2026-10-06", "dom": 15, "beds": 7, "baths": 3, "year": null, "exterior": "Brick", "basement": "Finished, exterior entry, full", "parking": "3-car garage", "lot": "40X125", "taxes": 8729.49, "taxYear": "2025", "remarks": "INVESTOR OR HOUSE-HACKERS DREAM! CHECK OUT THIS MULTI-UNIT BRICK BUILDING SITTING ON A 40X125 LOT WITH 3BED 1 BATH 2ND FLOOR. 2BED 1 BATH 1ST FLOOR, IN-LAW 2BED 1 BATH FINISH BASEMENT WITH FRONT AND REAR EXITS, AND HUGE 3 CAR GARAGE WITH DRIVEWAY NEAR THE 606 TRAIL. 3 SEPARATE HEATING UNITS, AND ELECTRICAL. WOOD FLOORS THROUGHOUT. SEPARATE LIVING/DINING ROOMS, AND SO MUCH MORE.", "lat": 41.9106177, "lon": -87.7321805, "images": ["mred/IMG-MRD12778119_6ac5174894192a6fe6b12bf4.jpg", "mred/IMG-MRD12778119_6ac5174894192a6fe6b12bf6.jpg", "mred/IMG-MRD12778119_6ac5174894192a6fe6b12bf2.jpg", "mred/IMG-MRD12778119_6ac5174894192a6fe6b12bf1.jpg", "mred/IMG-MRD12778119_6ac5174894192a6fe6b12bf7.jpg", "mred/IMG-MRD12778119_6ac5174894192a6fe6b12bf9.jpg", "mred/IMG-MRD12778119_6ac51ce6bbab28dce5c3d119.jpg", "mred/IMG-MRD12778119_6ac51ce6bbab28dce5c3d11f.jpg"]}, {"mls": "12789213", "status": "Active", "role": "Competition", "why": "Brick 2-flat plus garden unit, vacant. Roof, electrical and plumbing already updated.", "vs": "Similar", "address": "1508 N Monticello Avenue", "zip": "60651", "units": 2, "type": "2 Flat", "listPrice": 524900, "listDate": "2026-10-19", "dom": 10, "beds": 7, "baths": 3, "year": null, "exterior": "Brick", "basement": "Finished, full", "parking": "2-car garage", "lot": "25 X 125", "taxes": 7858.7, "taxYear": "2024", "remarks": "Brick two-flat plus garden unit, delivered fully vacant. Updated roof, tuckpointing, electrical and plumbing, central heat. The expensive work is done. Remaining scope is cosmetic: finishing touches and a washer/dryer. Full control from day one: buy-and-hold, light value-add, or house hack. Minutes from the 606 Trail and bordering Hermosa.", "lat": 41.9085017, "lon": -87.7182805, "images": ["mred/IMG-MRD12789213_6ad6819075c0d7eb156ba8c0.jpg", "mred/IMG-MRD12789213_6ad6819075c0d7eb156ba8d6.jpg", "mred/IMG-MRD12789213_6ad6819075c0d7eb156ba8cd.jpg", "mred/IMG-MRD12789213_6ad6819075c0d7eb156ba8de.jpg", "mred/IMG-MRD12789213_6ad6819075c0d7eb156ba8e1.jpg", "mred/IMG-MRD12789213_6ad6819075c0d7eb156ba8e0.jpg", "mred/IMG-MRD12789213_6ad6819075c0d7eb156ba8cc.jpg", "mred/IMG-MRD12789213_6ad6819075c0d7eb156ba8e2.jpg"]}, {"mls": "12713282", "status": "Active", "role": "Competition", "why": "Well-kept 2-flat with an adjacent lot on its own PIN. No basement unit. On market a month.", "vs": "Different", "address": "1408 N Central Park Avenue", "zip": "60651", "units": 2, "type": "2 Flat", "listPrice": 599000, "listDate": "2026-07-22", "dom": 30, "beds": 7, "baths": 2, "year": null, "exterior": "Brick", "basement": "None", "parking": "2-car garage", "lot": "24X125 + adjacent lot", "taxes": 7548, "taxYear": "2024", "remarks": "Beautiful well maintained 2 flat with 2 car garage and extra adjacent fully fenced yard space. Unit 1 has 3 bedrooms and 1 bathroom and unit 2 has 4 bedrooms and 1 bathroom. Adjacent lot has its own separate PIN#, giving added value and flexibility. Close to schools, parks, grocery stores, restaurants, and everyday shopping. Offered as-is. Taxes do not include any exemptions.", "lat": 41.9067388, "lon": -87.716973, "images": ["mred/IMG-MRD12713282_6a6269a319caa6c02ffd73ba.jpg", "mred/IMG-MRD12713282_6a6269a319caa6c02ffd73bc.jpg", "mred/IMG-MRD12713282_6a6269a319caa6c02ffd73b7.jpg", "mred/IMG-MRD12713282_6a6269a319caa6c02ffd73b9.jpg", "mred/IMG-MRD12713282_6a6269a319caa6c02ffd73b6.jpg", "mred/IMG-MRD12713282_6a6269a319caa6c02ffd73b1.jpg", "mred/IMG-MRD12713282_6a6269a319caa6c02ffd73bd.jpg", "mred/IMG-MRD12713282_6a6269a319caa6c02ffd73af.jpg"]}], "method": ["Closed sales of 2 to 4 unit income properties in ZIP 60651 with 5 to 9 bedrooms, November 2025 to October 2026: 89 sales reviewed.", "Six selected for unit count, age, construction, garden-level setup, parking and distance; three competing active listings shown for context.", "Condition assessed from listing remarks and photos; no interior inspection of any property.", "Data from the MRED MLS via Repliers, pulled November 5, 2026."]};
+const CDN = "https://cdn.repliers.io/";
+const img = (p, c) => CDN + p + "?class=" + (c || "medium");
+const $ = s => document.querySelector(s);
+const money = n => n == null ? "&ndash;" : "$" + Math.round(n).toLocaleString();
+const k = n => "$" + Math.round(n / 1000) + "K";
+const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const fmtDate = d => d ? new Date(d + "T12:00:00").toLocaleDateString("en-US", {month:"short", day:"numeric", year:"numeric"}) : "&ndash;";
+const S = R.subject, SOLD = R.sold, ACT = R.actives, M = R.report;
+S.key = "subject"; SOLD.forEach((c, i) => { c.key = "s" + i; c.n = i + 1; }); ACT.forEach((c, i) => { c.key = "a" + i; c.n = String.fromCharCode(65 + i); });
+const ALL = [S, ...SOLD, ...ACT];
+const byKey = key => ALL.find(x => x.key === key);
+const pill = x => x.key === "subject" ? '<span class="pill subj">Subject</span>' : x.status === "Sold" ? '<span class="pill sold">Sold</span>' : x.status === "Under contract" ? '<span class="pill uc">Under contract</span>' : '<span class="pill act">Active</span>';
+const ratio = x => x.soldPrice && x.listPrice ? x.soldPrice / x.listPrice : null;
+const ratioTxt = x => { const r = ratio(x); if (!r) return "&ndash;"; const p = (r * 100).toFixed(1) + "%"; return '<span class="' + (r >= 1 ? "up" : "down") + '">' + p + "</span>"; };
+const price = x => x.soldPrice || x.listPrice;
+const perUnit = x => x.units ? money(price(x) / x.units) : "&ndash;";
+function dist(x) { if (x.key === "subject") return "&ndash;"; const dLat = (x.lat - S.lat) * 69, dLon = (x.lon - S.lon) * 51.6; return Math.sqrt(dLat * dLat + dLon * dLon).toFixed(2) + " mi"; }
+
+// header
+$("#agentName").textContent = M.agent.name; $("#agentCo").textContent = M.agent.team + ", " + M.agent.brokerage;
+$("#prepared").textContent = (M.preparedFor ? "Prepared for " + M.preparedFor + " · " : "") + M.prepared;
+$("#hero").style.backgroundImage = "url('" + img(S.images[0], "large") + "')";
+$("#heroTitle").textContent = S.address.replace(" Avenue", " Ave");
+$("#heroSub").textContent = "Chicago, IL " + S.zip + " · " + S.units + "-unit " + S.exterior.toLowerCase() + " building · Listed at " + money(S.listPrice).replace("&ndash;", "");
+
+// overview
+$("#vRange").innerHTML = k(M.valueLow) + " to " + k(M.valueHigh); $("#vMid").innerHTML = money(M.valueMid);
+$("#vList").innerHTML = money(S.listPrice);
+$("#vListNote").textContent = Math.round((S.listPrice / M.valueMid - 1) * 100) + "% above the most likely value";
+$("#vMed").innerHTML = money(M.market.medianNear);
+$("#vMedNote").textContent = M.market.countNear + " income-property sales within " + M.market.radiusNear + ", past 12 months";
+$("#summary").textContent = M.summary;
+const subjFacts = [["Units", S.units + " + garden in-law"], ["Beds / baths", S.beds + " / " + S.baths], ["Year built", S.year], ["Exterior", S.exterior], ["Lot", S.lot], ["Parking", S.parking], ["Days on market", S.dom], ["Taxes (" + S.taxYear + ")", money(S.taxes) + "*"]];
+$("#subjFacts").innerHTML = subjFacts.map(f => "<div><div class='lbl'>" + f[0] + "</div><div class='v'>" + f[1] + "</div></div>").join("");
+function card(x) {
+  const sub = x.status === "Sold" ? "Sold " + fmtDate(x.soldDate) + " · " + ratioTxt(x) + " of list" : x.status + " · " + x.dom + " days";
+  return "<div class='ccard' onclick=\"openDetail('" + x.key + "')\"><img loading='lazy' src='" + img(x.images[0]) + "' alt=''><div class='b'>" +
+    "<div style='display:flex;justify-content:space-between;align-items:center'>" + pill(x) + "<span class='lbl'>" + esc(x.role) + "</span></div>" +
+    "<div class='p' style='margin-top:8px'>" + money(price(x)) + "</div><div style='font-weight:600'>" + x.n + ". " + esc(x.address) + "</div>" +
+    "<div class='muted' style='font-size:14px;margin-top:4px'>" + sub + "</div>" +
+    "<div class='muted' style='font-size:14px;margin-top:6px'>" + x.units + " units · " + x.beds + " bd / " + x.baths + " ba · " + esc(x.parking) + "</div></div></div>";
+}
+$("#soldCards").innerHTML = SOLD.map(card).join(""); $("#actCards").innerHTML = ACT.map(card).join("");
+
+// side by side
+const ROWS = [
+  ["", x => "<td class='pic'>" + (x.images[0] ? "<img loading='lazy' src='" + img(x.images[0]) + "' alt=''>" : "<div class='noimg'></div>") + "</td>", true],
+  ["Property", x => "<div>" + pill(x) + "</div><div class='addr' style='margin-top:6px'>" + (x.n ? x.n + ". " : "") + esc(x.address) + "</div><span class='open'>Details &rarr;</span>"],
+  ["Units", x => x.units + (x.type ? " <span class='muted'>(" + esc(x.type) + ")</span>" : "")],
+  ["List price", x => money(x.listPrice)],
+  ["Sold price", x => x.soldPrice ? "<b>" + money(x.soldPrice) + "</b>" : "&ndash;"],
+  ["Sold vs. list", ratioTxt],
+  ["Price per unit", perUnit],
+  ["Days on market", x => x.dom ?? "&ndash;"],
+  ["Sold date", x => x.soldDate ? fmtDate(x.soldDate) : "&ndash;"],
+  ["Beds / baths", x => x.beds + " / " + x.baths],
+  ["Parking", x => esc(x.parking)],
+  ["Basement", x => esc(x.basement || "None")],
+  ["Lot", x => esc(x.lot || "&ndash;")],
+  ["Year built", x => esc(x.year || "&ndash;")],
+  ["Exterior", x => esc(x.exterior || "&ndash;")],
+  ["Taxes", x => money(x.taxes) + (x.taxYear ? " <span class='muted'>(" + x.taxYear + ")</span>" : "")],
+  ["Distance", dist],
+  ["vs. subject", x => x.vs ? "<b>" + esc(x.vs) + "</b>" : "&ndash;"]
+];
+let filt = "sold";
+function drawSbs() {
+  const cols = [S, ...(filt === "sold" ? SOLD : filt === "active" ? ACT : [...SOLD, ...ACT])];
+  $("#sbsTable").innerHTML = ROWS.map(r => "<tr><th class='rowh'>" + r[0] + "</th>" + cols.map(x => {
+    const cell = r[1](x); const cls = "col" + (x.key === "subject" ? " subj" : "");
+    return r[2] ? cell.replace("<td class='pic'>", "<td class='pic " + cls + "' onclick=\"openDetail('" + x.key + "')\">") : "<td class='" + cls + "' onclick=\"openDetail('" + x.key + "')\">" + cell + "</td>";
+  }).join("") + "</tr>").join("");
+}
+document.querySelectorAll("#seg button").forEach(b => b.onclick = () => { filt = b.dataset.f; document.querySelectorAll("#seg button").forEach(x => x.classList.toggle("on", x === b)); drawSbs(); });
+drawSbs();
+
+// detail
+let gi = 0, cur = null;
+function openDetail(key) {
+  cur = byKey(key); gi = 0; renderDetail(); $("#detail").classList.add("on"); $("#detail").scrollTop = 0; document.body.style.overflow = "hidden";
+  history.replaceState(null, "", "#p-" + key);
+}
+function closeDetail() { $("#detail").classList.remove("on"); document.body.style.overflow = ""; history.replaceState(null, "", "#" + (curView || "overview")); }
+function renderDetail() {
+  const x = cur, ims = x.images || [];
+  const facts = [["Status", pill(x)], ["List price", money(x.listPrice)], ["Sold price", x.soldPrice ? money(x.soldPrice) : "&ndash;"], ["Sold vs. list", ratioTxt(x)],
+    ["Original list price", money(x.originalPrice || x.listPrice)], ["Price per unit", perUnit(x)], ["Days on market", x.dom ?? "&ndash;"], ["Listed", fmtDate(x.listDate)],
+    ["Sold", x.soldDate ? fmtDate(x.soldDate) : "&ndash;"], ["Units", x.units + (x.type ? " (" + esc(x.type) + ")" : "")], ["Beds / baths", x.beds + " / " + x.baths],
+    ["Parking", esc(x.parking)], ["Basement", esc(x.basement || "None")], ["Lot", esc(x.lot || "&ndash;")], ["Year built", esc(x.year || "&ndash;")], ["Exterior", esc(x.exterior || "&ndash;")],
+    ["Heating", esc(x.heating || "&ndash;")], ["Taxes", money(x.taxes) + (x.taxYear ? " (" + x.taxYear + ")" : "")], ["Distance from subject", dist(x)], ["MLS #", esc(x.mls)]];
+  const units = x.unitsDetail ? "<h3 style='font-size:20px;margin-top:8px'>Unit breakdown</h3><table class='units'><tr><th>Unit</th><th>Beds</th><th>Baths</th><th>Sq ft</th><th>Notes</th></tr>" +
+    x.unitsDetail.map(u => "<tr><td>" + esc(u.unit) + "</td><td>" + u.beds + "</td><td>" + u.baths + "</td><td>" + (u.sqft ? u.sqft.toLocaleString() : "&ndash;") + "</td><td>" + esc(u.notes) + "</td></tr>").join("") + "</table>" : "";
+  const idx = ALL.indexOf(x), prev = ALL[(idx - 1 + ALL.length) % ALL.length], next = ALL[(idx + 1) % ALL.length];
+  $("#dcontent").innerHTML =
+    "<div class='gal'>" + (ims.length ? "<img id='gimg' src='" + img(ims[0], "large") + "' alt=''>" : "<div style='height:200px'></div>") +
+    (ims.length > 1 ? "<button class='prev' onclick='gstep(-1)'>&#8249;</button><button class='next' onclick='gstep(1)'>&#8250;</button><div class='count' id='gcount'>1 / " + ims.length + "</div>" : "") + "</div>" +
+    (ims.length > 1 ? "<div class='thumbs' id='thumbs'>" + ims.map((p, i) => "<img loading='lazy' src='" + img(p, "small") + "' class='" + (i ? "" : "on") + "' onclick='gset(" + i + ")' alt=''>").join("") + "</div>" : "") +
+    "<div class='dbody'><div class='lbl'>" + esc(x.role || "") + "</div><h2 style='font-size:30px;margin:4px 0'>" + esc(x.address) + "</h2><div class='muted'>Chicago, IL " + esc(x.zip) + "</div>" +
+    (x.why ? "<div class='card' style='margin-top:16px'><div class='lbl'>Compared with the subject: " + esc(x.vs) + "</div><p style='margin:6px 0 0'>" + esc(x.why) + "</p></div>" : "") +
+    (x.taxNote ? "<p class='muted' style='font-size:14px'>* " + esc(x.taxNote) + "</p>" : "") +
+    "<div class='facts'>" + facts.map(f => "<div><div class='lbl'>" + f[0] + "</div><div class='v'>" + f[1] + "</div></div>").join("") + "</div>" + units +
+    (x.showing ? "<p><b>Showings:</b> " + esc(x.showing) + "</p>" : "") +
+    "<h3 style='font-size:20px'>Listing remarks</h3><p style='line-height:1.6'>" + esc(x.remarks) + "</p>" +
+    "<div class='dnav'><button class='btn' onclick=\"openDetail('" + prev.key + "')\">&larr; " + esc(prev.address.split(" ").slice(0, 3).join(" ")) + "</button><button class='btn' onclick=\"openDetail('" + next.key + "')\">" + esc(next.address.split(" ").slice(0, 3).join(" ")) + " &rarr;</button></div></div>";
+}
+function gset(i) { const ims = cur.images; gi = (i + ims.length) % ims.length; $("#gimg").src = img(ims[gi], "large"); $("#gcount").textContent = (gi + 1) + " / " + ims.length;
+  document.querySelectorAll("#thumbs img").forEach((t, j) => t.classList.toggle("on", j === gi)); const t = document.querySelectorAll("#thumbs img")[gi]; if (t && t.scrollIntoView) t.scrollIntoView({block:"nearest", inline:"center"}); }
+function gstep(d) { gset(gi + d); }
+document.addEventListener("keydown", e => { if (!$("#detail").classList.contains("on")) return; if (e.key === "Escape") closeDetail(); if (e.key === "ArrowRight") gstep(1); if (e.key === "ArrowLeft") gstep(-1); });
+let tx = null; document.addEventListener("touchstart", e => { if (e.target.id === "gimg") tx = e.touches[0].clientX; }, {passive:true});
+document.addEventListener("touchend", e => { if (tx === null) return; const dx = e.changedTouches[0].clientX - tx; if (Math.abs(dx) > 40) gstep(dx < 0 ? 1 : -1); tx = null; });
+
+// pricing
+(function () {
+  const lo = 400000, hi = 620000, pos = v => ((v - lo) / (hi - lo) * 100) + "%";
+  let h = "<div class='bar'></div><div class='band' style='left:" + pos(M.valueLow) + ";width:calc(" + pos(M.valueHigh) + " - " + pos(M.valueLow) + ")'></div>";
+  SOLD.forEach(c => { h += "<div class='dot" + (c.role === "Anchor comp" ? " anchor" : "") + "' style='left:" + pos(c.soldPrice) + "' title='" + esc(c.address) + "' onclick=\"openDetail('" + c.key + "')\"><span>" + c.n + "</span></div>"; });
+  h += "<div class='list' style='left:" + pos(S.listPrice) + "'><span>List " + k(S.listPrice) + "</span></div>";
+  h += "<div style='position:absolute;left:0;bottom:0;font-size:12px;color:var(--muted)'>" + k(lo) + "</div><div style='position:absolute;right:0;bottom:0;font-size:12px;color:var(--muted)'>" + k(hi) + "</div>";
+  $("#range").innerHTML = h;
+  const avg = SOLD.reduce((a, c) => a + c.soldPrice, 0) / SOLD.length, avgR = SOLD.reduce((a, c) => a + ratio(c), 0) / SOLD.length, avgD = Math.round(SOLD.reduce((a, c) => a + c.dom, 0) / SOLD.length);
+  $("#pricingStats").innerHTML = [["Average comp sale", money(avg)], ["Average sold vs. list", (avgR * 100).toFixed(1) + "%"], ["Average days on market", avgD], ["Median time to sell (1 mi)", M.market.medianDom + " days"]]
+    .map(s => "<div class='card'><div class='lbl'>" + s[0] + "</div><div class='big' style='font-size:32px'>" + s[1] + "</div></div>").join("");
+  $("#adjTable").innerHTML = "<tr><th>#</th><th>Property</th><th>Sold</th><th>Compared with subject</th></tr>" +
+    SOLD.map(c => "<tr style='cursor:pointer' onclick=\"openDetail('" + c.key + "')\"><td>" + c.n + "</td><td><b>" + esc(c.address) + "</b><div class='muted' style='font-size:13px'>" + esc(c.why) + "</div></td><td>" + money(c.soldPrice) + "</td><td><b>" + esc(c.vs) + "</b><div class='muted' style='font-size:13px'>" + esc(c.role) + "</div></td></tr>").join("");
+})();
+
+// about
+$("#method").innerHTML = R.method.map(m => "<li>" + esc(m) + "</li>").join("");
+$("#contact").innerHTML = "<b>" + esc(M.agent.name) + "</b>, " + esc(M.agent.team) + ", " + esc(M.agent.brokerage) + "<br>" + esc(M.agent.email);
+$("#foot").innerHTML = esc(M.agent.name) + " &middot; " + esc(M.agent.team) + " &middot; " + esc(M.agent.brokerage) + "<br>Data: MRED MLS via Repliers, " + esc(M.prepared) + ". Broker opinion, not an appraisal. Information deemed reliable but not guaranteed.";
+
+// map
+let map = null;
+function drawMap() {
+  if (map || typeof L === "undefined") { if (map) map.invalidateSize(); return; }
+  map = L.map("map", {scrollWheelZoom:false});
+  L.tileLayer("https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png", {attribution:"&copy; OpenStreetMap contributors &copy; CARTO", maxZoom:19}).addTo(map);
+  const pts = [];
+  ALL.forEach(x => {
+    const cls = x.key === "subject" ? "pin s" : x.status === "Sold" ? "pin" : "pin a";
+    const label = x.key === "subject" ? "&#9733;" : x.n;
+    const m = L.marker([x.lat, x.lon], {icon:L.divIcon({className:"", html:"<div class='" + cls + "'>" + label + "</div>", iconSize:[36, 36], iconAnchor:[18, 18]})}).addTo(map);
+    m.bindPopup("<div style='width:200px'><img src='" + img(x.images[0], "small") + "' style='width:100%;height:110px;object-fit:cover;border-radius:6px'><b>" + esc(x.address) + "</b><br>" + money(price(x)) + " &middot; " + (x.status === "Sold" ? "Sold" : x.key === "subject" ? "Subject" : x.status) + "<br><a href='#' onclick=\"openDetail('" + x.key + "');return false\">Details</a></div>");
+    pts.push([x.lat, x.lon]);
+  });
+  map.fitBounds(pts, {padding:[40, 40]});
+}
+
+// routing
+let curView = "overview";
+function route() {
+  const h = location.hash.slice(1);
+  if (h.startsWith("p-") && byKey(h.slice(2))) { if (!$("#detail").classList.contains("on")) openDetail(h.slice(2)); return; }
+  const v = ["overview", "comps", "map-view", "pricing", "about"].includes(h) ? h : "overview";
+  curView = v; closeDetailSilently();
+  document.querySelectorAll("section.view").forEach(s => s.classList.toggle("on", s.id === "v-" + v));
+  document.querySelectorAll("nav.tabs a").forEach(a => a.classList.toggle("on", a.dataset.v === v));
+  $("#hero").style.display = v === "overview" ? "" : "none";
+  if (v === "map-view") setTimeout(drawMap, 50);
+}
+function closeDetailSilently() { $("#detail").classList.remove("on"); document.body.style.overflow = ""; }
+window.addEventListener("hashchange", route); route();
+</script>
+</body>
+</html>
