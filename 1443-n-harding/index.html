@@ -83,7 +83,7 @@ section.view.on{display:block}
 .tav-v{font-family:'Space Grotesk',sans-serif;font-size:17px;font-weight:600;color:#2f4f7a;line-height:1.2}
 .tav-c{font-size:12px;font-weight:500;color:#5577a6;text-align:right}
 /* detail */
-#detail{position:fixed;inset:0;z-index:100;background:rgba(20,26,34,.6);display:none;overflow-y:auto}
+#detail{position:fixed;inset:0;z-index:1500;background:rgba(20,26,34,.6);display:none;overflow-y:auto}
 #detail.on{display:block}
 .dpanel{max-width:980px;margin:24px auto;background:var(--bg);border-radius:16px;overflow:hidden}
 .gal{position:relative;background:#111}
@@ -104,10 +104,10 @@ table.units th,table.units td{padding:10px;border-bottom:1px solid var(--line);t
 table.units th{font-size:12px;text-transform:uppercase;color:var(--muted)}
 .dnav{display:flex;justify-content:space-between;gap:10px;margin-top:20px}
 .btn{border:1px solid var(--line);background:var(--card);padding:10px 14px;border-radius:10px;font:600 14px Inter;cursor:pointer;color:var(--ink)}
-#map{height:560px;border-radius:14px;border:1px solid var(--line)}
+#map{position:relative;z-index:0;isolation:isolate;height:560px;border-radius:14px;border:1px solid var(--line)}
 .pin{width:30px;height:30px;border-radius:50%;background:var(--ink);color:#fff;font:700 13px Inter;display:flex;align-items:center;justify-content:center;border:3px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,.4)}
 .pin{background:#b23b3b}.pin.s{background:#2c62a8;width:36px;height:36px}.pin.a{background:var(--green)}.pin.u{background:#e0b000;color:#3d2e00}
-#asof{position:fixed;left:0;right:0;bottom:0;z-index:200;background:var(--orange);color:#fff;text-align:center;font:700 15px Inter,sans-serif;padding:10px 14px;box-shadow:0 -2px 8px rgba(0,0,0,.18)}
+#asof{position:fixed;left:0;right:0;bottom:0;z-index:1600;background:var(--orange);color:#fff;text-align:center;font:700 15px Inter,sans-serif;padding:10px 14px;box-shadow:0 -2px 8px rgba(0,0,0,.18)}
 body{padding-bottom:44px}
 #detail{bottom:40px}
 footer{background:var(--ink);color:#c9cfd6;font-size:13px;padding:24px 0}
@@ -299,7 +299,7 @@ drawSbs();
 // detail
 let gi = 0, cur = null;
 function openDetail(key) {
-  cur = byKey(key); gi = 0; renderDetail(); $("#detail").classList.add("on"); $("#detail").scrollTop = 0; document.body.style.overflow = "hidden";
+  if (map) map.closePopup(); cur = byKey(key); gi = 0; renderDetail(); $("#detail").classList.add("on"); $("#detail").scrollTop = 0; document.body.style.overflow = "hidden";
   history.replaceState(null, "", "#p-" + key);
 }
 function closeDetail() { $("#detail").classList.remove("on"); document.body.style.overflow = ""; history.replaceState(null, "", "#" + (curView || "overview")); }
