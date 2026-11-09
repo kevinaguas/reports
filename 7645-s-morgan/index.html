@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Market Analysis | 7645 S Morgan St</title>
+<meta name="robots" content="noindex, nofollow">
+<meta property="og:title" content="Comparative Market Analysis: 7645 S Morgan St">
+<meta property="og:description" content="Prepared by Kevin Waters, The Axon Group at eXp Realty">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+<style>
+:root{--ink:#1d2733;--muted:#5d6773;--bg:#f5f2ec;--card:#fffdf9;--line:#e2ddd3;--blue:#2c62a8;--orange:#c8641e;--orange2:#e8955a;--green:#2e7d4f;--red:#b23b3b}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{font-family:Inter,system-ui,sans-serif;color:var(--ink);background:var(--bg);-webkit-font-smoothing:antialiased}
+h1,h2,h3{font-family:'Space Grotesk',Inter,sans-serif;margin:0}
+a{color:var(--blue)}
+header.top{background:var(--ink);color:var(--bg)}
+.wrap{max-width:1200px;margin:0 auto;padding:0 20px}
+.brand{display:flex;justify-content:space-between;align-items:center;padding:14px 0;font-size:14px;color:#c9cfd6;gap:12px;flex-wrap:wrap}
+.brand b{color:#fff}
+nav.tabs{position:sticky;top:0;z-index:50;background:var(--ink);border-top:1px solid #2c3846}
+nav.tabs .wrap{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none}
+nav.tabs a{color:#c9cfd6;text-decoration:none;padding:14px 14px;font-weight:600;font-size:15px;white-space:nowrap;border-bottom:3px solid transparent}
+nav.tabs a.on{color:#fff;border-bottom-color:var(--orange2)}
+.hero{position:relative;height:340px;background:#2c3846 center/cover no-repeat}
+.hero::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(29,39,51,0) 30%,rgba(29,39,51,.92))}
+.hero .cap{position:absolute;left:0;right:0;bottom:0;z-index:2;color:#fff;padding-bottom:24px}
+.eyebrow{font-size:13px;letter-spacing:2px;font-weight:700;color:var(--orange2);text-transform:uppercase}
+.hero h1{font-size:44px;line-height:1.05;margin:6px 0}
+.hero p{margin:0;color:#dfe3e8}
+section.view{display:none;padding:28px 0 60px}
+section.view.on{display:block}
+.grid{display:grid;gap:16px}
+.g3{grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px}
+.big{font-family:'Space Grotesk',sans-serif;font-size:40px;font-weight:700;line-height:1.05}
+.lbl{font-size:13px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.5px}
+.muted{color:var(--muted)}
+.value-card{background:var(--ink);color:#fff;border:none}
+.value-card .lbl{color:#c9cfd6}
+.value-card .big{color:#fff;font-size:48px}
+.range{position:relative;height:120px;margin:16px 0 8px}
+.range .bar{position:absolute;left:0;right:0;top:54px;height:6px;background:#d8d2c6;border-radius:3px}
+.range .band{position:absolute;top:40px;height:34px;background:rgba(44,98,168,.18);border:2px solid var(--blue);border-radius:8px}
+.range .dot{position:absolute;top:47px;width:20px;height:20px;margin-left:-10px;border-radius:50%;background:var(--ink);border:3px solid var(--bg);cursor:pointer}
+.range .dot.anchor{border-color:var(--orange)}
+.range .dot span{position:absolute;top:26px;left:50%;transform:translateX(-50%);font-size:12px;color:var(--muted);white-space:nowrap}
+.range .list{position:absolute;top:22px;height:70px;width:4px;margin-left:-2px;background:var(--orange)}
+.range .list span{position:absolute;top:-22px;left:50%;transform:translateX(-50%);font-size:13px;font-weight:700;color:#a8521a;white-space:nowrap}
+.legend{display:flex;gap:18px;flex-wrap:wrap;font-size:13px;color:var(--muted)}
+.pill{display:inline-block;font-size:12px;font-weight:700;padding:4px 10px;border-radius:999px;background:#e9e4da;color:var(--ink)}
+.pill.sold{background:#f9dcdc;color:#9b2c2c}.pill.act{background:#dff1e6;color:#1f5e3a}.pill.uc{background:#fbeeb8;color:#7a5b00}.pill.subj{background:#2c62a8;color:#fff}
+/* side by side */
+.sbs-tools{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:14px}
+.seg{display:inline-flex;background:#e9e4da;border-radius:10px;padding:3px}
+.seg button{border:0;background:transparent;padding:8px 14px;border-radius:8px;font:600 14px Inter,sans-serif;color:var(--muted);cursor:pointer}
+.seg button.on{background:#fff;color:var(--ink);box-shadow:0 1px 2px rgba(0,0,0,.1)}
+.sbs{overflow-x:auto;border:1px solid var(--line);border-radius:14px;background:var(--card);-webkit-overflow-scrolling:touch}
+.sbs table{border-collapse:separate;border-spacing:0;min-width:100%}
+.sbs th,.sbs td{padding:10px 14px;border-bottom:1px solid var(--line);font-size:14px;text-align:left;vertical-align:top;min-width:190px;max-width:220px}
+.sbs th.rowh{position:sticky;left:0;z-index:3;background:#f0ebe2;min-width:130px;max-width:140px;font-size:12px;text-transform:uppercase;letter-spacing:.4px;color:var(--muted)}
+.sbs td.col{cursor:pointer}
+.sbs tr:hover td.col{background:#fbf8f3}
+.sbs td.subj{background:#eef4fc}
+.sbs td.pic{padding:0}
+.sbs td.pic img{display:block;width:100%;height:140px;object-fit:cover;background:#ddd}
+.sbs td.pic .noimg{height:140px;background:#e9e4da}
+.sbs .addr{font-weight:700;font-size:15px}
+.sbs .open{display:inline-block;margin-top:6px;font-size:13px;font-weight:700;color:var(--blue)}
+.up{color:var(--green);font-weight:700}.down{color:var(--red);font-weight:700}
+/* cards list on overview */
+.comp-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px}
+.ccard{background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden;cursor:pointer;transition:transform .15s}
+.ccard:hover{transform:translateY(-2px)}
+.ccard img{width:100%;height:170px;object-fit:cover;display:block;background:#ddd}
+.ccard .b{padding:14px 16px}
+.ccard .p{font-family:'Space Grotesk',sans-serif;font-size:24px;font-weight:700}
+.tav{display:flex;justify-content:space-between;align-items:center;margin-top:10px;background:#f5f8fc;border-left:3px solid #9db9e0;border-radius:6px;padding:7px 12px}
+.tav-l{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:#5577a6}
+.tav-v{font-family:'Space Grotesk',sans-serif;font-size:17px;font-weight:600;color:#2f4f7a;line-height:1.2}
+.tav-c{font-size:12px;font-weight:500;color:#5577a6;text-align:right}
+/* detail */
+#detail{position:fixed;inset:0;z-index:1500;background:rgba(20,26,34,.6);display:none;overflow-y:auto}
+#detail.on{display:block}
+.dpanel{max-width:980px;margin:24px auto;background:var(--bg);border-radius:16px;overflow:hidden}
+.gal{position:relative;background:#111}
+.gal img{display:block;width:100%;height:min(62vh,560px);object-fit:contain;background:#111}
+.gal button{position:absolute;top:50%;transform:translateY(-50%);border:0;background:rgba(255,255,255,.85);width:44px;height:44px;border-radius:50%;font-size:22px;cursor:pointer}
+.gal .prev{left:12px}.gal .next{right:12px}
+.gal .count{position:absolute;bottom:10px;right:12px;color:#fff;font-size:13px;background:rgba(0,0,0,.5);padding:3px 8px;border-radius:6px}
+.thumbs{display:flex;gap:6px;overflow-x:auto;padding:8px;background:#1a1f26}
+.thumbs img{width:84px;height:60px;object-fit:cover;opacity:.6;cursor:pointer;border-radius:4px;flex:none}
+.thumbs img.on{opacity:1;outline:2px solid var(--orange2)}
+.close{position:sticky;top:0;float:right;margin:10px;z-index:5;border:0;background:var(--ink);color:#fff;border-radius:999px;padding:10px 16px;font:600 14px Inter;cursor:pointer}
+.dbody{padding:24px}
+.facts{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:12px;overflow:hidden;margin:18px 0}
+.facts div{background:var(--card);padding:12px 14px}
+.facts .v{font-weight:600;margin-top:2px}
+table.units{width:100%;border-collapse:collapse;margin:8px 0 18px;font-size:14px}
+table.units th,table.units td{padding:10px;border-bottom:1px solid var(--line);text-align:left}
+table.units th{font-size:12px;text-transform:uppercase;color:var(--muted)}
+.dnav{display:flex;justify-content:space-between;gap:10px;margin-top:20px}
+.btn{border:1px solid var(--line);background:var(--card);padding:10px 14px;border-radius:10px;font:600 14px Inter;cursor:pointer;color:var(--ink)}
+#map{position:relative;z-index:0;isolation:isolate;height:560px;border-radius:14px;border:1px solid var(--line)}
+.pin{width:30px;height:30px;border-radius:50%;background:var(--ink);color:#fff;font:700 13px Inter;display:flex;align-items:center;justify-content:center;border:3px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,.4)}
+.pin{background:#b23b3b}.pin.s{background:#2c62a8;width:36px;height:36px}.pin.a{background:var(--green)}.pin.u{background:#e0b000;color:#3d2e00}
+#asof{position:fixed;left:0;right:0;bottom:0;z-index:1600;background:var(--orange);color:#fff;text-align:center;font:700 15px Inter,sans-serif;padding:10px 14px;box-shadow:0 -2px 8px rgba(0,0,0,.18)}
+body{padding-bottom:44px}
+#detail{bottom:40px}
+footer{background:var(--ink);color:#c9cfd6;font-size:13px;padding:24px 0}
+@media (max-width:640px){.hero{height:280px}.hero h1{font-size:32px}.big{font-size:32px}.value-card .big{font-size:36px}#map{height:420px}.dpanel{margin:0;border-radius:0}.gal img{height:44vh}}
+</style>
+</head>
+<body>
+<header class="top"><div class="wrap brand"><div><b id="agentName"></b> &middot; <span id="agentCo"></span></div><div id="prepared"></div></div></header>
+<nav class="tabs"><div class="wrap">
+<a href="#overview" data-v="overview">Overview</a>
+<a href="#comps" data-v="comps">Side by side</a>
+<a href="#map-view" data-v="map-view">Map</a>
+<a href="#pricing" data-v="pricing">Pricing</a>
+<a href="#about" data-v="about">About this CMA</a>
+</div></nav>
+<div class="hero" id="hero"><div class="cap wrap"><div class="eyebrow">Comparative Market Analysis</div><h1 id="heroTitle"></h1><p id="heroSub"></p></div></div>
+
+<main class="wrap">
+<section class="view" id="v-overview">
+ <div class="grid g3" style="margin-bottom:16px">
+  <div class="card value-card"><div class="lbl">Supported value</div><div class="big" id="vRange"></div><div style="margin-top:8px;color:#c9cfd6">Most likely <b style="color:#fff" id="vMid"></b></div><div id="vAdjNote" style="margin-top:6px;color:#c9cfd6;font-size:13px"></div></div>
+  <div class="card"><div class="lbl" id="vListLbl">List price</div><div class="big" id="vList"></div><div class="muted" id="vListNote" style="margin-top:8px"></div></div>
+  <div class="card"><div class="lbl">Neighborhood median</div><div class="big" id="vMed"></div><div class="muted" id="vMedNote" style="margin-top:8px"></div></div>
+ </div>
+ <div class="card" style="margin-bottom:16px"><h3 style="font-size:18px;margin-bottom:6px" id="mathTitle"></h3><div style="overflow-x:auto"><table class="units" id="mathTable" style="margin-bottom:6px"></table></div><p class="muted" style="font-size:13px;margin:0" id="mathNote"></p></div>
+ <div class="card" style="margin-bottom:16px"><p id="summary" style="margin:0;font-size:17px;line-height:1.55"></p></div>
+ <div class="card" style="margin-bottom:28px;cursor:pointer" onclick="openDetail('subject')">
+  <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap"><h2 style="font-size:24px">The property</h2><span class="open" style="font-weight:700;color:var(--blue)">See full details &rarr;</span></div>
+  <div class="facts" id="subjFacts"></div>
+ </div>
+ <h2 style="font-size:26px;margin-bottom:6px">Sold comparables</h2><p class="muted" style="margin-top:0">Tap any property for photos and full details.</p>
+ <div class="comp-cards" id="soldCards"></div>
+ <h2 style="font-size:26px;margin:32px 0 6px">Competing listings</h2><p class="muted" style="margin-top:0">On the market now.</p>
+ <div class="comp-cards" id="actCards"></div>
+</section>
+
+<section class="view" id="v-comps">
+ <div class="sbs-tools"><h2 style="font-size:26px">Side by side</h2>
+  <div class="seg" id="seg"><button data-f="sold" class="on">Sold</button><button data-f="active">Active</button><button data-f="all">All</button></div></div>
+ <p class="muted" style="margin-top:0">Scroll sideways to compare. Tap a column to open that property.</p>
+ <div class="sbs"><table id="sbsTable"></table></div>
+</section>
+
+<section class="view" id="v-map-view">
+ <h2 style="font-size:26px;margin-bottom:12px">Map</h2>
+ <div id="map"></div>
+ <div class="legend" style="margin-top:10px"><span><b style="color:#2c62a8">&#9679;</b> Subject</span><span><b style="color:#b23b3b">&#9679;</b> Sold comparable</span><span><b style="color:#e0b000">&#9679;</b> Under contract</span><span><b style="color:var(--green)">&#9679;</b> Active listing</span></div>
+</section>
+
+<section class="view" id="v-pricing">
+ <h2 style="font-size:26px;margin-bottom:12px">Where the price should land</h2>
+ <div class="card"><div class="range" id="range"></div>
+ <div class="legend"><span><b>&#9679;</b> Sold comp at today's adjusted price (tap for details)</span><span style="color:var(--blue)"><b>&#9644;</b> Supported range</span><span style="color:#a8521a"><b>|</b> List price</span></div></div>
+ <div class="grid g3" style="margin-top:16px" id="pricingStats"></div>
+ <div class="card" style="margin-top:16px"><h3 style="font-size:20px;margin-bottom:8px">How the comps compare</h3><table class="units" id="adjTable"></table></div>
+</section>
+
+<section class="view" id="v-about">
+ <div class="card" style="line-height:1.6">
+ <h2 style="font-size:26px;margin-bottom:8px">What is a CMA?</h2>
+ <p>A comparative market analysis estimates what a property is worth by comparing it with similar properties that recently sold nearby. For 2 to 4 unit buildings, the best comparables match on unit count, construction, garden-level setup, parking and condition.</p>
+ <h3 style="font-size:20px;margin:18px 0 6px">How this one was prepared</h3>
+ <ul id="method"></ul>
+ <p class="muted" style="font-size:14px">This analysis is a broker opinion based on market data, not an appraisal. Information is deemed reliable but not guaranteed. Listing photos and remarks are courtesy of the listing brokers via the MRED MLS.</p>
+ <h3 style="font-size:20px;margin:18px 0 6px">Questions?</h3>
+ <p id="contact"></p>
+ </div>
+</section>
+</main>
+
+<div id="detail" onclick="if(event.target===this)closeDetail()"><div class="dpanel"><button class="close" onclick="closeDetail()">Close &times;</button><div id="dcontent"></div></div></div>
+
+<div id="asof"></div>
+<footer><div class="wrap" id="foot"></div></footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script>
+const R = {"report": {"slug": "7645-s-morgan", "title": "7645 S Morgan St", "prepared": "November 9, 2026", "preparedFor": "", "mode": "seller", "agent": {"name": "Kevin Waters", "team": "The Axon Group", "brokerage": "eXp Realty", "email": "kevin@househackusa.com"}, "market": {"medianNear": 286750, "countNear": 92, "radiusNear": "1 mile", "medianDom": 28}, "appreciation": {"rate": -0.051, "asOf": "2026-11-09", "source": "MRED InfoSparks median sale price of 2 to 4 unit buildings in Auburn Gresham, down 5.1% since October 2025 (figure provided by Kevin Waters from InfoSparks, November 9, 2026)", "label": "2 to 4 unit buildings in Auburn Gresham"}}, "subject": {"mls": "12477764 (2025 listing, cancelled)", "status": "Active", "role": "Subject", "address": "7645 S Morgan Street", "zip": "60620", "units": 2, "type": "2 Flat", "listPrice": 359900, "originalPrice": 359900, "soldPrice": null, "soldDate": null, "listDate": null, "dom": null, "beds": 6, "baths": 3, "year": "1910 (rehabbed 2025)", "exterior": "Brick", "basement": "Finished, Full (full bath, laundry hookups)", "parking": "2-car garage plus 1 covered space", "heating": "Natural gas steam, radiators", "lot": "40 X 125", "taxes": 2953.85, "taxYear": "2023", "lat": 41.754703, "lon": -87.6487047, "unitsLabel": "2 + finished basement", "remarks": "From the 2025 listing: fully rehabbed, turn-key 2-unit with a partially finished full basement that includes a newly renovated full bathroom. Each unit has separate living and dining rooms and updated kitchens with quartz counters, shaker cabinets and stainless appliances. 2-car garage plus a covered parking space. One block from the new Auburn Park Metra station and minutes from the Red Line and Dan Ryan. 2025 updates: basement waterproofing, new sump pump, sealed flat roof with 15-year certification, new pipes in both units, laundry hookups in the basement. Current condition per listing agent: the rehab finishes now show wear and need cosmetic attention.", "images": ["mred/IMG-MRD12477764_0.jpg", "mred/IMG-MRD12477764_1.jpg", "mred/IMG-MRD12477764_2.jpg", "mred/IMG-MRD12477764_3.jpg", "mred/IMG-MRD12477764_4.jpg", "mred/IMG-MRD12477764_5.jpg", "mred/IMG-MRD12477764_6.jpg", "mred/IMG-MRD12477764_7.jpg", "mred/IMG-MRD12477764_8.jpg", "mred/IMG-MRD12477764_9.jpg", "mred/IMG-MRD12477764_10.jpg", "mred/IMG-MRD12477764_11.jpg", "mred/IMG-MRD12477764_12.jpg", "mred/IMG-MRD12477764_13.jpg", "mred/IMG-MRD12477764_14.jpg", "mred/IMG-MRD12477764_15.jpg", "mred/IMG-MRD12477764_16.jpg", "mred/IMG-MRD12477764_17.jpg", "mred/IMG-MRD12477764_18.jpg", "mred/IMG-MRD12477764_19.jpg"], "unitRows": [{"unit": "Unit 1 (floor 1)", "beds": 2, "baths": 2, "sqft": null, "rent": 1750, "lease": "Occupied (rent from 2025 listing, verify current lease)", "pays": "None"}, {"unit": "Unit 2 (floor 2)", "beds": 3, "baths": 1, "sqft": 1242, "rent": null, "lease": "Vacant (offered for rent at $1,725 since July 2026)", "pays": "None"}], "extraUnitNote": "Basement: finished with a full bath and laundry hookups. Not a separate unit.", "taxNote": "No exemptions on the 2023 bill, so an investor's taxes should be close to the current amount (verify the 2025 reassessment).", "showing": "Not yet listed."}, "sold": [{"mls": "12687608", "status": "Sold", "role": "Anchor comp", "why": "Same street, four blocks south. Brick 2-flat rehabbed in 2018 with only the first floor refreshed, so a lived-in rehab like the subject. 2-car garage, unfinished basement, narrower 25 ft lot. One unit vacant at sale. Multiple offers, sold in 6 days.", "vs": "Similar", "address": "8027 S Morgan Street", "zip": "60620", "units": 2, "type": "2 Flat", "listPrice": 374900, "originalPrice": 374900, "soldPrice": 375000, "soldDate": "2026-06-30", "listDate": "2026-06-25", "dom": 6, "beds": 6, "baths": 2, "year": "1914", "exterior": "Brick", "basement": "Unfinished, Full", "parking": "2-car garage", "heating": "Natural Gas, Forced Air", "lot": "25X125", "taxes": 5566.11, "taxYear": "2024", "remarks": "*Multiple offers, please submit your best by 5pm 6/29*A fantastic opportunity to own a beautifully updated JUMBO 2-unit building in Auburn Gresham! Renovated in 2018 with the first-floor unit recently refreshed, this property is ideal for both owner-occupants and savvy investors. The vacant first-floor unit is move-in ready, offering the flexibility to live in one unit while generating rental income from the other, or to place your own tenant at current market rates.  Each oversized unit features 3 spacious bedrooms, 1 full bath, in-unit laundry, and generous room sizes designed for comfortable living. The bedrooms easily accommodate king-size furniture and include walk-in closets. The kitchens and bathrooms are finished with granite countertops, and Unit 1 boasts stainless steel appliances along with a large walk-in pantry. Climate Guard windows and forced-air heating provide year-round comfort-no radiator heat here!  Major improvements include a new roof and tuckpointing completed in 2020. Additional highlights include separate furnaces and water heaters for each unit, an enclosed rear porch, and an expansive unfinished basement offering outstanding potential for future living space, storage, or additional income opportunities. Whether you're looking to expand your investment portfolio or purchase your first multi-unit property, this one checks all the boxes.", "lat": 41.74794199999999, "lon": -87.648536, "images": ["mred/IMG-MRD12687608_0.jpg", "mred/IMG-MRD12687608_1.jpg", "mred/IMG-MRD12687608_2.jpg", "mred/IMG-MRD12687608_3.jpg", "mred/IMG-MRD12687608_4.jpg", "mred/IMG-MRD12687608_5.jpg", "mred/IMG-MRD12687608_6.jpg", "mred/IMG-MRD12687608_7.jpg", "mred/IMG-MRD12687608_8.jpg", "mred/IMG-MRD12687608_9.jpg", "mred/IMG-MRD12687608_10.jpg", "mred/IMG-MRD12687608_11.jpg", "mred/IMG-MRD12687608_12.jpg", "mred/IMG-MRD12687608_13.jpg", "mred/IMG-MRD12687608_14.jpg", "mred/IMG-MRD12687608_15.jpg", "mred/IMG-MRD12687608_16.jpg", "mred/IMG-MRD12687608_17.jpg", "mred/IMG-MRD12687608_18.jpg", "mred/IMG-MRD12687608_19.jpg"], "unitRows": [{"unit": "Unit 1 (floor 1)", "beds": 3, "baths": 1, "sqft": null, "rent": null, "lease": "Vacant or not reported", "pays": "Electric,Gas,Heat"}, {"unit": "Unit 2 (floor 2)", "beds": 3, "baths": 1, "sqft": null, "rent": 1425, "lease": "Month to month", "pays": "Electric,Gas,Heat,Water"}]}, {"mls": "12614495", "status": "Sold", "role": "Supporting", "why": "About half a mile southwest. Well-kept brick 2-flat with older finishes, first floor duplexed, 3-car garage, partly finished basement. One unit vacant. Sold above list.", "vs": "Similar", "address": "8004 S May Street", "zip": "60620", "units": 2, "type": "2 Flat", "listPrice": 345000, "originalPrice": 345000, "soldPrice": 362000, "soldDate": "2026-06-30", "listDate": "2026-04-09", "dom": 83, "beds": 6, "baths": 2, "year": "1914", "exterior": "Brick", "basement": "Partially Finished, Full", "parking": "3-car garage", "heating": "Radiator(s)", "lot": "25X125", "taxes": 2539, "taxYear": "2023", "remarks": "Fantastic opportunity to own a spacious, well-maintained brick 2-flat on a quiet, tree-lined block in Auburn Gresham. New roof on garage. New front windows.Unit 1 duplexes. Unit 2 occupied. Monthly rent $1,800. This property is perfect for an owner-occupant looking to live in one unit while renting the other or for an investor seeking strong rental income in a growing neighborhood.    Each unit features:    3 bedrooms & 1 bath    Beautiful hardwood floors throughout    Large living rooms with bay windows and decorative fireplaces    Formal dining rooms with original built-in hutches    Updated light fixtures & ceiling fans    Spacious kitchens with room to customize    Enclosed back porch and private balcony access    Additional highlights:    Classic Chicago charm with modern updates    Shared basement with laundry hookups and storage    Radiator heat    Brick exterior with timeless curb appeal    Located near schools, shopping, parks, and public transportation", "lat": 41.74845, "lon": -87.6527774, "images": ["mred/IMG-MRD12614495_0.jpg", "mred/IMG-MRD12614495_1.jpg", "mred/IMG-MRD12614495_2.jpg", "mred/IMG-MRD12614495_3.jpg", "mred/IMG-MRD12614495_4.jpg", "mred/IMG-MRD12614495_5.jpg", "mred/IMG-MRD12614495_6.jpg", "mred/IMG-MRD12614495_7.jpg", "mred/IMG-MRD12614495_8.jpg", "mred/IMG-MRD12614495_9.jpg", "mred/IMG-MRD12614495_10.jpg", "mred/IMG-MRD12614495_11.jpg", "mred/IMG-MRD12614495_12.jpg", "mred/IMG-MRD12614495_13.jpg", "mred/IMG-MRD12614495_14.jpg", "mred/IMG-MRD12614495_15.jpg", "mred/IMG-MRD12614495_16.jpg", "mred/IMG-MRD12614495_17.jpg", "mred/IMG-MRD12614495_18.jpg", "mred/IMG-MRD12614495_19.jpg"], "unitRows": [{"unit": "Unit 1 (floor 1)", "beds": 3, "baths": 1, "sqft": 1398, "rent": null, "lease": "Vacant or not reported", "pays": "Electric"}, {"unit": "Unit 2 (floor 2)", "beds": 3, "baths": 1, "sqft": 1398, "rent": 1800, "lease": "Lease to 04/26", "pays": "Electric"}]}, {"mls": "12619281", "status": "Sold", "role": "Supporting", "why": "Two blocks west. Clean, long-held brick 2-flat with central air, newer furnaces, updated electric and plumbing, 2-car garage, unfinished basement. Not a recent rehab. Smaller 2-bed units.", "vs": "Similar", "address": "1226 W 77th Street", "zip": "60620", "units": 2, "type": "2 Flat", "listPrice": 359900, "originalPrice": 359900, "soldPrice": 359900, "soldDate": "2026-05-28", "listDate": "2026-04-15", "dom": 44, "beds": 4, "baths": 2, "year": "1928", "exterior": "Brick", "basement": "Unfinished, Full, Walk-Out Access", "parking": "2-car garage", "heating": "Natural Gas", "lot": "25x125", "taxes": 3324.37, "taxYear": "2024", "remarks": "This brick 2 flat that has been well-maintained and loved by a long term owner features a full unfinished basement, backyard, and 2-car garage in a convenient location adjacent to a playground. Each unit features central air, updated windows, large bedrooms, formal dining room and newer furnaces. Unit 2 is occupied by a stable tenant, while Unit 1 is vacant and move-in ready with new appliances including a dishwasher for an owner-occupant or new tenant. Major improvements include updated electrical and plumbing, plus a tear-off roof completed approximately 5 years ago and was recently sealed for added longevity. Each unit also offers a spacious primary bedroom with a large adjacent room that can serve as a third bedroom, office, or dream walk-in closet. Great opportunity for investors or buyers looking to live in one unit and collect rental income from the other. Nothing to do but move in and enjoy owning a well-maintained piece of Chicago.", "lat": 41.7543204, "lon": -87.6549502, "images": ["mred/IMG-MRD12619281_0.jpg", "mred/IMG-MRD12619281_1.jpg", "mred/IMG-MRD12619281_2.jpg", "mred/IMG-MRD12619281_3.jpg", "mred/IMG-MRD12619281_4.jpg", "mred/IMG-MRD12619281_5.jpg", "mred/IMG-MRD12619281_6.jpg", "mred/IMG-MRD12619281_7.jpg", "mred/IMG-MRD12619281_8.jpg", "mred/IMG-MRD12619281_9.jpg", "mred/IMG-MRD12619281_10.jpg", "mred/IMG-MRD12619281_11.jpg", "mred/IMG-MRD12619281_12.jpg", "mred/IMG-MRD12619281_13.jpg", "mred/IMG-MRD12619281_14.jpg", "mred/IMG-MRD12619281_15.jpg", "mred/IMG-MRD12619281_16.jpg", "mred/IMG-MRD12619281_17.jpg", "mred/IMG-MRD12619281_18.jpg", "mred/IMG-MRD12619281_19.jpg"], "unitRows": [{"unit": "Unit 1 (floor 1)", "beds": 2, "baths": 1, "sqft": null, "rent": null, "lease": "Vacant or not reported", "pays": "Electric,Gas,Heat"}, {"unit": "Unit 2 (floor 2)", "beds": 2, "baths": 1, "sqft": null, "rent": null, "lease": "Vacant or not reported", "pays": "Electric,Gas,Heat"}]}, {"mls": "12515780", "status": "Sold", "role": "Upper bound", "why": "Same street, two blocks south. Freshly renovated with the first floor duplexed down, 2-car garage. Newer-looking finishes than the subject today.", "vs": "Slightly better", "address": "7824 S Morgan Street", "zip": "60620", "units": 2, "type": "Other", "listPrice": 374900, "originalPrice": 374900, "soldPrice": 374900, "soldDate": "2026-08-21", "listDate": "2026-08-20", "dom": 2, "beds": 6, "baths": 3, "year": "1906", "exterior": "Brick", "basement": "Finished, Full", "parking": "2-car garage", "heating": "Natural Gas, Forced Air", "lot": "124x30", "taxes": 3415.47, "taxYear": "2024", "remarks": "Recently renovated duplexed-down all-brick 2-unit building offering 6 bedrooms and 2.1 bathrooms in the vibrant Auburn Gresham neighborhood. Situated on a well-maintained block just minutes from downtown Chicago, this turnkey investment presents an excellent opportunity for both owner-occupants and investors. The main-level unit features a spacious eat-in kitchen with ample cabinets, granite countertops, stainless steel appliances, custom tile backsplash, and hardwood flooring. The spacious living room showcases original built-ins with custom glasswork and a decorative fireplace, blending timeless character with modern updates. Two bedrooms and a tastefully renovated full bath complete the main level, while the finished lower level offers a large family room, two additional bedrooms, an updated powder room, laundry area, and ample storage. The upper unit has also been thoughtfully remodeled with an eat-in kitchen featuring new cabinetry, updated countertops, stainless steel appliances, a breakfast peninsula, and new LVP flooring. Featuring another generous living room with original built-ins and a decorative fireplace, two bedrooms and a renovated full bathroom. 2 car garage for convenience and added storage. All improvements were completed with approved plans and permits including new HVAC systems, electrical, plumbing, appliances, vanities, flooring, lighting, paint, and a new rear staircase. Each unit is equipped with separate forced-air heating and central air conditioning, providing added efficiency and individual tenant control. Conveniently located near parks, schools, shopping, dining, and public transportation, this move-in-ready property is well-positioned to attract strong, long-term tenant demand.", "lat": 41.7516058, "lon": -87.6492256, "images": ["mred/IMG-MRD12515780_6a85bcfcddec6ecf57c1f27b.jpg", "mred/IMG-MRD12515780_6a85bcfcddec6ecf57c1f277.jpg", "mred/IMG-MRD12515780_6a8736cb5cb5d3a489e599cc.jpg", "mred/IMG-MRD12515780_6a85bcfcddec6ecf57c1f268.jpg", "mred/IMG-MRD12515780_6a8736cb5cb5d3a489e599cb.jpg", "mred/IMG-MRD12515780_6a85bcfcddec6ecf57c1f269.jpg", "mred/IMG-MRD12515780_6a85bcfcddec6ecf57c1f279.jpg", "mred/IMG-MRD12515780_6a85bcfcddec6ecf57c1f27d.jpg", "mred/IMG-MRD12515780_6a85bcfcddec6ecf57c1f275.jpg", "mred/IMG-MRD12515780_6a85bcfcddec6ecf57c1f27c.jpg", "mred/IMG-MRD12515780_6a85bcfcddec6ecf57c1f27f.jpg", "mred/IMG-MRD12515780_6a85bcfcddec6ecf57c1f273.jpg", "mred/IMG-MRD12515780_6a85bcfcddec6ecf57c1f26b.jpg", "mred/IMG-MRD12515780_6a85bcfcddec6ecf57c1f26a.jpg", "mred/IMG-MRD12515780_6a85bcfcddec6ecf57c1f270.jpg", "mred/IMG-MRD12515780_6a85bcfcddec6ecf57c1f280.jpg", "mred/IMG-MRD12515780_6a85bcfcddec6ecf57c1f26e.jpg", "mred/IMG-MRD12515780_6a85bcfcddec6ecf57c1f27a.jpg", "mred/IMG-MRD12515780_6a85bcfcddec6ecf57c1f282.jpg", "mred/IMG-MRD12515780_6a85bcfcddec6ecf57c1f26d.jpg"], "unitRows": [{"unit": "Unit 1 (floor 1)", "beds": 4, "baths": 2, "sqft": null, "rent": null, "lease": "Vacant or not reported", "pays": "Other"}, {"unit": "Unit 2 (floor 2)", "beds": 2, "baths": 1, "sqft": null, "rent": null, "lease": "Vacant or not reported", "pays": "Other"}]}, {"mls": "12725624", "status": "Sold", "role": "Ceiling", "why": "One block east. Completely renovated top to bottom with a new roof. No garage and an unfinished basement, but every finish is new. This is what a fresh rehab brings here.", "vs": "Better", "address": "7638 S Carpenter Street", "zip": "60620", "units": 2, "type": "2 Flat", "listPrice": 399900, "originalPrice": 399900, "soldPrice": 399000, "soldDate": "2026-09-09", "listDate": "2026-08-05", "dom": 36, "beds": 6, "baths": 2, "year": "1908", "exterior": "Brick", "basement": "Unfinished, Full, Walk-Out Access", "parking": "Outdoor / none listed", "heating": "Natural Gas", "lot": "30 X 124", "taxes": 3616.33, "taxYear": "2024", "remarks": "Completely renovated from top to bottom, this stunning all-brick two-flat at 7638 S Carpenter St. is a rare turnkey opportunity for both owner-occupants and savvy investors. Offering a total of 6 bedrooms and 2 full bathrooms, the property features two spacious 3-bedroom, 1-bath units with functional layouts, generous room sizes, and abundant natural light.    Nearly every major component has been updated, giving buyers peace of mind for years to come. The property boasts a brand-new roof along with extensive interior renovations, providing a clean, modern feel throughout. Whether you're looking to help your mortgage by living in one unit while renting the other or seeking a low-maintenance income-producing property, this building is well suited for a variety of buyers.    Located on a desirable, well-kept block, this solid brick building offers excellent curb appeal and long-term durability. The spacious units provide comfortable living for tenants or homeowners alike, making this an ideal addition to any investment portfolio. With strong rental potential, modern updates, and a move-in-ready condition, this is an opportunity you won't want to miss.    Schedule your private showing today and see everything this beautifully updated two-flat has to offer.", "lat": 41.7548163, "lon": -87.6505126, "images": ["mred/IMG-MRD12725624_6a73d76cb65cd4300154b76f.jpg", "mred/IMG-MRD12725624_6a73d76cb65cd4300154b771.jpg", "mred/IMG-MRD12725624_6a73d76cb65cd4300154b767.jpg", "mred/IMG-MRD12725624_6a73d76cb65cd4300154b768.jpg", "mred/IMG-MRD12725624_6a73d76cb65cd4300154b774.jpg", "mred/IMG-MRD12725624_6a73d76cb65cd4300154b76d.jpg", "mred/IMG-MRD12725624_6a73d76cb65cd4300154b76b.jpg", "mred/IMG-MRD12725624_6a73d76cb65cd4300154b766.jpg", "mred/IMG-MRD12725624_6a73d76cb65cd4300154b76e.jpg", "mred/IMG-MRD12725624_6a73d76cb65cd4300154b773.jpg", "mred/IMG-MRD12725624_6a73d76cb65cd4300154b769.jpg", "mred/IMG-MRD12725624_6a73d76cb65cd4300154b764.jpg", "mred/IMG-MRD12725624_6a73d76cb65cd4300154b76a.jpg", "mred/IMG-MRD12725624_6a73d76cb65cd4300154b76c.jpg", "mred/IMG-MRD12725624_6a73d76cb65cd4300154b765.jpg", "mred/IMG-MRD12725624_6a73d76cb65cd4300154b770.jpg", "mred/IMG-MRD12725624_6a73d76cb65cd4300154b772.jpg"], "unitRows": [{"unit": "Unit 1 (floor 1)", "beds": 3, "baths": 1, "sqft": 1300, "rent": null, "lease": "Vacant or not reported", "pays": "None"}, {"unit": "Unit 2 (floor 2)", "beds": 3, "baths": 1, "sqft": 1500, "rent": null, "lease": "Vacant or not reported", "pays": "None"}]}, {"mls": "12662525", "status": "Sold", "role": "Floor", "why": "Half a block east. Owner-occupied brick 2-flat sold as-is with no updates, unfinished basement, 2-car garage.", "vs": "Inferior", "address": "7637 S Sangamon Street", "zip": "60620", "units": 2, "type": "2 Flat", "listPrice": 274900, "originalPrice": 274900, "soldPrice": 275000, "soldDate": "2026-06-23", "listDate": "2026-06-03", "dom": 21, "beds": 5, "baths": 2, "year": "1908", "exterior": "Brick", "basement": "Unfinished, Walk-Out Access", "parking": "2-car garage", "heating": "Natural Gas", "lot": "32 X125", "taxes": 3098, "taxYear": "2023", "remarks": "Well-maintained 2-unit building located in the Auburn Gresham neighborhood of Chicago. This property offers a total of 5 bedrooms and 2 bathrooms across two units, making it an excellent opportunity for 1st time home buyers, investors or owner-occupants. Features include an unfinished basement with additional storage or future potential, as well as a detached 2-car brick garage. 1st floor unit has 2 bedrooms and 2nd floor unit has 3 bedrooms. Conveniently located near schools, parks, public transportation, shopping, and major roadways. Great opportunity to generate rental income or build equity in a solid multi-family property. Schedule a showing today. Property is being sold AS-IS.", "lat": 41.7549477, "lon": -87.6475026, "images": ["mred/IMG-MRD12662525_0.jpg", "mred/IMG-MRD12662525_1.jpg", "mred/IMG-MRD12662525_2.jpg", "mred/IMG-MRD12662525_3.jpg", "mred/IMG-MRD12662525_4.jpg", "mred/IMG-MRD12662525_5.jpg", "mred/IMG-MRD12662525_6.jpg", "mred/IMG-MRD12662525_7.jpg", "mred/IMG-MRD12662525_8.jpg", "mred/IMG-MRD12662525_9.jpg"], "unitRows": [{"unit": "Unit 1 (floor 1)", "beds": 2, "baths": 1, "sqft": null, "rent": null, "lease": "Vacant or not reported", "pays": "Gas,Heat"}, {"unit": "Unit 2 (floor 2)", "beds": 3, "baths": 1, "sqft": null, "rent": null, "lease": "Vacant or not reported", "pays": "Gas,Heat"}]}], "actives": [{"mls": "12694649", "status": "Active", "role": "Competition", "why": "Half a mile south. Brick 2-flat with finished basement, 2-car garage, partly updated units, $2,700 in rent. Cut from $350,000 to $279,999 and still unsold after two months. Seller disclosed a city violation notice. The listing buyers will compare against.", "vs": "Similar", "address": "7924 S May Street", "zip": "60620", "units": 2, "type": "2 Flat", "listPrice": 279999, "originalPrice": 350000, "soldPrice": null, "soldDate": null, "listDate": "2026-07-13", "dom": 63, "beds": 6, "baths": 3, "year": "1915", "exterior": "Brick", "basement": "Finished, Exterior Entry, Rec/Family Area, Sleeping Area, Storage Space, Full, Walk-Out Access", "parking": "2-car garage", "heating": "Natural Gas, Forced Air", "lot": "125X32", "taxes": 3415.47, "taxYear": "2024", "remarks": "Tenant-occupied 2-flat in Auburn Gresham generating $2,700 in total monthly rent. Each unit offers 2 bedrooms, 1 full bath, separate living and dining rooms, enclosed porches, appliances, and independently controlled heat. The first-floor unit features an updated kitchen and bathroom, while the second-floor unit includes a fully renovated kitchen and bathroom with updated finishes. Property also includes a full finished basement renovated in 2024 and a detached 2-car garage. Seller reports new roofs on the main building and garage and a new hot water tank in 2023, along with updates to the main plumbing line with copper in 2025. Property is being sold AS IS. Basement is not currently represented as a legal third residential unit.", "lat": 41.749742, "lon": -87.6527964, "images": ["mred/IMG-MRD12694649_0.jpg", "mred/IMG-MRD12694649_1.jpg"], "unitRows": [{"unit": "Unit 1 (floor 1)", "beds": 2, "baths": 1, "sqft": null, "rent": 1350, "lease": "Lease to 01/27", "pays": "None"}, {"unit": "Unit 2 (floor 2)", "beds": 2, "baths": 1, "sqft": null, "rent": 1350, "lease": "Lease to 09/26", "pays": "None"}]}, {"mls": "12594118", "status": "Active", "role": "Competition", "why": "About 0.8 mile south. Brick 2-flat needing a rehab, sold as-is. On market 210 days at $299,900 after a financing fallout.", "vs": "Inferior", "address": "8236 S May Street", "zip": "60620", "units": 2, "type": "2 Flat,2 Story Unit/s", "listPrice": 299900, "originalPrice": 299900, "soldPrice": null, "soldDate": null, "listDate": "2026-04-06", "dom": 210, "beds": 6, "baths": 3, "year": "1927", "exterior": "Brick", "basement": "Partially Finished, Full", "parking": "2-car garage", "heating": "Gas, Radiant", "lot": "4375", "taxes": 218, "taxYear": "2024", "remarks": "Excellent Investment Opportunity in Auburn Gresham.  Discover the potential in this solid all-brick 2-unit property located in the Auburn Gresham neighborhood. Each unit offers 3 bedrooms and 1 bathroom with functional layouts, well-maintained, providing a strong foundation for rental income or owner-occupant use. The property also features a full basement, offering additional possibilities for expansion. Buyers may explore options to duplex down or create additional living space, subject to zoning and city approval. This property is ideal for investors looking to renovate and build equity, or for those seeking a long-term hold opportunity. With comparable renovated properties in the area reaching values up to $475,000, there is significant upside potential. Conveniently located near local amenities, transportation, and neighborhood developments, this property presents a great opportunity to add value in a growing market. Property is being sold As-Is.", "lat": 41.7439528, "lon": -87.652653, "images": ["mred/IMG-MRD12594118_0.jpg", "mred/IMG-MRD12594118_1.jpg", "mred/IMG-MRD12594118_2.jpg", "mred/IMG-MRD12594118_3.jpg", "mred/IMG-MRD12594118_4.jpg", "mred/IMG-MRD12594118_5.jpg", "mred/IMG-MRD12594118_6.jpg", "mred/IMG-MRD12594118_7.jpg"], "unitRows": [{"unit": "Unit 1 (floor 1)", "beds": 3, "baths": 1, "sqft": 1206, "rent": null, "lease": "Vacant or not reported", "pays": "None"}, {"unit": "Unit 2 (floor 2)", "beds": 3, "baths": 1, "sqft": 1206, "rent": null, "lease": "Vacant or not reported", "pays": "None"}]}, {"mls": "12760841", "status": "Active", "role": "Competition", "why": "Half a mile north in Englewood. Recently rehabbed with new mechanicals and a duplexed first floor. Asking $429,900 after a cut, 48 days on market.", "vs": "Better", "address": "7309 S Green Street", "zip": "60621", "units": 2, "type": "2 Flat", "listPrice": 429900, "originalPrice": 440000, "soldPrice": null, "soldDate": null, "listDate": "2026-09-17", "dom": 48, "beds": 6, "baths": 2, "year": "1913", "exterior": "Brick", "basement": "Finished, Full", "parking": "Parking pad / outdoor", "heating": "Gas", "lot": "25x121", "taxes": 1793, "taxYear": "2023", "remarks": "Recently rehabbed 2 flat with 1st. floor duplex to basement with architectural plans and drawings approved  by Chicago city planning department. Each unit has 3 bedrooms and 1 bath each. New plumbing and electrical, heating and air conditioning, alarm system with cameras, electric fire place new windows. Two cars parking pad in rear of building.", "lat": 41.7612272, "lon": -87.6452626, "images": ["mred/IMG-MRD12760841_6aad5f15ce737f7fabb4dc3d.jpg", "mred/IMG-MRD12760841_6aad5f15ce737f7fabb4dc3e.jpg", "mred/IMG-MRD12760841_6aad60f449c4470daefae8c3.jpg", "mred/IMG-MRD12760841_6aad60f449c4470daefae8c0.jpg", "mred/IMG-MRD12760841_6aad6298e427766993900111.jpg", "mred/IMG-MRD12760841_6aad5f15ce737f7fabb4dc3c.jpg", "mred/IMG-MRD12760841_6aad5f15ce737f7fabb4dc42.jpg", "mred/IMG-MRD12760841_6aad5f15ce737f7fabb4dc44.jpg", "mred/IMG-MRD12760841_6aad5f15ce737f7fabb4dc3b.jpg", "mred/IMG-MRD12760841_6aad5f15ce737f7fabb4dc41.jpg", "mred/IMG-MRD12760841_6aad5f15ce737f7fabb4dc40.jpg", "mred/IMG-MRD12760841_6aad5f15ce737f7fabb4dc43.jpg", "mred/IMG-MRD12760841_6aad60f449c4470daefae8be.jpg", "mred/IMG-MRD12760841_6aad60f449c4470daefae8bd.jpg", "mred/IMG-MRD12760841_6aad60f449c4470daefae8bc.jpg", "mred/IMG-MRD12760841_6aad60f449c4470daefae8bf.jpg", "mred/IMG-MRD12760841_6aad60f449c4470daefae8c2.jpg", "mred/IMG-MRD12760841_6aad61a94bb57df0dea74706.jpg", "mred/IMG-MRD12760841_6aad61a94bb57df0dea74702.jpg", "mred/IMG-MRD12760841_6aad61a94bb57df0dea74700.jpg"], "unitRows": [{"unit": "Unit 1 (floor 1)", "beds": 3, "baths": 1, "sqft": 1069, "rent": null, "lease": "Vacant or not reported", "pays": "All,Electric,Gas,Heat"}, {"unit": "Unit 2 (floor 2)", "beds": 3, "baths": 1, "sqft": 1069, "rent": 1400, "lease": "Month to month", "pays": "Electric,Gas"}]}, {"mls": "12729964", "status": "Under contract", "role": "Competition", "why": "About 0.75 mile southwest. Rehabbed brick 2-flat with a 2-car garage, under contract after 75 days at $455,000 asking.", "vs": "Better", "address": "8151 S Ada Street", "zip": "60620", "units": 2, "type": "2 Flat", "listPrice": 455000, "originalPrice": 467900, "soldPrice": null, "soldDate": null, "listDate": "2026-08-13", "dom": 75, "beds": 6, "baths": 2, "year": "1920", "exterior": "Brick", "basement": "Unfinished, Full", "parking": "2-car garage", "heating": "Forced Air", "lot": "2398", "taxes": 3376, "taxYear": "2023", "remarks": "Rehabbed 2-flat building.", "lat": 41.7453339, "lon": -87.656967, "images": ["mred/IMG-MRD12729964_6a7deab98163660931e7fa47.jpg", "mred/IMG-MRD12729964_6a7deab98163660931e7fa41.jpg", "mred/IMG-MRD12729964_6a7deab98163660931e7fa3d.jpg", "mred/IMG-MRD12729964_6a7deab98163660931e7fa3b.jpg", "mred/IMG-MRD12729964_6a7deab98163660931e7fa49.jpg", "mred/IMG-MRD12729964_6a7deab98163660931e7fa3e.jpg", "mred/IMG-MRD12729964_6a7deab98163660931e7fa3f.jpg", "mred/IMG-MRD12729964_6a7deab98163660931e7fa45.jpg", "mred/IMG-MRD12729964_6a7deab98163660931e7fa48.jpg", "mred/IMG-MRD12729964_6a7deab98163660931e7fa42.jpg", "mred/IMG-MRD12729964_6a7deab98163660931e7fa46.jpg", "mred/IMG-MRD12729964_6a7deab98163660931e7fa3c.jpg", "mred/IMG-MRD12729964_6a7deab98163660931e7fa40.jpg", "mred/IMG-MRD12729964_6a7deab98163660931e7fa44.jpg", "mred/IMG-MRD12729964_6a7deab98163660931e7fa43.jpg"], "unitRows": [{"unit": "Unit 1 (floor 1)", "beds": 3, "baths": 1, "sqft": null, "rent": null, "lease": "Vacant or not reported", "pays": "None"}, {"unit": "Unit 2 (floor 2)", "beds": 3, "baths": 1, "sqft": null, "rent": null, "lease": "Vacant or not reported", "pays": "None"}]}], "method": ["Closed sales of 2 to 4 unit income properties with 4 to 8 bedrooms in ZIPs 60620 and 60621, November 2025 to November 2026: 186 sales reviewed, almost all of them 2-flats.", "Condition drives price on this stretch: fresh rehabs within half a mile sold for about $375,000 to $475,000, while as-is buildings sold for $150,000 to $275,000. The subject was rehabbed in 2025 but now shows wear, so the value comps are well-kept and older-rehab 2-flats, with fresh rehabs as the upper bound and ceiling and an as-is sale as the floor.", "History: the subject was listed in 2025 at $399,000, then $390,000, then $377,777, freshly rehabbed and fully leased, and was cancelled after 194 cumulative days without a sale.", "Existing rent-to-price ratio uses the monthly rents reported in the MLS divided by the sold price (or list price for active listings). Vacant or unreported units are excluded, so a partial figure understates the building's potential.", "Market change since sale: each sold comp is adjusted to today using MRED InfoSparks median sale price of 2 to 4 unit buildings in Auburn Gresham, down 5.1% since October 2025 (figure provided by Kevin Waters from InfoSparks, November 9, 2026), prorated by months since the sale. The value range comes from the anchor and supporting comps at their adjusted prices.", "Condition assessed from listing remarks and the listing agent's description of the subject; no interior inspection of any comparable.", "Data from the MRED MLS via Repliers, pulled November 9, 2026."]};
+const CDN = "https://cdn.repliers.io/";
+const img = (p, c) => CDN + p + "?class=" + (c || "medium");
+const $ = s => document.querySelector(s);
+const money = n => n == null ? "&ndash;" : "$" + Math.round(n).toLocaleString();
+const k = n => "$" + Math.round(n / 1000) + "K";
+const esc = s => s === "&ndash;" ? s : String(s ?? "").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const fmtDate = d => d ? new Date(d + "T12:00:00").toLocaleDateString("en-US", {month:"short", day:"numeric", year:"numeric"}) : "&ndash;";
+const S = R.subject, SOLD = R.sold, ACT = R.actives, M = R.report, APP = M.appreciation;
+const AS_OF = new Date(APP.asOf + "T12:00:00");
+const ASOF_TXT = AS_OF.toLocaleDateString("en-US", {month:"long", day:"numeric", year:"numeric"});
+const monthsSince = x => x.soldDate ? Math.max(0, (AS_OF - new Date(x.soldDate + "T12:00:00")) / (86400000 * 30.4375)) : 0;
+const chg = x => APP.rate * monthsSince(x) / 12;
+const adj = x => x.soldPrice ? x.soldPrice * (1 + chg(x)) : null;
+const r5 = v => Math.round(v / 5000) * 5000;
+const pctS = v => (v >= 0 ? "+" : "") + (v * 100).toFixed(1) + "%";
+const chgTxt = x => x.soldPrice ? "<span class='" + (chg(x) >= 0 ? "up" : "down") + "'>" + pctS(chg(x)) + "</span> <span class='muted'>(" + Math.round(monthsSince(x)) + " mo)</span>" : "&ndash;";
+const CORE = SOLD.filter(c => c.role === "Anchor comp" || c.role === "Supporting");
+const V = {low: r5(Math.min(...CORE.map(adj))), high: r5(Math.max(...CORE.map(adj))), mid: Math.round(CORE.reduce((a, c) => a + adj(c), 0) / CORE.length)};
+S.key = "subject"; SOLD.forEach((c, i) => { c.key = "s" + i; c.n = i + 1; }); ACT.forEach((c, i) => { c.key = "a" + i; c.n = String.fromCharCode(65 + i); });
+const ALL = [S, ...SOLD, ...ACT];
+const SELLER = M.mode === "seller", LISTWORD = SELLER ? "Suggested list price" : "List price";
+const AREA_TXT = APP.label || "2 to 4 unit buildings priced $439K and up in Humboldt Park";
+const byKey = key => ALL.find(x => x.key === key);
+const pill = x => x.key === "subject" ? '<span class="pill subj">Subject</span>' : x.status === "Sold" ? '<span class="pill sold">Sold</span>' : x.status === "Under contract" ? '<span class="pill uc">Under contract</span>' : '<span class="pill act">Active</span>';
+const ratio = x => x.soldPrice && x.listPrice ? x.soldPrice / x.listPrice : null;
+const ratioTxt = x => { const r = ratio(x); if (!r) return "&ndash;"; const p = (r * 100).toFixed(1) + "%"; return '<span class="' + (r >= 1 ? "up" : "down") + '">' + p + "</span>"; };
+const price = x => x.soldPrice || x.listPrice;
+const perUnit = x => x.units ? money(price(x) / x.units) : "&ndash;";
+function rentInfo(x) {
+  const rows = x.unitRows || [], rep = rows.filter(u => u.rent > 0), total = rep.reduce((a, u) => a + u.rent, 0), n = x.units || rows.length;
+  return {total, reported:rep.length, n, ratio: total ? total / price(x) : null, full: rep.length > 0 && rep.length >= n};
+}
+function rentTxt(x) { const r = rentInfo(x); if (!r.total) return "<span class='muted'>Not reported</span>"; return money(r.total) + "/mo" + (r.full ? "" : " <span class='muted'>(" + r.reported + " of " + r.n + " units)</span>"); }
+function rtpTxt(x, short) {
+  const r = rentInfo(x); if (!r.ratio) return "<span class='muted'>" + (short ? "Rents n/a" : "Not reported") + "</span>";
+  const p = (r.ratio * 100).toFixed(2) + "%";
+  return "<b>" + p + "</b>" + (r.full ? "" : " <span class='muted'>(partial" + (short ? "" : ": " + r.reported + " of " + r.n + " units reported, understates true ratio") + ")</span>");
+}
+function dist(x) { if (x.key === "subject") return "&ndash;"; const dLat = (x.lat - S.lat) * 69, dLon = (x.lon - S.lon) * 51.6; return Math.sqrt(dLat * dLat + dLon * dLon).toFixed(2) + " mi"; }
+
+// header
+$("#agentName").textContent = M.agent.name; $("#agentCo").textContent = M.agent.team + ", " + M.agent.brokerage;
+$("#asof").innerHTML = "&#128197; Market data current as of " + ASOF_TXT;
+$("#prepared").textContent = (M.preparedFor ? "Prepared for " + M.preparedFor + " · " : "") + "Information as of " + ASOF_TXT;
+$("#hero").style.backgroundImage = "url('" + img(S.images[0], "large") + "')";
+$("#heroTitle").textContent = S.address.replace(" Avenue", " Ave");
+$("#heroSub").textContent = "Chicago, IL " + S.zip + " · " + S.units + "-unit " + S.exterior.toLowerCase() + " building · " + (SELLER ? "Not yet on market · Suggested list price " : "Listed at ") + money(S.listPrice).replace("&ndash;", "");
+if (SELLER) $("#vListLbl").textContent = LISTWORD;
+
+// overview
+$("#vRange").innerHTML = k(V.low) + " to " + k(V.high); $("#vMid").innerHTML = money(V.mid);
+$("#vAdjNote").textContent = "Comps adjusted " + pctS(APP.rate) + "/yr for market change since sale";
+$("#mathTitle").textContent = "How we got " + money(V.mid);
+$("#mathTable").innerHTML = "<tr><th>Comp</th><th>Sold</th><th>Months since sale</th><th>Market change</th><th>Time-adjusted value</th></tr>" +
+  CORE.map(c => "<tr style='cursor:pointer' onclick=\"openDetail('" + c.key + "')\"><td><b>" + esc(c.address.replace(" Avenue", "")) + "</b><div class='muted' style='font-size:13px'>" + esc(c.role) + "</div></td><td>" + money(c.soldPrice) + "<div class='muted' style='font-size:13px'>" + fmtDate(c.soldDate) + "</div></td><td>" + monthsSince(c).toFixed(1) + "</td><td><span class='" + (chg(c) >= 0 ? "up" : "down") + "'>" + pctS(chg(c)) + "</span></td><td><b>" + money(adj(c)) + "</b></td></tr>").join("") +
+  "<tr><td colspan='4'><b>Average of the " + CORE.length + " closest comps = most likely value</b></td><td><b>" + money(V.mid) + "</b></td></tr>";
+$("#mathNote").innerHTML = "Adjusted price = sold price &times; (1 + " + pctS(APP.rate).replace("+", "") + " &times; months since sale &divide; 12). The range is the lowest and highest adjusted price of these comps. <b>This information is as of " + ASOF_TXT + ".</b>";
+$("#vList").innerHTML = money(S.listPrice);
+{ const d = S.listPrice / V.mid - 1; $("#vListNote").textContent = Math.abs(d) < 0.01 ? "In line with the most likely value" : Math.round(Math.abs(d) * 100) + "% " + (d > 0 ? "above" : "below") + " the most likely value"; }
+$("#vMed").innerHTML = money(M.market.medianNear);
+$("#vMedNote").textContent = M.market.countNear + " income-property sales within " + M.market.radiusNear + ", past 12 months";
+{ const an = SOLD.find(c => c.role === "Anchor comp"), d = S.listPrice / V.mid - 1;
+  $("#summary").textContent = "Adjusted for market " + (APP.rate >= 0 ? "appreciation" : "change") + " since each sale (" + pctS(APP.rate) + " per year for " + AREA_TXT + "), the closest comparable sales support a value of " + k(V.low) + " to " + k(V.high) + ", most likely around " + money(V.mid) + ". " + (SELLER ? "A suggested list price of " : "The list price of ") + k(S.listPrice) + " is " + (Math.abs(d) < 0.01 ? "in line with that value" : Math.round(Math.abs(d) * 100) + "% " + (d > 0 ? "above" : "below") + " it") + ". The closest match, " + an.address.replace(" Avenue", "") + ", sold for " + k(an.soldPrice) + " " + Math.round(monthsSince(an)) + " months ago, which is about " + k(adj(an)) + " in today's market. This information is as of " + ASOF_TXT + "."; }
+const subjFacts = [["Units", S.unitsLabel || (S.units + (S.extraUnitNote ? " + garden in-law" : ""))], ["Beds / baths", S.beds + " / " + S.baths], ["Year built", S.year], ["Exterior", S.exterior], ["Lot", S.lot], ["Parking", S.parking], ["Days on market", SELLER ? "Not yet listed" : S.dom], ["Taxes (" + S.taxYear + ")", money(S.taxes) + "*"], ["Existing rent-to-price ratio", rtpTxt(S, true)]];
+$("#subjFacts").innerHTML = subjFacts.map(f => "<div><div class='lbl'>" + f[0] + "</div><div class='v'>" + f[1] + "</div></div>").join("");
+function card(x) {
+  const sub = x.status === "Sold" ? "Sold " + fmtDate(x.soldDate) + " · " + ratioTxt(x) + " of list" : x.status + " · " + x.dom + " days";
+  return "<div class='ccard' onclick=\"openDetail('" + x.key + "')\"><img loading='lazy' src='" + img(x.images[0]) + "' alt=''><div class='b'>" +
+    "<div style='display:flex;justify-content:space-between;align-items:center'>" + pill(x) + "<span class='lbl'>" + esc(x.role) + "</span></div>" +
+    "<div class='p' style='margin-top:8px'>" + money(price(x)) + "</div><div style='font-weight:600'>" + x.n + ". " + esc(x.address) + "</div>" +
+    "<div class='muted' style='font-size:14px;margin-top:4px'>" + sub + "</div>" +
+    (x.soldPrice ? "<div class='tav'><div><div class='tav-l'>Time-adjusted value</div><div class='tav-v'>" + money(adj(x)) + "</div></div><div class='tav-c'>" + pctS(chg(x)) + "<br>over " + Math.round(monthsSince(x)) + " mo</div></div>" : "") +
+    "<div class='muted' style='font-size:14px;margin-top:6px'>" + x.units + " units · " + x.beds + " bd / " + x.baths + " ba · " + esc(x.parking) + "</div>" +
+    "<div style='font-size:14px;margin-top:8px;padding-top:8px;border-top:1px solid var(--line)'>Existing rent-to-price ratio: " + rtpTxt(x, true) + "</div></div></div>";
+}
+$("#soldCards").innerHTML = SOLD.map(card).join(""); $("#actCards").innerHTML = ACT.map(card).join("");
+
+// side by side
+const ROWS = [
+  ["", x => "<td class='pic'>" + (x.images[0] ? "<img loading='lazy' src='" + img(x.images[0]) + "' alt=''>" : "<div class='noimg'></div>") + "</td>", true],
+  ["Property", x => "<div>" + pill(x) + "</div><div class='addr' style='margin-top:6px'>" + (x.n ? x.n + ". " : "") + esc(x.address) + "</div><span class='open'>Details &rarr;</span>"],
+  ["Units", x => x.units + (x.type ? " <span class='muted'>(" + esc(x.type) + ")</span>" : "")],
+  ["Basement", x => esc(x.basement || "None")],
+  ["List price", x => money(x.listPrice)],
+  ["Sold price", x => x.soldPrice ? "<b>" + money(x.soldPrice) + "</b>" : "&ndash;"],
+  ["Market change since sale", chgTxt],
+  ["Time-adjusted value", x => x.soldPrice ? "<b>" + money(adj(x)) + "</b>" : "&ndash;"],
+  ["Sold vs. list", ratioTxt],
+  ["Existing rents", rentTxt],
+  ["Existing rent-to-price ratio", x => rtpTxt(x, true)],
+  ["Days on market", x => x.dom ?? "&ndash;"],
+  ["Sold date", x => x.soldDate ? fmtDate(x.soldDate) : "&ndash;"],
+  ["Beds / baths", x => x.beds + " / " + x.baths],
+  ["Parking", x => esc(x.parking)],
+  ["Lot", x => esc(x.lot || "&ndash;")],
+  ["Year built", x => esc(x.year || "&ndash;")],
+  ["Exterior", x => esc(x.exterior || "&ndash;")],
+  ["Taxes", x => money(x.taxes) + (x.taxYear ? " <span class='muted'>(" + x.taxYear + ")</span>" : "")],
+  ["Distance", dist],
+  ["vs. subject", x => x.vs ? "<b>" + esc(x.vs) + "</b>" : "&ndash;"]
+];
+let filt = "sold";
+function drawSbs() {
+  const cols = [S, ...(filt === "sold" ? SOLD : filt === "active" ? ACT : [...SOLD, ...ACT])];
+  $("#sbsTable").innerHTML = ROWS.map(r => "<tr><th class='rowh'>" + r[0] + "</th>" + cols.map(x => {
+    const cell = r[1](x); const cls = "col" + (x.key === "subject" ? " subj" : "");
+    return r[2] ? cell.replace("<td class='pic'>", "<td class='pic " + cls + "' onclick=\"openDetail('" + x.key + "')\">") : "<td class='" + cls + "' onclick=\"openDetail('" + x.key + "')\">" + cell + "</td>";
+  }).join("") + "</tr>").join("");
+}
+document.querySelectorAll("#seg button").forEach(b => b.onclick = () => { filt = b.dataset.f; document.querySelectorAll("#seg button").forEach(x => x.classList.toggle("on", x === b)); drawSbs(); });
+drawSbs();
+
+// detail
+let gi = 0, cur = null;
+function openDetail(key) {
+  if (map) map.closePopup(); cur = byKey(key); gi = 0; renderDetail(); $("#detail").classList.add("on"); $("#detail").scrollTop = 0; document.body.style.overflow = "hidden";
+  history.replaceState(null, "", "#p-" + key);
+}
+function closeDetail() { $("#detail").classList.remove("on"); document.body.style.overflow = ""; history.replaceState(null, "", "#" + (curView || "overview")); }
+function renderDetail() {
+  const x = cur, ims = x.images || [];
+  const facts = [["Status", pill(x)], [x.key === "subject" ? LISTWORD : "List price", money(x.listPrice)], ["Sold price", x.soldPrice ? money(x.soldPrice) : "&ndash;"], ["Sold vs. list", ratioTxt(x)],
+    ["Original list price", money(x.originalPrice || x.listPrice)], ["Existing monthly rents", rentTxt(x)], ["Existing rent-to-price ratio", rtpTxt(x)], ["Days on market", x.dom ?? "&ndash;"], ["Listed", fmtDate(x.listDate)],
+    ["Sold", x.soldDate ? fmtDate(x.soldDate) : "&ndash;"], ["Market change since sale", chgTxt(x)], ["Time-adjusted value", x.soldPrice ? "<b>" + money(adj(x)) + "</b>" : "&ndash;"], ["Units", x.units + (x.type ? " (" + esc(x.type) + ")" : "")], ["Basement", esc(x.basement || "None")], ["Beds / baths", x.beds + " / " + x.baths],
+    ["Parking", esc(x.parking)], ["Lot", esc(x.lot || "&ndash;")], ["Year built", esc(x.year || "&ndash;")], ["Exterior", esc(x.exterior || "&ndash;")],
+    ["Heating", esc(x.heating || "&ndash;")], ["Taxes", money(x.taxes) + (x.taxYear ? " (" + x.taxYear + ")" : "")], ["Distance from subject", dist(x)], ["MLS #", esc(x.mls)]];
+  const ur = x.unitRows || [];
+  const units = ur.length ? "<h3 style='font-size:20px;margin-top:8px'>Unit breakdown and rents</h3><div style='overflow-x:auto'><table class='units'><tr><th>Unit</th><th>Beds</th><th>Baths</th><th>Sq ft</th><th>Rent</th><th>Lease</th><th>Tenant pays</th></tr>" +
+    ur.map(u => "<tr><td>" + esc(u.unit) + "</td><td>" + (u.beds ?? "&ndash;") + "</td><td>" + (u.baths ?? "&ndash;") + "</td><td>" + (u.sqft ? u.sqft.toLocaleString() : "&ndash;") + "</td><td>" + (u.rent ? money(u.rent) : "<span class='muted'>&ndash;</span>") + "</td><td>" + esc(u.lease || "&ndash;") + "</td><td>" + esc((u.pays || "").replace(/,/g, ", ")) + "</td></tr>").join("") +
+    "</table></div>" + (x.extraUnitNote ? "<p class='muted' style='font-size:14px;margin-top:-8px'>" + esc(x.extraUnitNote) + "</p>" : "") +
+    "<p class='muted' style='font-size:13px'>Rents as reported by the listing agent in the MLS. Rent-to-price ratio = total reported monthly rent &divide; " + (x.soldPrice ? "sold" : "list") + " price.</p>" : "";
+  const idx = ALL.indexOf(x), prev = ALL[(idx - 1 + ALL.length) % ALL.length], next = ALL[(idx + 1) % ALL.length];
+  $("#dcontent").innerHTML =
+    "<div class='gal'>" + (ims.length ? "<img id='gimg' src='" + img(ims[0], "large") + "' alt=''>" : "<div style='height:200px'></div>") +
+    (ims.length > 1 ? "<button class='prev' onclick='gstep(-1)'>&#8249;</button><button class='next' onclick='gstep(1)'>&#8250;</button><div class='count' id='gcount'>1 / " + ims.length + "</div>" : "") + "</div>" +
+    (ims.length > 1 ? "<div class='thumbs' id='thumbs'>" + ims.map((p, i) => "<img loading='lazy' src='" + img(p, "small") + "' class='" + (i ? "" : "on") + "' onclick='gset(" + i + ")' alt=''>").join("") + "</div>" : "") +
+    "<div class='dbody'><div class='lbl'>" + esc(x.role || "") + "</div><h2 style='font-size:30px;margin:4px 0'>" + esc(x.address) + "</h2><div class='muted'>Chicago, IL " + esc(x.zip) + "</div>" +
+    (x.why ? "<div class='card' style='margin-top:16px'><div class='lbl'>Compared with the subject: " + esc(x.vs) + "</div><p style='margin:6px 0 0'>" + esc(x.why) + "</p></div>" : "") +
+    (x.taxNote ? "<p class='muted' style='font-size:14px'>* " + esc(x.taxNote) + "</p>" : "") +
+    "<div class='facts'>" + facts.map(f => "<div><div class='lbl'>" + f[0] + "</div><div class='v'>" + f[1] + "</div></div>").join("") + "</div>" + units +
+    (x.showing ? "<p><b>Showings:</b> " + esc(x.showing) + "</p>" : "") +
+    "<h3 style='font-size:20px'>Listing remarks</h3><p style='line-height:1.6'>" + esc(x.remarks) + "</p>" +
+    "<div class='dnav'><button class='btn' onclick=\"openDetail('" + prev.key + "')\">&larr; " + esc(prev.address.split(" ").slice(0, 3).join(" ")) + "</button><button class='btn' onclick=\"openDetail('" + next.key + "')\">" + esc(next.address.split(" ").slice(0, 3).join(" ")) + " &rarr;</button></div></div>";
+}
+function gset(i) { const ims = cur.images; gi = (i + ims.length) % ims.length; $("#gimg").src = img(ims[gi], "large"); $("#gcount").textContent = (gi + 1) + " / " + ims.length;
+  document.querySelectorAll("#thumbs img").forEach((t, j) => t.classList.toggle("on", j === gi)); const t = document.querySelectorAll("#thumbs img")[gi]; if (t && t.scrollIntoView) t.scrollIntoView({block:"nearest", inline:"center"}); }
+function gstep(d) { gset(gi + d); }
+document.addEventListener("keydown", e => { if (!$("#detail").classList.contains("on")) return; if (e.key === "Escape") closeDetail(); if (e.key === "ArrowRight") gstep(1); if (e.key === "ArrowLeft") gstep(-1); });
+let tx = null; document.addEventListener("touchstart", e => { if (e.target.id === "gimg") tx = e.touches[0].clientX; }, {passive:true});
+document.addEventListener("touchend", e => { if (tx === null) return; const dx = e.changedTouches[0].clientX - tx; if (Math.abs(dx) > 40) gstep(dx < 0 ? 1 : -1); tx = null; });
+
+// pricing
+(function () {
+  const allP = [...SOLD.map(adj), S.listPrice, V.low, V.high], lo = Math.floor(Math.min(...allP) * 0.95 / 20000) * 20000, hi = Math.ceil(Math.max(...allP) * 1.03 / 20000) * 20000, pos = v => ((v - lo) / (hi - lo) * 100) + "%";
+  let h = "<div class='bar'></div><div class='band' style='left:" + pos(V.low) + ";width:calc(" + pos(V.high) + " - " + pos(V.low) + ")'></div>";
+  SOLD.forEach(c => { h += "<div class='dot" + (c.role === "Anchor comp" ? " anchor" : "") + "' style='left:" + pos(adj(c)) + "' title='" + esc(c.address) + ": " + money(adj(c)) + " today" + "' onclick=\"openDetail('" + c.key + "')\"><span>" + c.n + "</span></div>"; });
+  h += "<div class='list' style='left:" + pos(S.listPrice) + "'><span>" + (SELLER ? "Suggested " : "List ") + k(S.listPrice) + "</span></div>";
+  h += "<div style='position:absolute;left:0;bottom:0;font-size:12px;color:var(--muted)'>" + k(lo) + "</div><div style='position:absolute;right:0;bottom:0;font-size:12px;color:var(--muted)'>" + k(hi) + "</div>";
+  $("#range").innerHTML = h;
+  const avg = SOLD.reduce((a, c) => a + adj(c), 0) / SOLD.length, avgR = SOLD.reduce((a, c) => a + ratio(c), 0) / SOLD.length, avgD = Math.round(SOLD.reduce((a, c) => a + c.dom, 0) / SOLD.length);
+  $("#pricingStats").innerHTML = [["Average comp sale, adjusted to today", money(avg)], ["Market appreciation used", pctS(APP.rate) + "/yr"], ["Average sold vs. list", (avgR * 100).toFixed(1) + "%"], ["Average days on market", avgD], ["Median time to sell (1 mi)", M.market.medianDom + " days"], ["Avg existing rent-to-price ratio", (() => { const f = SOLD.filter(c => rentInfo(c).full); return f.length ? (f.reduce((a, c) => a + rentInfo(c).ratio, 0) / f.length * 100).toFixed(2) + "%<div class='muted' style='font-size:13px;font-weight:500;font-family:Inter'>" + f.length + " sold comps with full rent rolls</div>" : "n/a"; })()]]
+    .map(s => "<div class='card'><div class='lbl'>" + s[0] + "</div><div class='big' style='font-size:32px'>" + s[1] + "</div></div>").join("");
+  $("#adjTable").innerHTML = "<tr><th>#</th><th>Property</th><th>Sold</th><th>Today</th><th>Compared with subject</th></tr>" +
+    SOLD.map(c => "<tr style='cursor:pointer' onclick=\"openDetail('" + c.key + "')\"><td>" + c.n + "</td><td><b>" + esc(c.address) + "</b><div class='muted' style='font-size:13px'>" + esc(c.why) + "</div></td><td>" + money(c.soldPrice) + "<div class='muted' style='font-size:13px'>" + fmtDate(c.soldDate) + "</div></td><td><b>" + money(adj(c)) + "</b><div style='font-size:13px'>" + chgTxt(c) + "</div></td><td><b>" + esc(c.vs) + "</b><div class='muted' style='font-size:13px'>" + esc(c.role) + "</div></td></tr>").join("");
+})();
+
+// about
+$("#method").innerHTML = R.method.map(m => "<li>" + esc(m) + "</li>").join("");
+$("#contact").innerHTML = "<b>" + esc(M.agent.name) + "</b>, " + esc(M.agent.team) + ", " + esc(M.agent.brokerage) + "<br>" + esc(M.agent.email);
+$("#foot").innerHTML = esc(M.agent.name) + " &middot; " + esc(M.agent.team) + " &middot; " + esc(M.agent.brokerage) + "<br>Market appreciation: " + esc(APP.source) + ". Data: MRED MLS via Repliers, " + esc(M.prepared) + ". Broker opinion, not an appraisal. Information deemed reliable but not guaranteed.";
+
+// map
+let map = null;
+function drawMap() {
+  if (map || typeof L === "undefined") { if (map) map.invalidateSize(); return; }
+  map = L.map("map", {scrollWheelZoom:false});
+  L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {attribution:"&copy; <a href='https://www.openstreetmap.org/copyright'>OpenStreetMap</a> contributors", maxZoom:19}).addTo(map);
+  const pts = [];
+  ALL.forEach(x => {
+    const cls = x.key === "subject" ? "pin s" : x.status === "Sold" ? "pin" : x.status === "Under contract" ? "pin u" : "pin a";
+    const label = x.key === "subject" ? "&#9733;" : x.n;
+    const m = L.marker([x.lat, x.lon], {icon:L.divIcon({className:"", html:"<div class='" + cls + "'>" + label + "</div>", iconSize:[36, 36], iconAnchor:[18, 18]}), zIndexOffset: x.key === "subject" ? 1000 : 0}).addTo(map);
+    m.bindPopup("<div style='width:200px'><img src='" + img(x.images[0], "small") + "' style='width:100%;height:110px;object-fit:cover;border-radius:6px'><b>" + esc(x.address) + "</b><br>" + money(price(x)) + " &middot; " + (x.status === "Sold" ? "Sold" : x.key === "subject" ? "Subject" : x.status) + "<br><a href='#' onclick=\"openDetail('" + x.key + "');return false\">Details</a></div>");
+    pts.push([x.lat, x.lon]);
+  });
+  map.fitBounds(pts, {padding:[40, 40]});
+}
+
+// routing
+let curView = "overview";
+function route() {
+  const h = location.hash.slice(1);
+  if (h.startsWith("p-") && byKey(h.slice(2))) { if (!$("#detail").classList.contains("on")) openDetail(h.slice(2)); return; }
+  const v = ["overview", "comps", "map-view", "pricing", "about"].includes(h) ? h : "overview";
+  curView = v; closeDetailSilently();
+  document.querySelectorAll("section.view").forEach(s => s.classList.toggle("on", s.id === "v-" + v));
+  document.querySelectorAll("nav.tabs a").forEach(a => a.classList.toggle("on", a.dataset.v === v));
+  $("#hero").style.display = v === "overview" ? "" : "none";
+  if (v === "map-view") setTimeout(drawMap, 50);
+}
+function closeDetailSilently() { $("#detail").classList.remove("on"); document.body.style.overflow = ""; }
+window.addEventListener("hashchange", route); route();
+</script>
+</body>
+</html>
