@@ -265,6 +265,7 @@ const ROWS = [
   ["", x => "<td class='pic'>" + (x.images[0] ? "<img loading='lazy' src='" + img(x.images[0]) + "' alt=''>" : "<div class='noimg'></div>") + "</td>", true],
   ["Property", x => "<div>" + pill(x) + "</div><div class='addr' style='margin-top:6px'>" + (x.n ? x.n + ". " : "") + esc(x.address) + "</div><span class='open'>Details &rarr;</span>"],
   ["Units", x => x.units + (x.type ? " <span class='muted'>(" + esc(x.type) + ")</span>" : "")],
+  ["Basement", x => esc(x.basement || "None")],
   ["List price", x => money(x.listPrice)],
   ["Sold price", x => x.soldPrice ? "<b>" + money(x.soldPrice) + "</b>" : "&ndash;"],
   ["Market change since sale", chgTxt],
@@ -276,7 +277,6 @@ const ROWS = [
   ["Sold date", x => x.soldDate ? fmtDate(x.soldDate) : "&ndash;"],
   ["Beds / baths", x => x.beds + " / " + x.baths],
   ["Parking", x => esc(x.parking)],
-  ["Basement", x => esc(x.basement || "None")],
   ["Lot", x => esc(x.lot || "&ndash;")],
   ["Year built", x => esc(x.year || "&ndash;")],
   ["Exterior", x => esc(x.exterior || "&ndash;")],
@@ -306,8 +306,8 @@ function renderDetail() {
   const x = cur, ims = x.images || [];
   const facts = [["Status", pill(x)], ["List price", money(x.listPrice)], ["Sold price", x.soldPrice ? money(x.soldPrice) : "&ndash;"], ["Sold vs. list", ratioTxt(x)],
     ["Original list price", money(x.originalPrice || x.listPrice)], ["Existing monthly rents", rentTxt(x)], ["Existing rent-to-price ratio", rtpTxt(x)], ["Days on market", x.dom ?? "&ndash;"], ["Listed", fmtDate(x.listDate)],
-    ["Sold", x.soldDate ? fmtDate(x.soldDate) : "&ndash;"], ["Market change since sale", chgTxt(x)], ["Time-adjusted value", x.soldPrice ? "<b>" + money(adj(x)) + "</b>" : "&ndash;"], ["Units", x.units + (x.type ? " (" + esc(x.type) + ")" : "")], ["Beds / baths", x.beds + " / " + x.baths],
-    ["Parking", esc(x.parking)], ["Basement", esc(x.basement || "None")], ["Lot", esc(x.lot || "&ndash;")], ["Year built", esc(x.year || "&ndash;")], ["Exterior", esc(x.exterior || "&ndash;")],
+    ["Sold", x.soldDate ? fmtDate(x.soldDate) : "&ndash;"], ["Market change since sale", chgTxt(x)], ["Time-adjusted value", x.soldPrice ? "<b>" + money(adj(x)) + "</b>" : "&ndash;"], ["Units", x.units + (x.type ? " (" + esc(x.type) + ")" : "")], ["Basement", esc(x.basement || "None")], ["Beds / baths", x.beds + " / " + x.baths],
+    ["Parking", esc(x.parking)], ["Lot", esc(x.lot || "&ndash;")], ["Year built", esc(x.year || "&ndash;")], ["Exterior", esc(x.exterior || "&ndash;")],
     ["Heating", esc(x.heating || "&ndash;")], ["Taxes", money(x.taxes) + (x.taxYear ? " (" + x.taxYear + ")" : "")], ["Distance from subject", dist(x)], ["MLS #", esc(x.mls)]];
   const ur = x.unitRows || [];
   const units = ur.length ? "<h3 style='font-size:20px;margin-top:8px'>Unit breakdown and rents</h3><div style='overflow-x:auto'><table class='units'><tr><th>Unit</th><th>Beds</th><th>Baths</th><th>Sq ft</th><th>Rent</th><th>Lease</th><th>Tenant pays</th></tr>" +
