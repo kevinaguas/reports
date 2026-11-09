@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Market Analysis | __TITLE__</title>
+<meta name="robots" content="noindex, nofollow">
+<meta property="og:title" content="Comparative Market Analysis: __TITLE__">
+<meta property="og:description" content="Prepared by Kevin Waters, The Axon Group at eXp Realty">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+<style>
+:root{--ink:#1d2733;--muted:#5d6773;--bg:#f5f2ec;--card:#fffdf9;--line:#e2ddd3;--blue:#2c62a8;--orange:#c8641e;--orange2:#e8955a;--green:#2e7d4f;--red:#b23b3b}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{font-family:Inter,system-ui,sans-serif;color:var(--ink);background:var(--bg);-webkit-font-smoothing:antialiased}
+h1,h2,h3{font-family:'Space Grotesk',Inter,sans-serif;margin:0}
+a{color:var(--blue)}
+header.top{background:var(--ink);color:var(--bg)}
+.wrap{max-width:1200px;margin:0 auto;padding:0 20px}
+.brand{display:flex;justify-content:space-between;align-items:center;padding:14px 0;font-size:14px;color:#c9cfd6;gap:12px;flex-wrap:wrap}
+.brand b{color:#fff}
+nav.tabs{position:sticky;top:0;z-index:50;background:var(--ink);border-top:1px solid #2c3846}
+nav.tabs .wrap{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none}
+nav.tabs a{color:#c9cfd6;text-decoration:none;padding:14px 14px;font-weight:600;font-size:15px;white-space:nowrap;border-bottom:3px solid transparent}
+nav.tabs a.on{color:#fff;border-bottom-color:var(--orange2)}
+.hero{position:relative;height:340px;background:#2c3846 center/cover no-repeat}
+.hero::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(29,39,51,0) 30%,rgba(29,39,51,.92))}
+.hero .cap{position:absolute;left:0;right:0;bottom:0;z-index:2;color:#fff;padding-bottom:24px}
+.eyebrow{font-size:13px;letter-spacing:2px;font-weight:700;color:var(--orange2);text-transform:uppercase}
+.hero h1{font-size:44px;line-height:1.05;margin:6px 0}
+.hero p{margin:0;color:#dfe3e8}
+section.view{display:none;padding:28px 0 60px}
+section.view.on{display:block}
+.grid{display:grid;gap:16px}
+.g3{grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px}
+.big{font-family:'Space Grotesk',sans-serif;font-size:40px;font-weight:700;line-height:1.05}
+.lbl{font-size:13px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.5px}
+.muted{color:var(--muted)}
+.value-card{background:var(--ink);color:#fff;border:none}
+.value-card .lbl{color:#c9cfd6}
+.value-card .big{color:#fff;font-size:48px}
+.range{position:relative;height:120px;margin:16px 0 8px}
+.range .bar{position:absolute;left:0;right:0;top:54px;height:6px;background:#d8d2c6;border-radius:3px}
+.range .band{position:absolute;top:40px;height:34px;background:rgba(44,98,168,.18);border:2px solid var(--blue);border-radius:8px}
+.range .dot{position:absolute;top:47px;width:20px;height:20px;margin-left:-10px;border-radius:50%;background:var(--ink);border:3px solid var(--bg);cursor:pointer}
+.range .dot.anchor{border-color:var(--orange)}
+.range .dot span{position:absolute;top:26px;left:50%;transform:translateX(-50%);font-size:12px;color:var(--muted);white-space:nowrap}
+.range .list{position:absolute;top:22px;height:70px;width:4px;margin-left:-2px;background:var(--orange)}
+.range .list span{position:absolute;top:-22px;left:50%;transform:translateX(-50%);font-size:13px;font-weight:700;color:#a8521a;white-space:nowrap}
+.legend{display:flex;gap:18px;flex-wrap:wrap;font-size:13px;color:var(--muted)}
+.pill{display:inline-block;font-size:12px;font-weight:700;padding:4px 10px;border-radius:999px;background:#e9e4da;color:var(--ink)}
+.pill.sold{background:#f9dcdc;color:#9b2c2c}.pill.act{background:#dff1e6;color:#1f5e3a}.pill.uc{background:#fbeeb8;color:#7a5b00}.pill.subj{background:#2c62a8;color:#fff}
+/* side by side */
+.sbs-tools{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:14px}
+.seg{display:inline-flex;background:#e9e4da;border-radius:10px;padding:3px}
+.seg button{border:0;background:transparent;padding:8px 14px;border-radius:8px;font:600 14px Inter,sans-serif;color:var(--muted);cursor:pointer}
+.seg button.on{background:#fff;color:var(--ink);box-shadow:0 1px 2px rgba(0,0,0,.1)}
+.sbs{overflow-x:auto;border:1px solid var(--line);border-radius:14px;background:var(--card);-webkit-overflow-scrolling:touch}
+.sbs table{border-collapse:separate;border-spacing:0;min-width:100%}
+.sbs th,.sbs td{padding:10px 14px;border-bottom:1px solid var(--line);font-size:14px;text-align:left;vertical-align:top;min-width:190px;max-width:220px}
+.sbs th.rowh{position:sticky;left:0;z-index:3;background:#f0ebe2;min-width:130px;max-width:140px;font-size:12px;text-transform:uppercase;letter-spacing:.4px;color:var(--muted)}
+.sbs td.col{cursor:pointer}
+.sbs tr:hover td.col{background:#fbf8f3}
+.sbs td.subj{background:#eef4fc}
+.sbs td.pic{padding:0}
+.sbs td.pic img{display:block;width:100%;height:140px;object-fit:cover;background:#ddd}
+.sbs td.pic .noimg{height:140px;background:#e9e4da}
+.sbs .addr{font-weight:700;font-size:15px}
+.sbs .open{display:inline-block;margin-top:6px;font-size:13px;font-weight:700;color:var(--blue)}
+.up{color:var(--green);font-weight:700}.down{color:var(--red);font-weight:700}
+/* cards list on overview */
+.comp-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px}
+.ccard{background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden;cursor:pointer;transition:transform .15s}
+.ccard:hover{transform:translateY(-2px)}
+.ccard img{width:100%;height:170px;object-fit:cover;display:block;background:#ddd}
+.ccard .b{padding:14px 16px}
+.ccard .p{font-family:'Space Grotesk',sans-serif;font-size:24px;font-weight:700}
+.tav{display:flex;justify-content:space-between;align-items:center;margin-top:10px;background:#f5f8fc;border-left:3px solid #9db9e0;border-radius:6px;padding:7px 12px}
+.tav-l{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;color:#5577a6}
+.tav-v{font-family:'Space Grotesk',sans-serif;font-size:17px;font-weight:600;color:#2f4f7a;line-height:1.2}
+.tav-c{font-size:12px;font-weight:500;color:#5577a6;text-align:right}
+/* detail */
+#detail{position:fixed;inset:0;z-index:1500;background:rgba(20,26,34,.6);display:none;overflow-y:auto}
+#detail.on{display:block}
+.dpanel{max-width:980px;margin:24px auto;background:var(--bg);border-radius:16px;overflow:hidden}
+.gal{position:relative;background:#111}
+.gal img{display:block;width:100%;height:min(62vh,560px);object-fit:contain;background:#111}
+.gal button{position:absolute;top:50%;transform:translateY(-50%);border:0;background:rgba(255,255,255,.85);width:44px;height:44px;border-radius:50%;font-size:22px;cursor:pointer}
+.gal .prev{left:12px}.gal .next{right:12px}
+.gal .count{position:absolute;bottom:10px;right:12px;color:#fff;font-size:13px;background:rgba(0,0,0,.5);padding:3px 8px;border-radius:6px}
+.thumbs{display:flex;gap:6px;overflow-x:auto;padding:8px;background:#1a1f26}
+.thumbs img{width:84px;height:60px;object-fit:cover;opacity:.6;cursor:pointer;border-radius:4px;flex:none}
+.thumbs img.on{opacity:1;outline:2px solid var(--orange2)}
+.close{position:sticky;top:0;float:right;margin:10px;z-index:5;border:0;background:var(--ink);color:#fff;border-radius:999px;padding:10px 16px;font:600 14px Inter;cursor:pointer}
+.dbody{padding:24px}
+.facts{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:12px;overflow:hidden;margin:18px 0}
+.facts div{background:var(--card);padding:12px 14px}
+.facts .v{font-weight:600;margin-top:2px}
+table.units{width:100%;border-collapse:collapse;margin:8px 0 18px;font-size:14px}
+table.units th,table.units td{padding:10px;border-bottom:1px solid var(--line);text-align:left}
+table.units th{font-size:12px;text-transform:uppercase;color:var(--muted)}
+.dnav{display:flex;justify-content:space-between;gap:10px;margin-top:20px}
+.btn{border:1px solid var(--line);background:var(--card);padding:10px 14px;border-radius:10px;font:600 14px Inter;cursor:pointer;color:var(--ink)}
+#map{position:relative;z-index:0;isolation:isolate;height:560px;border-radius:14px;border:1px solid var(--line)}
+.pin{width:30px;height:30px;border-radius:50%;background:var(--ink);color:#fff;font:700 13px Inter;display:flex;align-items:center;justify-content:center;border:3px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,.4)}
+.pin{background:#b23b3b}.pin.s{background:#2c62a8;width:36px;height:36px}.pin.a{background:var(--green)}.pin.u{background:#e0b000;color:#3d2e00}
+#asof{position:fixed;left:0;right:0;bottom:0;z-index:1600;background:var(--orange);color:#fff;text-align:center;font:700 15px Inter,sans-serif;padding:10px 14px;box-shadow:0 -2px 8px rgba(0,0,0,.18)}
+body{padding-bottom:44px}
+#detail{bottom:40px}
+footer{background:var(--ink);color:#c9cfd6;font-size:13px;padding:24px 0}
+@media (max-width:640px){.hero{height:280px}.hero h1{font-size:32px}.big{font-size:32px}.value-card .big{font-size:36px}#map{height:420px}.dpanel{margin:0;border-radius:0}.gal img{height:44vh}}
+</style>
+</head>
+<body>
+<header class="top"><div class="wrap brand"><div><b id="agentName"></b> &middot; <span id="agentCo"></span></div><div id="prepared"></div></div></header>
+<nav class="tabs"><div class="wrap">
+<a href="#overview" data-v="overview">Overview</a>
+<a href="#comps" data-v="comps">Side by side</a>
+<a href="#map-view" data-v="map-view">Map</a>
+<a href="#pricing" data-v="pricing">Pricing</a>
+<a href="#about" data-v="about">About this CMA</a>
+</div></nav>
+<div class="hero" id="hero"><div class="cap wrap"><div class="eyebrow">Comparative Market Analysis</div><h1 id="heroTitle"></h1><p id="heroSub"></p></div></div>
+
+<main class="wrap">
+<section class="view" id="v-overview">
+ <div class="grid g3" style="margin-bottom:16px">
+  <div class="card value-card"><div class="lbl">Supported value</div><div class="big" id="vRange"></div><div style="margin-top:8px;color:#c9cfd6">Most likely <b style="color:#fff" id="vMid"></b></div><div id="vAdjNote" style="margin-top:6px;color:#c9cfd6;font-size:13px"></div></div>
+  <div class="card"><div class="lbl">List price</div><div class="big" id="vList"></div><div class="muted" id="vListNote" style="margin-top:8px"></div></div>
+  <div class="card"><div class="lbl">Neighborhood median</div><div class="big" id="vMed"></div><div class="muted" id="vMedNote" style="margin-top:8px"></div></div>
+ </div>
+ <div class="card" style="margin-bottom:16px"><h3 style="font-size:18px;margin-bottom:6px" id="mathTitle"></h3><div style="overflow-x:auto"><table class="units" id="mathTable" style="margin-bottom:6px"></table></div><p class="muted" style="font-size:13px;margin:0" id="mathNote"></p></div>
+ <div class="card" style="margin-bottom:16px"><p id="summary" style="margin:0;font-size:17px;line-height:1.55"></p></div>
+ <div class="card" style="margin-bottom:28px;cursor:pointer" onclick="openDetail('subject')">
+  <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap"><h2 style="font-size:24px">The property</h2><span class="open" style="font-weight:700;color:var(--blue)">See full details &rarr;</span></div>
+  <div class="facts" id="subjFacts"></div>
+ </div>
+ <h2 style="font-size:26px;margin-bottom:6px">Sold comparables</h2><p class="muted" style="margin-top:0">Tap any property for photos and full details.</p>
+ <div class="comp-cards" id="soldCards"></div>
+ <h2 style="font-size:26px;margin:32px 0 6px">Competing listings</h2><p class="muted" style="margin-top:0">On the market now.</p>
+ <div class="comp-cards" id="actCards"></div>
+</section>
+
+<section class="view" id="v-comps">
+ <div class="sbs-tools"><h2 style="font-size:26px">Side by side</h2>
+  <div class="seg" id="seg"><button data-f="sold" class="on">Sold</button><button data-f="active">Active</button><button data-f="all">All</button></div></div>
+ <p class="muted" style="margin-top:0">Scroll sideways to compare. Tap a column to open that property.</p>
+ <div class="sbs"><table id="sbsTable"></table></div>
+</section>
+
+<section class="view" id="v-map-view">
+ <h2 style="font-size:26px;margin-bottom:12px">Map</h2>
+ <div id="map"></div>
+ <div class="legend" style="margin-top:10px"><span><b style="color:#2c62a8">&#9679;</b> Subject</span><span><b style="color:#b23b3b">&#9679;</b> Sold comparable</span><span><b style="color:#e0b000">&#9679;</b> Under contract</span><span><b style="color:var(--green)">&#9679;</b> Active listing</span></div>
+</section>
+
+<section class="view" id="v-pricing">
+ <h2 style="font-size:26px;margin-bottom:12px">Where the price should land</h2>
+ <div class="card"><div class="range" id="range"></div>
+ <div class="legend"><span><b>&#9679;</b> Sold comp at today's adjusted price (tap for details)</span><span style="color:var(--blue)"><b>&#9644;</b> Supported range</span><span style="color:#a8521a"><b>|</b> List price</span></div></div>
+ <div class="grid g3" style="margin-top:16px" id="pricingStats"></div>
+ <div class="card" style="margin-top:16px"><h3 style="font-size:20px;margin-bottom:8px">How the comps compare</h3><table class="units" id="adjTable"></table></div>
+</section>
+
+<section class="view" id="v-about">
+ <div class="card" style="line-height:1.6">
+ <h2 style="font-size:26px;margin-bottom:8px">What is a CMA?</h2>
+ <p>A comparative market analysis estimates what a property is worth by comparing it with similar properties that recently sold nearby. For 2 to 4 unit buildings, the best comparables match on unit count, construction, garden-level setup, parking and condition.</p>
+ <h3 style="font-size:20px;margin:18px 0 6px">How this one was prepared</h3>
+ <ul id="method"></ul>
+ <p class="muted" style="font-size:14px">This analysis is a broker opinion based on market data, not an appraisal. Information is deemed reliable but not guaranteed. Listing photos and remarks are courtesy of the listing brokers via the MRED MLS.</p>
+ <h3 style="font-size:20px;margin:18px 0 6px">Questions?</h3>
+ <p id="contact"></p>
+ </div>
+</section>
+</main>
+
+<div id="detail" onclick="if(event.target===this)closeDetail()"><div class="dpanel"><button class="close" onclick="closeDetail()">Close &times;</button><div id="dcontent"></div></div></div>
+
+<div id="asof"></div>
+<footer><div class="wrap" id="foot"></div></footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script>
+const R = /*DATA*/;
+const CDN = "https://cdn.repliers.io/";
+const img = (p, c) => CDN + p + "?class=" + (c || "medium");
+const $ = s => document.querySelector(s);
+const money = n => n == null ? "&ndash;" : "$" + Math.round(n).toLocaleString();
+const k = n => "$" + Math.round(n / 1000) + "K";
+const esc = s => s === "&ndash;" ? s : String(s ?? "").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const fmtDate = d => d ? new Date(d + "T12:00:00").toLocaleDateString("en-US", {month:"short", day:"numeric", year:"numeric"}) : "&ndash;";
+const S = R.subject, SOLD = R.sold, ACT = R.actives, M = R.report, APP = M.appreciation;
+const AS_OF = new Date(APP.asOf + "T12:00:00");
+const ASOF_TXT = AS_OF.toLocaleDateString("en-US", {month:"long", day:"numeric", year:"numeric"});
+const monthsSince = x => x.soldDate ? Math.max(0, (AS_OF - new Date(x.soldDate + "T12:00:00")) / (86400000 * 30.4375)) : 0;
+const chg = x => APP.rate * monthsSince(x) / 12;
+const adj = x => x.soldPrice ? x.soldPrice * (1 + chg(x)) : null;
+const r5 = v => Math.round(v / 5000) * 5000;
+const pctS = v => (v >= 0 ? "+" : "") + (v * 100).toFixed(1) + "%";
+const chgTxt = x => x.soldPrice ? "<span class='" + (chg(x) >= 0 ? "up" : "down") + "'>" + pctS(chg(x)) + "</span> <span class='muted'>(" + Math.round(monthsSince(x)) + " mo)</span>" : "&ndash;";
+const CORE = SOLD.filter(c => c.role === "Anchor comp" || c.role === "Supporting");
+const V = {low: r5(Math.min(...CORE.map(adj))), high: r5(Math.max(...CORE.map(adj))), mid: Math.round(CORE.reduce((a, c) => a + adj(c), 0) / CORE.length)};
+S.key = "subject"; SOLD.forEach((c, i) => { c.key = "s" + i; c.n = i + 1; }); ACT.forEach((c, i) => { c.key = "a" + i; c.n = String.fromCharCode(65 + i); });
+const ALL = [S, ...SOLD, ...ACT];
+const byKey = key => ALL.find(x => x.key === key);
+const pill = x => x.key === "subject" ? '<span class="pill subj">Subject</span>' : x.status === "Sold" ? '<span class="pill sold">Sold</span>' : x.status === "Under contract" ? '<span class="pill uc">Under contract</span>' : '<span class="pill act">Active</span>';
+const ratio = x => x.soldPrice && x.listPrice ? x.soldPrice / x.listPrice : null;
+const ratioTxt = x => { const r = ratio(x); if (!r) return "&ndash;"; const p = (r * 100).toFixed(1) + "%"; return '<span class="' + (r >= 1 ? "up" : "down") + '">' + p + "</span>"; };
+const price = x => x.soldPrice || x.listPrice;
+const perUnit = x => x.units ? money(price(x) / x.units) : "&ndash;";
+function rentInfo(x) {
+  const rows = x.unitRows || [], rep = rows.filter(u => u.rent > 0), total = rep.reduce((a, u) => a + u.rent, 0), n = x.units || rows.length;
+  return {total, reported:rep.length, n, ratio: total ? total / price(x) : null, full: rep.length > 0 && rep.length >= n};
+}
+function rentTxt(x) { const r = rentInfo(x); if (!r.total) return "<span class='muted'>Not reported</span>"; return money(r.total) + "/mo" + (r.full ? "" : " <span class='muted'>(" + r.reported + " of " + r.n + " units)</span>"); }
+function rtpTxt(x, short) {
+  const r = rentInfo(x); if (!r.ratio) return "<span class='muted'>" + (short ? "Rents n/a" : "Not reported") + "</span>";
+  const p = (r.ratio * 100).toFixed(2) + "%";
+  return "<b>" + p + "</b>" + (r.full ? "" : " <span class='muted'>(partial" + (short ? "" : ": " + r.reported + " of " + r.n + " units reported, understates true ratio") + ")</span>");
+}
+function dist(x) { if (x.key === "subject") return "&ndash;"; const dLat = (x.lat - S.lat) * 69, dLon = (x.lon - S.lon) * 51.6; return Math.sqrt(dLat * dLat + dLon * dLon).toFixed(2) + " mi"; }
+
+// header
+$("#agentName").textContent = M.agent.name; $("#agentCo").textContent = M.agent.team + ", " + M.agent.brokerage;
+$("#asof").innerHTML = "&#128197; Market data current as of " + ASOF_TXT;
+$("#prepared").textContent = (M.preparedFor ? "Prepared for " + M.preparedFor + " · " : "") + "Information as of " + ASOF_TXT;
+$("#hero").style.backgroundImage = "url('" + img(S.images[0], "large") + "')";
+$("#heroTitle").textContent = S.address.replace(" Avenue", " Ave");
+$("#heroSub").textContent = "Chicago, IL " + S.zip + " · " + S.units + "-unit " + S.exterior.toLowerCase() + " building · Listed at " + money(S.listPrice).replace("&ndash;", "");
+
+// overview
+$("#vRange").innerHTML = k(V.low) + " to " + k(V.high); $("#vMid").innerHTML = money(V.mid);
+$("#vAdjNote").textContent = "Comps adjusted " + pctS(APP.rate) + "/yr for market change since sale";
+$("#mathTitle").textContent = "How we got " + money(V.mid);
+$("#mathTable").innerHTML = "<tr><th>Comp</th><th>Sold</th><th>Months since sale</th><th>Market change</th><th>Time-adjusted value</th></tr>" +
+  CORE.map(c => "<tr style='cursor:pointer' onclick=\"openDetail('" + c.key + "')\"><td><b>" + esc(c.address.replace(" Avenue", "")) + "</b><div class='muted' style='font-size:13px'>" + esc(c.role) + "</div></td><td>" + money(c.soldPrice) + "<div class='muted' style='font-size:13px'>" + fmtDate(c.soldDate) + "</div></td><td>" + monthsSince(c).toFixed(1) + "</td><td><span class='up'>" + pctS(chg(c)) + "</span></td><td><b>" + money(adj(c)) + "</b></td></tr>").join("") +
+  "<tr><td colspan='4'><b>Average of the " + CORE.length + " closest comps = most likely value</b></td><td><b>" + money(V.mid) + "</b></td></tr>";
+$("#mathNote").innerHTML = "Adjusted price = sold price &times; (1 + " + pctS(APP.rate).replace("+", "") + " &times; months since sale &divide; 12). The range is the lowest and highest adjusted price of these comps. <b>This information is as of " + ASOF_TXT + ".</b>";
+$("#vList").innerHTML = money(S.listPrice);
+{ const d = S.listPrice / V.mid - 1; $("#vListNote").textContent = Math.abs(d) < 0.01 ? "In line with the most likely value" : Math.round(Math.abs(d) * 100) + "% " + (d > 0 ? "above" : "below") + " the most likely value"; }
+$("#vMed").innerHTML = money(M.market.medianNear);
+$("#vMedNote").textContent = M.market.countNear + " income-property sales within " + M.market.radiusNear + ", past 12 months";
+{ const an = SOLD.find(c => c.role === "Anchor comp"), d = S.listPrice / V.mid - 1;
+  $("#summary").textContent = "Adjusted for market appreciation since each sale (" + pctS(APP.rate) + " per year for 2 to 4 unit buildings priced $439K and up in Humboldt Park), the closest comparable sales support a value of " + k(V.low) + " to " + k(V.high) + ", most likely around " + money(V.mid) + ". The list price of " + k(S.listPrice) + " is " + (Math.abs(d) < 0.01 ? "in line with that value" : Math.round(Math.abs(d) * 100) + "% " + (d > 0 ? "above" : "below") + " it") + ". The closest match, " + an.address.replace(" Avenue", "") + ", sold for " + k(an.soldPrice) + " " + Math.round(monthsSince(an)) + " months ago, which is about " + k(adj(an)) + " in today's market. This information is as of " + ASOF_TXT + "."; }
+const subjFacts = [["Units", S.units + " + garden in-law"], ["Beds / baths", S.beds + " / " + S.baths], ["Year built", S.year], ["Exterior", S.exterior], ["Lot", S.lot], ["Parking", S.parking], ["Days on market", S.dom], ["Taxes (" + S.taxYear + ")", money(S.taxes) + "*"], ["Existing rent-to-price ratio", rtpTxt(S, true)]];
+$("#subjFacts").innerHTML = subjFacts.map(f => "<div><div class='lbl'>" + f[0] + "</div><div class='v'>" + f[1] + "</div></div>").join("");
+function card(x) {
+  const sub = x.status === "Sold" ? "Sold " + fmtDate(x.soldDate) + " · " + ratioTxt(x) + " of list" : x.status + " · " + x.dom + " days";
+  return "<div class='ccard' onclick=\"openDetail('" + x.key + "')\"><img loading='lazy' src='" + img(x.images[0]) + "' alt=''><div class='b'>" +
+    "<div style='display:flex;justify-content:space-between;align-items:center'>" + pill(x) + "<span class='lbl'>" + esc(x.role) + "</span></div>" +
+    "<div class='p' style='margin-top:8px'>" + money(price(x)) + "</div><div style='font-weight:600'>" + x.n + ". " + esc(x.address) + "</div>" +
+    "<div class='muted' style='font-size:14px;margin-top:4px'>" + sub + "</div>" +
+    (x.soldPrice ? "<div class='tav'><div><div class='tav-l'>Time-adjusted value</div><div class='tav-v'>" + money(adj(x)) + "</div></div><div class='tav-c'>" + pctS(chg(x)) + "<br>over " + Math.round(monthsSince(x)) + " mo</div></div>" : "") +
+    "<div class='muted' style='font-size:14px;margin-top:6px'>" + x.units + " units · " + x.beds + " bd / " + x.baths + " ba · " + esc(x.parking) + "</div>" +
+    "<div style='font-size:14px;margin-top:8px;padding-top:8px;border-top:1px solid var(--line)'>Existing rent-to-price ratio: " + rtpTxt(x, true) + "</div></div></div>";
+}
+$("#soldCards").innerHTML = SOLD.map(card).join(""); $("#actCards").innerHTML = ACT.map(card).join("");
+
+// side by side
+const ROWS = [
+  ["", x => "<td class='pic'>" + (x.images[0] ? "<img loading='lazy' src='" + img(x.images[0]) + "' alt=''>" : "<div class='noimg'></div>") + "</td>", true],
+  ["Property", x => "<div>" + pill(x) + "</div><div class='addr' style='margin-top:6px'>" + (x.n ? x.n + ". " : "") + esc(x.address) + "</div><span class='open'>Details &rarr;</span>"],
+  ["Units", x => x.units + (x.type ? " <span class='muted'>(" + esc(x.type) + ")</span>" : "")],
+  ["Basement", x => esc(x.basement || "None")],
+  ["List price", x => money(x.listPrice)],
+  ["Sold price", x => x.soldPrice ? "<b>" + money(x.soldPrice) + "</b>" : "&ndash;"],
+  ["Market change since sale", chgTxt],
+  ["Time-adjusted value", x => x.soldPrice ? "<b>" + money(adj(x)) + "</b>" : "&ndash;"],
+  ["Sold vs. list", ratioTxt],
+  ["Existing rents", rentTxt],
+  ["Existing rent-to-price ratio", x => rtpTxt(x, true)],
+  ["Days on market", x => x.dom ?? "&ndash;"],
+  ["Sold date", x => x.soldDate ? fmtDate(x.soldDate) : "&ndash;"],
+  ["Beds / baths", x => x.beds + " / " + x.baths],
+  ["Parking", x => esc(x.parking)],
+  ["Lot", x => esc(x.lot || "&ndash;")],
+  ["Year built", x => esc(x.year || "&ndash;")],
+  ["Exterior", x => esc(x.exterior || "&ndash;")],
+  ["Taxes", x => money(x.taxes) + (x.taxYear ? " <span class='muted'>(" + x.taxYear + ")</span>" : "")],
+  ["Distance", dist],
+  ["vs. subject", x => x.vs ? "<b>" + esc(x.vs) + "</b>" : "&ndash;"]
+];
+let filt = "sold";
+function drawSbs() {
+  const cols = [S, ...(filt === "sold" ? SOLD : filt === "active" ? ACT : [...SOLD, ...ACT])];
+  $("#sbsTable").innerHTML = ROWS.map(r => "<tr><th class='rowh'>" + r[0] + "</th>" + cols.map(x => {
+    const cell = r[1](x); const cls = "col" + (x.key === "subject" ? " subj" : "");
+    return r[2] ? cell.replace("<td class='pic'>", "<td class='pic " + cls + "' onclick=\"openDetail('" + x.key + "')\">") : "<td class='" + cls + "' onclick=\"openDetail('" + x.key + "')\">" + cell + "</td>";
+  }).join("") + "</tr>").join("");
+}
+document.querySelectorAll("#seg button").forEach(b => b.onclick = () => { filt = b.dataset.f; document.querySelectorAll("#seg button").forEach(x => x.classList.toggle("on", x === b)); drawSbs(); });
+drawSbs();
+
+// detail
+let gi = 0, cur = null;
+function openDetail(key) {
+  if (map) map.closePopup(); cur = byKey(key); gi = 0; renderDetail(); $("#detail").classList.add("on"); $("#detail").scrollTop = 0; document.body.style.overflow = "hidden";
+  history.replaceState(null, "", "#p-" + key);
+}
+function closeDetail() { $("#detail").classList.remove("on"); document.body.style.overflow = ""; history.replaceState(null, "", "#" + (curView || "overview")); }
+function renderDetail() {
+  const x = cur, ims = x.images || [];
+  const facts = [["Status", pill(x)], ["List price", money(x.listPrice)], ["Sold price", x.soldPrice ? money(x.soldPrice) : "&ndash;"], ["Sold vs. list", ratioTxt(x)],
+    ["Original list price", money(x.originalPrice || x.listPrice)], ["Existing monthly rents", rentTxt(x)], ["Existing rent-to-price ratio", rtpTxt(x)], ["Days on market", x.dom ?? "&ndash;"], ["Listed", fmtDate(x.listDate)],
+    ["Sold", x.soldDate ? fmtDate(x.soldDate) : "&ndash;"], ["Market change since sale", chgTxt(x)], ["Time-adjusted value", x.soldPrice ? "<b>" + money(adj(x)) + "</b>" : "&ndash;"], ["Units", x.units + (x.type ? " (" + esc(x.type) + ")" : "")], ["Basement", esc(x.basement || "None")], ["Beds / baths", x.beds + " / " + x.baths],
+    ["Parking", esc(x.parking)], ["Lot", esc(x.lot || "&ndash;")], ["Year built", esc(x.year || "&ndash;")], ["Exterior", esc(x.exterior || "&ndash;")],
+    ["Heating", esc(x.heating || "&ndash;")], ["Taxes", money(x.taxes) + (x.taxYear ? " (" + x.taxYear + ")" : "")], ["Distance from subject", dist(x)], ["MLS #", esc(x.mls)]];
+  const ur = x.unitRows || [];
+  const units = ur.length ? "<h3 style='font-size:20px;margin-top:8px'>Unit breakdown and rents</h3><div style='overflow-x:auto'><table class='units'><tr><th>Unit</th><th>Beds</th><th>Baths</th><th>Sq ft</th><th>Rent</th><th>Lease</th><th>Tenant pays</th></tr>" +
+    ur.map(u => "<tr><td>" + esc(u.unit) + "</td><td>" + (u.beds ?? "&ndash;") + "</td><td>" + (u.baths ?? "&ndash;") + "</td><td>" + (u.sqft ? u.sqft.toLocaleString() : "&ndash;") + "</td><td>" + (u.rent ? money(u.rent) : "<span class='muted'>&ndash;</span>") + "</td><td>" + esc(u.lease || "&ndash;") + "</td><td>" + esc((u.pays || "").replace(/,/g, ", ")) + "</td></tr>").join("") +
+    "</table></div>" + (x.extraUnitNote ? "<p class='muted' style='font-size:14px;margin-top:-8px'>" + esc(x.extraUnitNote) + "</p>" : "") +
+    "<p class='muted' style='font-size:13px'>Rents as reported by the listing agent in the MLS. Rent-to-price ratio = total reported monthly rent &divide; " + (x.soldPrice ? "sold" : "list") + " price.</p>" : "";
+  const idx = ALL.indexOf(x), prev = ALL[(idx - 1 + ALL.length) % ALL.length], next = ALL[(idx + 1) % ALL.length];
+  $("#dcontent").innerHTML =
+    "<div class='gal'>" + (ims.length ? "<img id='gimg' src='" + img(ims[0], "large") + "' alt=''>" : "<div style='height:200px'></div>") +
+    (ims.length > 1 ? "<button class='prev' onclick='gstep(-1)'>&#8249;</button><button class='next' onclick='gstep(1)'>&#8250;</button><div class='count' id='gcount'>1 / " + ims.length + "</div>" : "") + "</div>" +
+    (ims.length > 1 ? "<div class='thumbs' id='thumbs'>" + ims.map((p, i) => "<img loading='lazy' src='" + img(p, "small") + "' class='" + (i ? "" : "on") + "' onclick='gset(" + i + ")' alt=''>").join("") + "</div>" : "") +
+    "<div class='dbody'><div class='lbl'>" + esc(x.role || "") + "</div><h2 style='font-size:30px;margin:4px 0'>" + esc(x.address) + "</h2><div class='muted'>Chicago, IL " + esc(x.zip) + "</div>" +
+    (x.why ? "<div class='card' style='margin-top:16px'><div class='lbl'>Compared with the subject: " + esc(x.vs) + "</div><p style='margin:6px 0 0'>" + esc(x.why) + "</p></div>" : "") +
+    (x.taxNote ? "<p class='muted' style='font-size:14px'>* " + esc(x.taxNote) + "</p>" : "") +
+    "<div class='facts'>" + facts.map(f => "<div><div class='lbl'>" + f[0] + "</div><div class='v'>" + f[1] + "</div></div>").join("") + "</div>" + units +
+    (x.showing ? "<p><b>Showings:</b> " + esc(x.showing) + "</p>" : "") +
+    "<h3 style='font-size:20px'>Listing remarks</h3><p style='line-height:1.6'>" + esc(x.remarks) + "</p>" +
+    "<div class='dnav'><button class='btn' onclick=\"openDetail('" + prev.key + "')\">&larr; " + esc(prev.address.split(" ").slice(0, 3).join(" ")) + "</button><button class='btn' onclick=\"openDetail('" + next.key + "')\">" + esc(next.address.split(" ").slice(0, 3).join(" ")) + " &rarr;</button></div></div>";
+}
+function gset(i) { const ims = cur.images; gi = (i + ims.length) % ims.length; $("#gimg").src = img(ims[gi], "large"); $("#gcount").textContent = (gi + 1) + " / " + ims.length;
+  document.querySelectorAll("#thumbs img").forEach((t, j) => t.classList.toggle("on", j === gi)); const t = document.querySelectorAll("#thumbs img")[gi]; if (t && t.scrollIntoView) t.scrollIntoView({block:"nearest", inline:"center"}); }
+function gstep(d) { gset(gi + d); }
+document.addEventListener("keydown", e => { if (!$("#detail").classList.contains("on")) return; if (e.key === "Escape") closeDetail(); if (e.key === "ArrowRight") gstep(1); if (e.key === "ArrowLeft") gstep(-1); });
+let tx = null; document.addEventListener("touchstart", e => { if (e.target.id === "gimg") tx = e.touches[0].clientX; }, {passive:true});
+document.addEventListener("touchend", e => { if (tx === null) return; const dx = e.changedTouches[0].clientX - tx; if (Math.abs(dx) > 40) gstep(dx < 0 ? 1 : -1); tx = null; });
+
+// pricing
+(function () {
+  const allP = [...SOLD.map(adj), S.listPrice, V.low, V.high], lo = Math.floor(Math.min(...allP) * 0.95 / 20000) * 20000, hi = Math.ceil(Math.max(...allP) * 1.03 / 20000) * 20000, pos = v => ((v - lo) / (hi - lo) * 100) + "%";
+  let h = "<div class='bar'></div><div class='band' style='left:" + pos(V.low) + ";width:calc(" + pos(V.high) + " - " + pos(V.low) + ")'></div>";
+  SOLD.forEach(c => { h += "<div class='dot" + (c.role === "Anchor comp" ? " anchor" : "") + "' style='left:" + pos(adj(c)) + "' title='" + esc(c.address) + ": " + money(adj(c)) + " today" + "' onclick=\"openDetail('" + c.key + "')\"><span>" + c.n + "</span></div>"; });
+  h += "<div class='list' style='left:" + pos(S.listPrice) + "'><span>List " + k(S.listPrice) + "</span></div>";
+  h += "<div style='position:absolute;left:0;bottom:0;font-size:12px;color:var(--muted)'>" + k(lo) + "</div><div style='position:absolute;right:0;bottom:0;font-size:12px;color:var(--muted)'>" + k(hi) + "</div>";
+  $("#range").innerHTML = h;
+  const avg = SOLD.reduce((a, c) => a + adj(c), 0) / SOLD.length, avgR = SOLD.reduce((a, c) => a + ratio(c), 0) / SOLD.length, avgD = Math.round(SOLD.reduce((a, c) => a + c.dom, 0) / SOLD.length);
+  $("#pricingStats").innerHTML = [["Average comp sale, adjusted to today", money(avg)], ["Market appreciation used", pctS(APP.rate) + "/yr"], ["Average sold vs. list", (avgR * 100).toFixed(1) + "%"], ["Average days on market", avgD], ["Median time to sell (1 mi)", M.market.medianDom + " days"], ["Avg existing rent-to-price ratio", (() => { const f = SOLD.filter(c => rentInfo(c).full); return f.length ? (f.reduce((a, c) => a + rentInfo(c).ratio, 0) / f.length * 100).toFixed(2) + "%<div class='muted' style='font-size:13px;font-weight:500;font-family:Inter'>" + f.length + " sold comps with full rent rolls</div>" : "n/a"; })()]]
+    .map(s => "<div class='card'><div class='lbl'>" + s[0] + "</div><div class='big' style='font-size:32px'>" + s[1] + "</div></div>").join("");
+  $("#adjTable").innerHTML = "<tr><th>#</th><th>Property</th><th>Sold</th><th>Today</th><th>Compared with subject</th></tr>" +
+    SOLD.map(c => "<tr style='cursor:pointer' onclick=\"openDetail('" + c.key + "')\"><td>" + c.n + "</td><td><b>" + esc(c.address) + "</b><div class='muted' style='font-size:13px'>" + esc(c.why) + "</div></td><td>" + money(c.soldPrice) + "<div class='muted' style='font-size:13px'>" + fmtDate(c.soldDate) + "</div></td><td><b>" + money(adj(c)) + "</b><div style='font-size:13px'>" + chgTxt(c) + "</div></td><td><b>" + esc(c.vs) + "</b><div class='muted' style='font-size:13px'>" + esc(c.role) + "</div></td></tr>").join("");
+})();
+
+// about
+$("#method").innerHTML = R.method.map(m => "<li>" + esc(m) + "</li>").join("");
+$("#contact").innerHTML = "<b>" + esc(M.agent.name) + "</b>, " + esc(M.agent.team) + ", " + esc(M.agent.brokerage) + "<br>" + esc(M.agent.email);
+$("#foot").innerHTML = esc(M.agent.name) + " &middot; " + esc(M.agent.team) + " &middot; " + esc(M.agent.brokerage) + "<br>Market appreciation: " + esc(APP.source) + ". Data: MRED MLS via Repliers, " + esc(M.prepared) + ". Broker opinion, not an appraisal. Information deemed reliable but not guaranteed.";
+
+// map
+let map = null;
+function drawMap() {
+  if (map || typeof L === "undefined") { if (map) map.invalidateSize(); return; }
+  map = L.map("map", {scrollWheelZoom:false});
+  L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {attribution:"&copy; <a href='https://www.openstreetmap.org/copyright'>OpenStreetMap</a> contributors", maxZoom:19}).addTo(map);
+  const pts = [];
+  ALL.forEach(x => {
+    const cls = x.key === "subject" ? "pin s" : x.status === "Sold" ? "pin" : x.status === "Under contract" ? "pin u" : "pin a";
+    const label = x.key === "subject" ? "&#9733;" : x.n;
+    const m = L.marker([x.lat, x.lon], {icon:L.divIcon({className:"", html:"<div class='" + cls + "'>" + label + "</div>", iconSize:[36, 36], iconAnchor:[18, 18]}), zIndexOffset: x.key === "subject" ? 1000 : 0}).addTo(map);
+    m.bindPopup("<div style='width:200px'><img src='" + img(x.images[0], "small") + "' style='width:100%;height:110px;object-fit:cover;border-radius:6px'><b>" + esc(x.address) + "</b><br>" + money(price(x)) + " &middot; " + (x.status === "Sold" ? "Sold" : x.key === "subject" ? "Subject" : x.status) + "<br><a href='#' onclick=\"openDetail('" + x.key + "');return false\">Details</a></div>");
+    pts.push([x.lat, x.lon]);
+  });
+  map.fitBounds(pts, {padding:[40, 40]});
+}
+
+// routing
+let curView = "overview";
+function route() {
+  const h = location.hash.slice(1);
+  if (h.startsWith("p-") && byKey(h.slice(2))) { if (!$("#detail").classList.contains("on")) openDetail(h.slice(2)); return; }
+  const v = ["overview", "comps", "map-view", "pricing", "about"].includes(h) ? h : "overview";
+  curView = v; closeDetailSilently();
+  document.querySelectorAll("section.view").forEach(s => s.classList.toggle("on", s.id === "v-" + v));
+  document.querySelectorAll("nav.tabs a").forEach(a => a.classList.toggle("on", a.dataset.v === v));
+  $("#hero").style.display = v === "overview" ? "" : "none";
+  if (v === "map-view") setTimeout(drawMap, 50);
+}
+function closeDetailSilently() { $("#detail").classList.remove("on"); document.body.style.overflow = ""; }
+window.addEventListener("hashchange", route); route();
+</script>
+</body>
+</html>
