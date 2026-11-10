@@ -3,7 +3,11 @@
 <title>CMA Hub | Kevin Waters</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
 <style>
-:root{--ink:#1d2733;--muted:#5d6773;--bg:#f5f2ec;--card:#fffdf9;--line:#e2ddd3;--blue:#2c62a8;--orange:#c8641e;--green:#2e7d4f;--red:#b23b3b}
+:root{--ink:#1d2733;--muted:#5d6773;--bg:#f5f2ec;--card:#fffdf9;--line:#e2ddd3;--blue:#2c62a8;--orange:#c8641e;--green:#2e7d4f;--red:#b23b3b;--valbg:#1d2733;--valink:#fff;--valmuted:#c9cfd6;--chipb:#e4edf8;--chipo:#fbeadc}
+[data-theme=dark]{--ink:#e8eaee;--muted:#9aa4b0;--bg:#12171d;--card:#1b222b;--line:#2c3540;--blue:#6fa3e8;--orange:#f0904a;--green:#5cc28a;--red:#ef7a7a;--valbg:#26303c;--chipb:#1f3350;--chipo:#3d2a1a}
+body{transition:background .2s,color .2s}
+.head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+.theme{font:inherit;font-size:14px;font-weight:600;display:flex;align-items:center;gap:6px;padding:8px 12px;border-radius:999px;border:1px solid var(--line);background:var(--card);color:var(--ink);cursor:pointer;white-space:nowrap}
 *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,system-ui,sans-serif;font-size:15px}
 .wrap{max-width:1100px;margin:0 auto;padding:24px 18px 60px}
 h1{font-family:'Space Grotesk',sans-serif;font-size:30px;margin:0}
@@ -20,9 +24,9 @@ h1{font-family:'Space Grotesk',sans-serif;font-size:30px;margin:0}
 .addr{font-family:'Space Grotesk',sans-serif;font-size:19px;font-weight:700;line-height:1.2}
 .meta{color:var(--muted);font-size:13px}
 .tag{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;padding:4px 8px;border-radius:999px;white-space:nowrap}
-.tag.buyer{background:#e4edf8;color:var(--blue)}.tag.seller{background:#fbeadc;color:var(--orange)}
-.val{background:#1d2733;color:#fff;border-radius:10px;padding:12px 14px}
-.val .r{font-family:'Space Grotesk',sans-serif;font-size:21px;font-weight:700}.val .m{color:#c9cfd6;font-size:13px;margin-top:2px}.val .m b{color:#fff}
+.tag.buyer{background:var(--chipb);color:var(--blue)}.tag.seller{background:var(--chipo);color:var(--orange)}
+.val{background:var(--valbg);color:var(--valink);border-radius:10px;padding:12px 14px}
+.val .r{font-family:'Space Grotesk',sans-serif;font-size:21px;font-weight:700}.val .m{color:var(--valmuted);font-size:13px;margin-top:2px}.val .m b{color:var(--valink)}
 .kv{display:grid;grid-template-columns:1fr 1fr;gap:6px 14px;font-size:13px}
 .kv div span{display:block;color:var(--muted);font-size:12px}.kv b{font-weight:600}
 .up{color:var(--red)}.down{color:var(--green)}.flat{color:var(--muted)}
@@ -34,11 +38,12 @@ table{width:100%;border-collapse:collapse;background:var(--card);border:1px soli
 th,td{padding:10px 12px;text-align:left;border-bottom:1px solid var(--line);white-space:nowrap}th{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.03em;cursor:pointer}
 td a{color:var(--blue);font-weight:600;text-decoration:none}.tblwrap{overflow-x:auto}
 .foot{color:var(--muted);font-size:12px;margin-top:24px}
-.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--ink);color:#fff;padding:10px 16px;border-radius:10px;font-size:14px;opacity:0;transition:opacity .2s;pointer-events:none}.toast.on{opacity:1}
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:10px;font-size:14px;opacity:0;transition:opacity .2s;pointer-events:none}.toast.on{opacity:1}
 </style></head>
 <body><div class="wrap">
-<h1>CMA Hub</h1>
-<div class="sub">Every 2 to 4 unit CMA report built for Kevin Waters &middot; The Axon Group &middot; eXp Realty</div>
+<div class="head"><div><h1>CMA Hub</h1>
+<div class="sub">Every 2 to 4 unit CMA report built for Kevin Waters &middot; The Axon Group &middot; eXp Realty</div></div>
+<button class="theme" id="theme" aria-label="Toggle light or dark mode"></button></div>
 <div class="stats" id="stats"></div>
 <div class="bar">
   <input id="q" placeholder="Search address, neighborhood, ZIP or client" autocomplete="off">
@@ -49,6 +54,7 @@ td a{color:var(--blue);font-weight:600;text-decoration:none}.tblwrap{overflow-x:
 <div class="foot">Values are the time-adjusted range and most-likely value shown in each live report, as of the report date. Updated __UPDATED__.</div>
 </div><div class="toast" id="toast"></div>
 <script>
+(function(){let th;try{th=localStorage.getItem('cmaHubTheme')}catch(_){}if(!th)th=matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';document.documentElement.dataset.theme=th;})();
 const ROWS = /*ROWS*/;
 const $ = s => document.querySelector(s);
 const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
@@ -115,5 +121,7 @@ document.addEventListener("click", e => {
 });
 ["#q", "#mode", "#view"].forEach(s => $(s).addEventListener("input", render));
 try { const v = localStorage.getItem("cmaHubView"); if (v) $("#view").value = v; $("#view").addEventListener("change", () => { try { localStorage.setItem("cmaHubView", $("#view").value); } catch (_) {} }); } catch (_) {}
-stats(); render();
+function themeBtn(){const d=document.documentElement.dataset.theme==="dark";$("#theme").innerHTML=d?"&#9728;&#65039; Light mode":"&#127769; Dark mode";}
+$("#theme").addEventListener("click",()=>{const n=document.documentElement.dataset.theme==="dark"?"light":"dark";document.documentElement.dataset.theme=n;try{localStorage.setItem("cmaHubTheme",n)}catch(_){}themeBtn();});
+themeBtn(); stats(); render();
 </script></body></html>
