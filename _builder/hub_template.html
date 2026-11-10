@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>CMA Hub | Kevin Waters</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#1d2733;--muted:#5d6773;--bg:#f5f2ec;--card:#fffdf9;--line:#e2ddd3;--blue:#2c62a8;--orange:#c8641e;--green:#2e7d4f;--red:#b23b3b}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,system-ui,sans-serif;font-size:15px}
+.wrap{max-width:1100px;margin:0 auto;padding:24px 18px 60px}
+h1{font-family:'Space Grotesk',sans-serif;font-size:30px;margin:0}
+.sub{color:var(--muted);margin-top:4px}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin:22px 0}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px}
+.stat .n{font-family:'Space Grotesk',sans-serif;font-size:26px;font-weight:700}.stat .l{color:var(--muted);font-size:13px}
+.bar{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px}
+.bar input,.bar select{font:inherit;padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:var(--card);color:var(--ink)}
+.bar input{flex:1;min-width:200px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:14px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 18px;display:flex;flex-direction:column;gap:10px}
+.top{display:flex;justify-content:space-between;gap:8px;align-items:flex-start}
+.addr{font-family:'Space Grotesk',sans-serif;font-size:19px;font-weight:700;line-height:1.2}
+.meta{color:var(--muted);font-size:13px}
+.tag{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;padding:4px 8px;border-radius:999px;white-space:nowrap}
+.tag.buyer{background:#e4edf8;color:var(--blue)}.tag.seller{background:#fbeadc;color:var(--orange)}
+.val{background:#1d2733;color:#fff;border-radius:10px;padding:12px 14px}
+.val .r{font-family:'Space Grotesk',sans-serif;font-size:21px;font-weight:700}.val .m{color:#c9cfd6;font-size:13px;margin-top:2px}.val .m b{color:#fff}
+.kv{display:grid;grid-template-columns:1fr 1fr;gap:6px 14px;font-size:13px}
+.kv div span{display:block;color:var(--muted);font-size:12px}.kv b{font-weight:600}
+.up{color:var(--red)}.down{color:var(--green)}.flat{color:var(--muted)}
+.btns{display:flex;gap:8px;margin-top:auto}
+.btn{flex:1;text-align:center;font:inherit;font-weight:600;font-size:14px;padding:10px;border-radius:10px;border:1px solid var(--blue);cursor:pointer;text-decoration:none}
+.btn.p{background:var(--blue);color:#fff}.btn.s{background:transparent;color:var(--blue)}
+.empty{color:var(--muted);text-align:center;padding:40px}
+table{width:100%;border-collapse:collapse;background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden;font-size:14px}
+th,td{padding:10px 12px;text-align:left;border-bottom:1px solid var(--line);white-space:nowrap}th{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.03em;cursor:pointer}
+td a{color:var(--blue);font-weight:600;text-decoration:none}.tblwrap{overflow-x:auto}
+.foot{color:var(--muted);font-size:12px;margin-top:24px}
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--ink);color:#fff;padding:10px 16px;border-radius:10px;font-size:14px;opacity:0;transition:opacity .2s;pointer-events:none}.toast.on{opacity:1}
+</style></head>
+<body><div class="wrap">
+<h1>CMA Hub</h1>
+<div class="sub">Every 2 to 4 unit CMA report built for Kevin Waters &middot; The Axon Group &middot; eXp Realty</div>
+<div class="stats" id="stats"></div>
+<div class="bar">
+  <input id="q" placeholder="Search address, neighborhood, ZIP or client" autocomplete="off">
+  <select id="mode"><option value="">All reports</option><option value="buyer">Buyer CMAs</option><option value="seller">Seller CMAs</option></select>
+  <select id="view"><option value="cards">Cards</option><option value="table">Table</option></select>
+</div>
+<div id="out"></div>
+<div class="foot">Values are the time-adjusted range and most-likely value shown in each live report, as of the report date. Updated __UPDATED__.</div>
+</div><div class="toast" id="toast"></div>
+<script>
+const ROWS = /*ROWS*/;
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const money = n => n == null ? "n/a" : "$" + Math.round(n).toLocaleString();
+const k = n => n == null ? "n/a" : "$" + Math.round(n / 1000) + "K";
+const fmtD = s => s ? new Date(s + "T12:00:00").toLocaleDateString("en-US", {month:"short", day:"numeric", year:"numeric"}) : "n/a";
+const pct = v => (v >= 0 ? "+" : "") + (v * 100).toFixed(1) + "%";
+const vsML = r => { if (!r.mid || !r.listPrice) return {t:"n/a", c:"flat"}; const d = r.listPrice / r.mid - 1;
+  return Math.abs(d) < 0.01 ? {t:"In line", c:"flat", d} : {t:Math.round(Math.abs(d) * 100) + "% " + (d > 0 ? "over" : "under"), c:d > 0 ? "up" : "down", d}; };
+const rtp = r => !r.rentAny || !r.listPrice ? "Not reported" : (r.rent / r.listPrice * 100).toFixed(2) + "%" + (r.rentFull ? "" : " (partial)");
+let sortKey = "asOf", sortDir = -1;
+
+function stats() {
+  const n = ROWS.length, now = new Date(), m = ROWS.filter(r => { const d = new Date(r.asOf + "T12:00:00"); return d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear(); }).length;
+  const b = ROWS.filter(r => r.mode === "buyer").length, s = ROWS.filter(r => r.mode === "seller").length;
+  const areas = new Set(ROWS.map(r => r.area).filter(Boolean)).size;
+  $("#stats").innerHTML = [[n, "CMAs built"], [m, "This month"], [b + " / " + s, "Buyer / seller"], [areas, "Neighborhoods"]]
+    .map(([v, l]) => `<div class="stat"><div class="n">${v}</div><div class="l">${l}</div></div>`).join("");
+}
+function filtered() {
+  const q = $("#q").value.trim().toLowerCase(), md = $("#mode").value;
+  return ROWS.filter(r => (!md || r.mode === md) && (!q || [r.title, r.address, r.area, r.zip, r.preparedFor, r.mls].join(" ").toLowerCase().includes(q)));
+}
+function card(r) {
+  const v = vsML(r), lw = r.mode === "seller" ? "Suggested list" : "List price";
+  return `<div class="card">
+  <div class="top"><div><div class="addr">${esc(r.title)}</div><div class="meta">${esc(r.area)}${r.area ? " &middot; " : ""}${esc(r.zip)} &middot; ${esc(r.unitsLabel || r.type || (r.units + " units"))}${r.beds ? " &middot; " + r.beds + " bd / " + r.baths + " ba" : ""}</div></div>
+  <span class="tag ${r.mode}">${r.mode === "seller" ? "Seller" : "Buyer"}</span></div>
+  <div class="val"><div class="r">${k(r.low)} to ${k(r.high)}</div><div class="m">Most likely <b>${money(r.mid)}</b></div></div>
+  <div class="kv">
+    <div><span>${lw}</span><b>${money(r.listPrice)}</b></div>
+    <div><span>${lw} vs. most likely</span><b class="${v.c}">${v.t}</b></div>
+    <div><span>Prepared</span><b>${esc(r.prepared)}</b></div>
+    <div><span>Prepared for</span><b>${esc(r.preparedFor) || "General"}</b></div>
+    <div><span>Market change used</span><b>${pct(r.rate)}/yr</b></div>
+    <div><span>Rent-to-price</span><b>${rtp(r)}</b></div>
+    <div><span>Anchor comp</span><b>${r.anchor ? esc(r.anchor.address.replace(/ (Avenue|Street)$/, "")) : "n/a"}</b></div>
+    <div><span>Comps / competing</span><b>${r.soldCount} sold &middot; ${r.activeCount} active</b></div>
+  </div>
+  <div class="btns"><a class="btn p" href="${r.url}" target="_blank" rel="noopener">Open report</a><button class="btn s" data-copy="${r.url}">Copy link</button></div>
+  </div>`;
+}
+const COLS = [["title","Property"],["area","Area"],["mode","Type"],["asOf","Prepared"],["preparedFor","For"],["listPrice","List"],["low","Range"],["mid","Most likely"],["vs","List vs. ML"],["rate","Mkt/yr"]];
+function table(rs) {
+  const val = (r, c) => c === "vs" ? (vsML(r).d ?? 0) : r[c];
+  rs = rs.slice().sort((a, b) => { const x = val(a, sortKey), y = val(b, sortKey); return (x > y ? 1 : x < y ? -1 : 0) * sortDir; });
+  return `<div class="tblwrap"><table><thead><tr>${COLS.map(([c, l]) => `<th data-k="${c}">${l}${sortKey === c ? (sortDir > 0 ? " &#9650;" : " &#9660;") : ""}</th>`).join("")}<th></th></tr></thead><tbody>${
+    rs.map(r => { const v = vsML(r); return `<tr><td><a href="${r.url}" target="_blank" rel="noopener">${esc(r.title)}</a></td><td>${esc(r.area)}</td><td>${r.mode === "seller" ? "Seller" : "Buyer"}</td><td>${fmtD(r.asOf)}</td><td>${esc(r.preparedFor) || "General"}</td><td>${k(r.listPrice)}</td><td>${k(r.low)} to ${k(r.high)}</td><td><b>${money(r.mid)}</b></td><td class="${v.c}">${v.t}</td><td>${pct(r.rate)}</td><td><button class="btn s" style="padding:6px 10px" data-copy="${r.url}">Copy link</button></td></tr>`; }).join("")
+  }</tbody></table></div>`;
+}
+function render() {
+  const rs = filtered();
+  if (!rs.length) { $("#out").innerHTML = `<div class="empty">No reports match.</div>`; return; }
+  $("#out").innerHTML = $("#view").value === "table" ? table(rs) : `<div class="grid">${rs.map(card).join("")}</div>`;
+}
+function toast(t) { const el = $("#toast"); el.textContent = t; el.classList.add("on"); setTimeout(() => el.classList.remove("on"), 1600); }
+document.addEventListener("click", e => {
+  const b = e.target.closest("[data-copy]");
+  if (b) { const u = b.dataset.copy;
+    const fallback = () => { const t = document.createElement("textarea"); t.value = u; document.body.appendChild(t); t.select(); try { document.execCommand("copy"); toast("Link copied"); } catch (_) { toast(u); } t.remove(); };
+    try { navigator.clipboard.writeText(u).then(() => toast("Link copied"), fallback); } catch (_) { fallback(); } return; }
+  const th = e.target.closest("th[data-k]");
+  if (th) { const c = th.dataset.k; sortDir = sortKey === c ? -sortDir : (c === "asOf" ? -1 : 1); sortKey = c; render(); }
+});
+["#q", "#mode", "#view"].forEach(s => $(s).addEventListener("input", render));
+try { const v = localStorage.getItem("cmaHubView"); if (v) $("#view").value = v; $("#view").addEventListener("change", () => { try { localStorage.setItem("cmaHubView", $("#view").value); } catch (_) {} }); } catch (_) {}
+stats(); render();
+</script></body></html>
