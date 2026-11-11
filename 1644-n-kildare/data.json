@@ -171,7 +171,13 @@
      "pays": "Electric, gas"
     }
    ],
-   "extraUnitNote": "Garden unit: 2 bed, non-conforming. Listing reports $3,750/mo total rent, so the garden unit is about $750/mo. Seller projected $4,840/mo at market."
+   "extraUnitNote": "Garden unit: 2 bed, non-conforming. Listing reports $3,750/mo total rent, so the garden unit is about $750/mo. Seller projected $4,840/mo at market.",
+   "adjustments": [
+    {
+     "label": "Garage",
+     "amount": -20000
+    }
+   ]
   },
   {
    "mls": "12588737",
@@ -241,7 +247,13 @@
      "pays": "Electric, gas, heat"
     }
    ],
-   "extraUnitNote": "After the sale, the units were listed for rent at $2,000 (unit 1) and $2,100 (unit 2)."
+   "extraUnitNote": "After the sale, the units were listed for rent at $2,000 (unit 1) and $2,100 (unit 2).",
+   "adjustments": [
+    {
+     "label": "Garage",
+     "amount": -20000
+    }
+   ]
   },
   {
    "mls": "12648141",
@@ -312,6 +324,12 @@
      "rent": null,
      "lease": "Vacant at sale",
      "pays": "Electric, gas, heat"
+    }
+   ],
+   "adjustments": [
+    {
+     "label": "Garage",
+     "amount": -20000
     }
    ]
   },
@@ -386,7 +404,13 @@
      "pays": "Electric, gas, heat"
     }
    ],
-   "extraUnitNote": "Garden unit rents for $1,300/mo per listing agent (legality not warranted)."
+   "extraUnitNote": "Garden unit rents for $1,300/mo per listing agent (legality not warranted).",
+   "adjustments": [
+    {
+     "label": "Garage",
+     "amount": -20000
+    }
+   ]
   },
   {
    "mls": "12539858",
@@ -453,7 +477,13 @@
      "pays": "Electric, gas, heat"
     }
    ],
-   "extraUnitNote": "Garden suite: 2 bed with kitchen and living area, rents for $1,400/mo with no lease per listing agent. Not a legal unit."
+   "extraUnitNote": "Garden suite: 2 bed with kitchen and living area, rents for $1,400/mo with no lease per listing agent. Not a legal unit.",
+   "adjustments": [
+    {
+     "label": "Garage",
+     "amount": -20000
+    }
+   ]
   },
   {
    "mls": "12628870",
@@ -597,6 +627,12 @@
      "lease": "Not reported",
      "pays": "All"
     }
+   ],
+   "adjustments": [
+    {
+     "label": "Garage",
+     "amount": -20000
+    }
    ]
   },
   {
@@ -668,6 +704,12 @@
      "rent": null,
      "lease": "Vacant",
      "pays": "Electric, gas, heat"
+    }
+   ],
+   "adjustments": [
+    {
+     "label": "Garage",
+     "amount": -20000
     }
    ]
   }
@@ -931,6 +973,7 @@
   "Comps limited to sales north of North Ave. The value range comes from three main comps chosen with agent review of photos for layout and condition (2206 N Kostner, 2147 N Kilpatrick, 2045 N Tripp); five more are shown for reference; four nearby competing listings shown for context, including two on the subject's own block or next block.",
   "Existing rent-to-price ratio uses the monthly rents the listing agent reported in the MLS, divided by the sold price (or list price for active listings). Vacant or unreported units are excluded, so a partial figure understates the building's potential.",
   "Market change since sale: each sold comp is adjusted to today using the 12-month change in median sale price for 2 to 4 unit buildings priced $439,000 and up in Humboldt Park from MRED InfoSparks (+6.6% per year), prorated by months since the sale. The value range comes from the anchor and supporting comps at their adjusted prices, so it rises or falls with the market.",
+  "Garage adjustment: the subject has two outdoor parking spaces but no garage, so $20,000 is subtracted from every comp that has a garage. This is an agent estimate of what a 2-car garage adds over a parking pad in this area, not a measured paired-sales figure.",
   "Sold prices are shown before seller credits. Six of the eight comps closed with seller credits of $500 to $15,000, so net prices were slightly lower.",
   "Condition assessed from listing remarks and agent review of listing photos; no interior inspection of any property. 2206 N Kostner was pulled from connectMLS directly because it is not in the internet data feed.",
   "Data from the MRED MLS via Repliers, pulled November 9 to 10, 2026."

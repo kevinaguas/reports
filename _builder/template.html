@@ -198,10 +198,16 @@ const AS_OF = new Date(APP.asOf + "T12:00:00");
 const ASOF_TXT = AS_OF.toLocaleDateString("en-US", {month:"long", day:"numeric", year:"numeric"});
 const monthsSince = x => x.soldDate ? Math.max(0, (AS_OF - new Date(x.soldDate + "T12:00:00")) / (86400000 * 30.4375)) : 0;
 const chg = x => APP.rate * monthsSince(x) / 12;
-const adj = x => x.soldPrice ? x.soldPrice * (1 + chg(x)) : null;
+const tadj = x => x.soldPrice ? x.soldPrice * (1 + chg(x)) : null;
+const otherAdj = x => (x.adjustments || []).reduce((a, b) => a + (b.amount || 0), 0);
+const adj = x => x.soldPrice ? tadj(x) + otherAdj(x) : null;
+const sMoney = n => (n < 0 ? "&minus;" : "+") + money(Math.abs(n));
+const adjList = x => (x.adjustments || []).length ? x.adjustments.map(a => esc(a.label) + " " + sMoney(a.amount)).join(", ") : "None";
 const r5 = v => Math.round(v / 5000) * 5000;
 const pctS = v => (v >= 0 ? "+" : "") + (v * 100).toFixed(1) + "%";
 const chgTxt = x => x.soldPrice ? "<span class='" + (chg(x) >= 0 ? "up" : "down") + "'>" + pctS(chg(x)) + "</span> <span class='muted'>(" + Math.round(monthsSince(x)) + " mo)</span>" : "&ndash;";
+const HAS_ADJ = SOLD.some(c => (c.adjustments || []).length);
+const ADJ_LBL = HAS_ADJ ? "Adjusted value" : "Time-adjusted value";
 const CORE = SOLD.filter(c => c.role === "Anchor comp" || c.role === "Supporting");
 const V = {low: r5(Math.min(...CORE.map(adj))), high: r5(Math.max(...CORE.map(adj))), mid: Math.round(CORE.reduce((a, c) => a + adj(c), 0) / CORE.length)};
 S.key = "subject"; SOLD.forEach((c, i) => { c.key = "s" + i; c.n = i + 1; }); ACT.forEach((c, i) => { c.key = "a" + i; c.n = String.fromCharCode(65 + i); });
@@ -237,18 +243,18 @@ if (SELLER) $("#vListLbl").textContent = LISTWORD;
 
 // overview
 $("#vRange").innerHTML = k(V.low) + " to " + k(V.high); $("#vMid").innerHTML = money(V.mid);
-$("#vAdjNote").textContent = "Comps adjusted " + pctS(APP.rate) + "/yr for market change since sale";
+$("#vAdjNote").textContent = "Comps adjusted " + pctS(APP.rate) + "/yr for market change since sale" + (HAS_ADJ ? ", plus feature adjustments where noted" : "");
 $("#mathTitle").textContent = "How we got " + money(V.mid);
-$("#mathTable").innerHTML = "<tr><th>Comp</th><th>Sold</th><th>Months since sale</th><th>Market change</th><th>Time-adjusted value</th></tr>" +
-  CORE.map(c => "<tr style='cursor:pointer' onclick=\"openDetail('" + c.key + "')\"><td><b>" + esc(c.address.replace(" Avenue", "")) + "</b><div class='muted' style='font-size:13px'>" + esc(c.role) + "</div></td><td>" + money(c.soldPrice) + "<div class='muted' style='font-size:13px'>" + fmtDate(c.soldDate) + "</div></td><td>" + monthsSince(c).toFixed(1) + "</td><td><span class='" + (chg(c) >= 0 ? "up" : "down") + "'>" + pctS(chg(c)) + "</span></td><td><b>" + money(adj(c)) + "</b></td></tr>").join("") +
-  "<tr><td colspan='4'><b>Average of the " + CORE.length + " closest comps = most likely value</b></td><td><b>" + money(V.mid) + "</b></td></tr>";
-$("#mathNote").innerHTML = "Adjusted price = sold price &times; (1 + " + pctS(APP.rate).replace("+", "") + " &times; months since sale &divide; 12). The range is the lowest and highest adjusted price of these comps. <b>This information is as of " + ASOF_TXT + ".</b>";
+$("#mathTable").innerHTML = "<tr><th>Comp</th><th>Sold</th><th>Months since sale</th><th>Market change</th>" + (HAS_ADJ ? "<th>Other adjustments</th>" : "") + "<th>" + ADJ_LBL + "</th></tr>" +
+  CORE.map(c => "<tr style='cursor:pointer' onclick=\"openDetail('" + c.key + "')\"><td><b>" + esc(c.address.replace(" Avenue", "")) + "</b><div class='muted' style='font-size:13px'>" + esc(c.role) + "</div></td><td>" + money(c.soldPrice) + "<div class='muted' style='font-size:13px'>" + fmtDate(c.soldDate) + "</div></td><td>" + monthsSince(c).toFixed(1) + "</td><td><span class='" + (chg(c) >= 0 ? "up" : "down") + "'>" + pctS(chg(c)) + "</span></td>" + (HAS_ADJ ? "<td>" + adjList(c) + "</td>" : "") + "<td><b>" + money(adj(c)) + "</b></td></tr>").join("") +
+  "<tr><td colspan='" + (HAS_ADJ ? 5 : 4) + "'><b>Average of the " + CORE.length + " closest comps = most likely value</b></td><td><b>" + money(V.mid) + "</b></td></tr>";
+$("#mathNote").innerHTML = "Adjusted price = sold price &times; (1 + " + pctS(APP.rate).replace("+", "") + " &times; months since sale &divide; 12)" + (HAS_ADJ ? " + other adjustments (for example, a garage the subject does not have)" : "") + ". The range is the lowest and highest adjusted price of these comps. <b>This information is as of " + ASOF_TXT + ".</b>";
 $("#vList").innerHTML = money(S.listPrice);
 { const d = S.listPrice / V.mid - 1; $("#vListNote").textContent = Math.abs(d) < 0.01 ? "In line with the most likely value" : Math.round(Math.abs(d) * 100) + "% " + (d > 0 ? "above" : "below") + " the most likely value"; }
 $("#vMed").innerHTML = money(M.market.medianNear);
 $("#vMedNote").textContent = M.market.countNear + " income-property sales within " + M.market.radiusNear + ", past 12 months";
 { const an = SOLD.find(c => c.role === "Anchor comp"), d = S.listPrice / V.mid - 1;
-  $("#summary").textContent = "Adjusted for market " + (APP.rate >= 0 ? "appreciation" : "change") + " since each sale (" + pctS(APP.rate) + " per year for " + AREA_TXT + "), the closest comparable sales support a value of " + k(V.low) + " to " + k(V.high) + ", most likely around " + money(V.mid) + ". " + (SELLER ? "A suggested list price of " : "The list price of ") + k(S.listPrice) + " is " + (Math.abs(d) < 0.01 ? "in line with that value" : Math.round(Math.abs(d) * 100) + "% " + (d > 0 ? "above" : "below") + " it") + ". The closest match, " + an.address.replace(" Avenue", "") + ", sold for " + k(an.soldPrice) + " " + Math.round(monthsSince(an)) + " months ago, which is about " + k(adj(an)) + " in today's market. This information is as of " + ASOF_TXT + "."; }
+  $("#summary").textContent = "Adjusted for market " + (APP.rate >= 0 ? "appreciation" : "change") + " since each sale (" + pctS(APP.rate) + " per year for " + AREA_TXT + ")" + (HAS_ADJ ? " and for features the subject lacks, such as a garage" : "") + ", the closest comparable sales support a value of " + k(V.low) + " to " + k(V.high) + ", most likely around " + money(V.mid) + ". " + (SELLER ? "A suggested list price of " : "The list price of ") + k(S.listPrice) + " is " + (Math.abs(d) < 0.01 ? "in line with that value" : Math.round(Math.abs(d) * 100) + "% " + (d > 0 ? "above" : "below") + " it") + ". The closest match, " + an.address.replace(" Avenue", "") + ", sold for " + k(an.soldPrice) + " " + Math.round(monthsSince(an)) + " months ago, which is about " + k(adj(an)) + " in today's market" + ((an.adjustments || []).length ? " after adjusting for " + an.adjustments.map(x => "the " + x.label.toLowerCase()).join(" and ") : "") + ". This information is as of " + ASOF_TXT + "."; }
 const subjFacts = [["Units", S.unitsLabel || (S.units + (S.extraUnitNote ? " + garden in-law" : ""))], ["Beds / baths", S.beds + " / " + S.baths], ["Year built", S.year], ["Exterior", S.exterior], ["Lot", S.lot], ["Parking", S.parking], ["Days on market", SELLER ? "Not yet listed" : S.dom], ["Taxes (" + S.taxYear + ")", money(S.taxes) + "*"], ["Existing rent-to-price ratio", rtpTxt(S, true)]];
 $("#subjFacts").innerHTML = subjFacts.map(f => "<div><div class='lbl'>" + f[0] + "</div><div class='v'>" + f[1] + "</div></div>").join("");
 function card(x) {
@@ -257,7 +263,7 @@ function card(x) {
     "<div style='display:flex;justify-content:space-between;align-items:center'>" + pill(x) + "<span class='lbl'>" + esc(x.role) + "</span></div>" +
     "<div class='p' style='margin-top:8px'>" + money(price(x)) + "</div><div style='font-weight:600'>" + x.n + ". " + esc(x.address) + "</div>" +
     "<div class='muted' style='font-size:14px;margin-top:4px'>" + sub + "</div>" +
-    (x.soldPrice ? "<div class='tav'><div><div class='tav-l'>Time-adjusted value</div><div class='tav-v'>" + money(adj(x)) + "</div></div><div class='tav-c'>" + pctS(chg(x)) + "<br>over " + Math.round(monthsSince(x)) + " mo</div></div>" : "") +
+    (x.soldPrice ? "<div class='tav'><div><div class='tav-l'>" + ADJ_LBL + "</div><div class='tav-v'>" + money(adj(x)) + "</div></div><div class='tav-c'>" + pctS(chg(x)) + "<br>over " + Math.round(monthsSince(x)) + " mo" + ((x.adjustments || []).length ? "<br>" + adjList(x) : "") + "</div></div>" : "") +
     "<div class='muted' style='font-size:14px;margin-top:6px'>" + x.units + " units · " + x.beds + " bd / " + x.baths + " ba · " + esc(x.parking) + "</div>" +
     "<div style='font-size:14px;margin-top:8px;padding-top:8px;border-top:1px solid var(--line)'>Existing rent-to-price ratio: " + rtpTxt(x, true) + "</div></div></div>";
 }
@@ -272,7 +278,8 @@ const ROWS = [
   ["List price", x => money(x.listPrice)],
   ["Sold price", x => x.soldPrice ? "<b>" + money(x.soldPrice) + "</b>" : "&ndash;"],
   ["Market change since sale", chgTxt],
-  ["Time-adjusted value", x => x.soldPrice ? "<b>" + money(adj(x)) + "</b>" : "&ndash;"],
+  ...(HAS_ADJ ? [["Other adjustments", x => x.soldPrice ? adjList(x) : "&ndash;"]] : []),
+  [ADJ_LBL, x => x.soldPrice ? "<b>" + money(adj(x)) + "</b>" : "&ndash;"],
   ["Sold vs. list", ratioTxt],
   ["Existing rents", rentTxt],
   ["Existing rent-to-price ratio", x => rtpTxt(x, true)],
@@ -309,7 +316,7 @@ function renderDetail() {
   const x = cur, ims = x.images || [];
   const facts = [["Status", pill(x)], [x.key === "subject" ? LISTWORD : "List price", money(x.listPrice)], ["Sold price", x.soldPrice ? money(x.soldPrice) : "&ndash;"], ["Sold vs. list", ratioTxt(x)],
     ["Original list price", money(x.originalPrice || x.listPrice)], ["Existing monthly rents", rentTxt(x)], ["Existing rent-to-price ratio", rtpTxt(x)], ["Days on market", x.dom ?? "&ndash;"], ["Listed", fmtDate(x.listDate)],
-    ["Sold", x.soldDate ? fmtDate(x.soldDate) : "&ndash;"], ["Market change since sale", chgTxt(x)], ["Time-adjusted value", x.soldPrice ? "<b>" + money(adj(x)) + "</b>" : "&ndash;"], ["Units", x.units + (x.type ? " (" + esc(x.type) + ")" : "")], ["Basement", esc(x.basement || "None")], ["Beds / baths", x.beds + " / " + x.baths],
+    ["Sold", x.soldDate ? fmtDate(x.soldDate) : "&ndash;"], ["Market change since sale", chgTxt(x)], ...(HAS_ADJ && x.soldPrice ? [["Other adjustments", adjList(x)]] : []), [ADJ_LBL, x.soldPrice ? "<b>" + money(adj(x)) + "</b>" : "&ndash;"], ["Units", x.units + (x.type ? " (" + esc(x.type) + ")" : "")], ["Basement", esc(x.basement || "None")], ["Beds / baths", x.beds + " / " + x.baths],
     ["Parking", esc(x.parking)], ["Lot", esc(x.lot || "&ndash;")], ["Year built", esc(x.year || "&ndash;")], ["Exterior", esc(x.exterior || "&ndash;")],
     ["Heating", esc(x.heating || "&ndash;")], ["Taxes", money(x.taxes) + (x.taxYear ? " (" + x.taxYear + ")" : "")], ["Distance from subject", dist(x)], ["MLS #", esc(x.mls)]];
   const ur = x.unitRows || [];
@@ -349,7 +356,7 @@ document.addEventListener("touchend", e => { if (tx === null) return; const dx =
   $("#pricingStats").innerHTML = [["Average comp sale, adjusted to today", money(avg)], ["Market appreciation used", pctS(APP.rate) + "/yr"], ["Average sold vs. list", (avgR * 100).toFixed(1) + "%"], ["Average days on market", avgD], ["Median time to sell (1 mi)", M.market.medianDom + " days"], ["Avg existing rent-to-price ratio", (() => { const f = SOLD.filter(c => rentInfo(c).full); return f.length ? (f.reduce((a, c) => a + rentInfo(c).ratio, 0) / f.length * 100).toFixed(2) + "%<div class='muted' style='font-size:13px;font-weight:500;font-family:Inter'>" + f.length + " sold comps with full rent rolls</div>" : "n/a"; })()]]
     .map(s => "<div class='card'><div class='lbl'>" + s[0] + "</div><div class='big' style='font-size:32px'>" + s[1] + "</div></div>").join("");
   $("#adjTable").innerHTML = "<tr><th>#</th><th>Property</th><th>Sold</th><th>Today</th><th>Compared with subject</th></tr>" +
-    SOLD.map(c => "<tr style='cursor:pointer' onclick=\"openDetail('" + c.key + "')\"><td>" + c.n + "</td><td><b>" + esc(c.address) + "</b><div class='muted' style='font-size:13px'>" + esc(c.why) + "</div></td><td>" + money(c.soldPrice) + "<div class='muted' style='font-size:13px'>" + fmtDate(c.soldDate) + "</div></td><td><b>" + money(adj(c)) + "</b><div style='font-size:13px'>" + chgTxt(c) + "</div></td><td><b>" + esc(c.vs) + "</b><div class='muted' style='font-size:13px'>" + esc(c.role) + "</div></td></tr>").join("");
+    SOLD.map(c => "<tr style='cursor:pointer' onclick=\"openDetail('" + c.key + "')\"><td>" + c.n + "</td><td><b>" + esc(c.address) + "</b><div class='muted' style='font-size:13px'>" + esc(c.why) + "</div></td><td>" + money(c.soldPrice) + "<div class='muted' style='font-size:13px'>" + fmtDate(c.soldDate) + "</div></td><td><b>" + money(adj(c)) + "</b><div style='font-size:13px'>" + chgTxt(c) + ((c.adjustments || []).length ? "<br>" + adjList(c) : "") + "</div></td><td><b>" + esc(c.vs) + "</b><div class='muted' style='font-size:13px'>" + esc(c.role) + "</div></td></tr>").join("");
 })();
 
 // about
