@@ -187,7 +187,7 @@ footer{background:var(--ink);color:#c9cfd6;font-size:13px;padding:24px 0}
 <script>
 const R = /*DATA*/;
 const CDN = "https://cdn.repliers.io/";
-const img = (p, c) => CDN + p + "?class=" + (c || "medium");
+const img = (p, c) => /^https?:/.test(p) ? p : CDN + p + "?class=" + (c || "medium");
 const $ = s => document.querySelector(s);
 const money = n => n == null ? "&ndash;" : "$" + Math.round(n).toLocaleString();
 const k = n => "$" + Math.round(n / 1000) + "K";
